@@ -1,0 +1,22 @@
+<div class="navbar navbar-default navbar-fixed-top" >
+    <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/#/">Stargazer</a>
+    </div>
+<ul class="nav navbar-nav">
+        <li><a href="/search">Search</a> </li>
+        <li><a href="/#/">Home</a></li>
+        <li><a href="/#constellation">Constellations</a></li>
+    {% if Catalogues %}
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Catalogues
+            <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+              {% for catalogue in Catalogues %}
+            <li><a href="{{ catalogue.name }}">{{ catalogue.name }}</a></li>
+              {% endfor %}
+          </ul>
+        </li>
+    {% endif %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+*.pyc
+
+manage.py
+
+djangoSettings/
+static/
+.idea/
+
