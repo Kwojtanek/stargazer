@@ -4,18 +4,18 @@ from django.template import loader, Context, RequestContext
 
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.decorators import api_view
 
-from .models import Objects_list, Ngc_list, Catalogues, NgcPhotos, Constellations
+from .filters import StellarListFilter
+from .models import Objects_list, StellarObject, Catalogues, NgcPhotos, Constellations
 from .serializer import NGCSerializer, ConstellationsSerializer, ObjectsSerializer, CatalogueSerializer
 
 #TODO napisz stronę 404 Not Found
 #TODO Mixins
 # Paginatory
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 25
     page_size_query_param = 'page_size'
-    max_page_size = 100
+    max_page_size = 200
 
 
 # Strona glowna
@@ -24,26 +24,38 @@ def MainView(request):
         'stargazer/ngc_list.html',
         {'Catalogues': Catalogues.objects.all()}, RequestContext(request))
 
+# Endpointy API
 
 # Wyszukiwarka
-def SearchView(request):
-    return render_to_response('stargazer/search.html')
+class SearchAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = NGCSerializer
+    filter_class = StellarListFilter
 
-# Endpointy API
-def SearchAPI(request):
-    if request.is_ajax():
-        pass
-    #TODO otrzymuje dane i zwraca filtrowaną listę obiektów
+    def get_queryset(self):
+        q = StellarObject.objects.all()
+        c = self.request.QUERY_PARAMS.get('const', None)
+        t = self.request.QUERY_PARAMS.get('type', None)
+        C = self.request.QUERY_PARAMS.get('cat', None)
+        if c:
+            c = c.split(',')
+            q = q.filter(constelation__abbreviation__in=c)
+        if t:
+            t = t.split(',')
+            q = q.filter(type_shortcut__in=t)
+        if C:
+            C = C.split(',')
+            q = q.filter(catalogues__object_catalogue__name__in=C)
+        return q.order_by('magnitudo')
 
-    #TODO Filtry napisać
 
 class SingleView(generics.RetrieveAPIView):
     serializer_class = NGCSerializer
-    queryset = Ngc_list
+    queryset = StellarObject
 
 
-class NgcViewAPI(generics.ListAPIView):
-    queryset = Ngc_list.objects.all()
+class StellarViewAPI(generics.ListAPIView):
+    queryset = StellarObject.objects.all()
     pagination_class = StandardResultsSetPagination
     serializer_class = NGCSerializer
 

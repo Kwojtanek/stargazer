@@ -1,0 +1,11 @@
+[
+  {
+    'magnitudo__max': 18.0,
+    'magnitudo__min': 1.9,
+    'Catalogues':{
+      'Catalogue' : 'NGC',
+      'Catalogue' : 'PGC',
+      'Catalogue' : 'Messier'
+    },
+  }
+]

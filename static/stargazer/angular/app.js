@@ -1,15 +1,15 @@
 var app = angular.module('appList', ['ngResource','ngRoute'])
 
-var sApp = angular.module('SearchApp', ['ngResource'])
+var SearchApp = angular.module('SearchApp', ['ngResource'])
 
 
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
-    {
-        controller: 'ListController',
-        templateUrl: '/static/stargazer/ngc_list.html'
-    })
+        {
+            controller: 'ListController',
+            templateUrl: '/static/stargazer/ngc_list.html'
+        })
         .when('/constellation', {
             controller: 'constellationsController',
             templateUrl: '/static/stargazer/constellations.html'
@@ -27,6 +27,5 @@ app.config(function($routeProvider){
             templateUrl: '/static/stargazer/CatalogueLists.html'
         })
 });
-
 //TODO Dopisz kontroler dla katalogów
 //TODO Kontroller do pojedyńczego obiektu

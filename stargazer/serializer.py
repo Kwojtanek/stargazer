@@ -2,7 +2,7 @@
 __author__ = 'kuba'
 
 from rest_framework import serializers
-from .models import Objects_list, Ngc_list, Constellations, Catalogues
+from .models import Objects_list, StellarObject, Constellations, Catalogues
 
 #Backward Ngc Serializer
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -24,17 +24,20 @@ class NGCSerializer(serializers.ModelSerializer):
         view_name='SingleUrl',
         lookup_field='pk'
     )
+    catalogues_list = serializers.ReadOnlyField(
+        read_only=True,
+    )
 
-    #TODO dla każdego rozmiaru zdjęcia zwraca hiperlink
-    photos = serializers.HyperlinkedRelatedField(
+    #TODO dla każdego rozmiaru zdjęcia zwraca hiperlink, Do poprawy, bo błądzi.
+    """photos = serializers.HyperlinkedRelatedField(
         read_only=True,
         many = True,
         view_name='Media_url',
         lookup_field='name'
     )
-
+"""
     class Meta:
-        model = Ngc_list
+        model = StellarObject
 
 #Forward Ngc serializer
 class ObjectsSerializer(serializers.ModelSerializer):

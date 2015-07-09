@@ -22,7 +22,7 @@ class Constellations(models.Model):
         return c.ngcs.all().count()
 
 
-class Ngc_list(models.Model):
+class StellarObject(models.Model):
     ngc_number = models.CharField(max_length=7, unique=True)
     type = models.CharField(max_length=100, blank=True,null=True)
     type_shortcut = models.CharField(max_length=12,blank=True,null=True)
@@ -60,30 +60,18 @@ class Catalogues(models.Model):
 
 
 class Objects_list(models.Model):
-    single_object = models.ForeignKey(Ngc_list, related_name='catalogues')
+    single_object = models.ForeignKey(StellarObject, related_name='catalogues')
     object_catalogue = models.ForeignKey(Catalogues, related_name='Catalogue')
     object_number = models.CharField(max_length=16)
 
-
-    def selflink(self):
-        if self.id:
-            return "<a href='../../ngc_list/%s' target='_blank'>Edit</a>" % str(Ngc_list.objects.get(pk=self.single_object.pk))
-        else:
-            return "Not present"
-    def selfname(self):
-        return 'NGC nr. %s' % str(self.id)
-    selflink.allow_tags = True
-
     def __unicode__(self):
-        return u'Ngc number %s' % str(Ngc_list.objects.get(pk=self.single_object.pk))
-
-
+        return u'%s number %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)), str(StellarObject.objects.get(pk=self.single_object.pk)))
 class NgcPhotos(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True)
     photo = ImageWithThumbsField(upload_to='images', sizes=((410,230),(1280,718)))
-    ngc_object = models.ForeignKey(Ngc_list, related_name='photos')
+    ngc_object = models.ForeignKey(StellarObject, related_name='photos')
 
     def __unicode__(self):
         return self.name
-
+#TODO Wgrać Fixtury do zdjęć
 #TODO Dodaj metody tworzenia linków dla zdjęć różnych wielkości

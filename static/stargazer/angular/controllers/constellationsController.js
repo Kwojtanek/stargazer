@@ -11,21 +11,22 @@ app.controller('constallationsDetailController', function( $routeParams, $scope,
         var ngcs = ConstNgcs.get({abbreviation: $routeParams.abbreviation, page: page});
         $scope.ngcs = ngcs;
     };
-    page = 1;
+
     getData();
 
-    $scope.clickNext = function(){
-        if ($scope.ngcs.next != null) {
-            page++;
-            getData(page);
-        }
-      };
-    $scope.clickPrevious = function(){
-        if (page != 1) {
-            page--;
-            getData(page);
-        }
-      };
+    page = 1;
+$scope.clickNext = function(){
+    if ($scope.ngcs.next != null) {
+        page++;
+        getData(page);
+    }
+};
+$scope.clickPrevious = function(){
+    if (page != 1) {
+        page--;
+        getData(page);
+    }
+};
 
 })
 

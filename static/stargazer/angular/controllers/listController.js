@@ -11,13 +11,11 @@ app.controller('ListController', ['$scope', '$http', function($scope, $http){
         if (link === undefined) link = 'ngclistAPI?format=json&page=1';
         $http.get(link).
             success(function(data, status) {
-                console.log("Request succed");
                 $scope.ngcs = data;
                 $scope.next = $scope.ngcs.next;
                 $scope.previous = $scope.ngcs.previous;
             }).
             error(function(data, status) {
-                console.log("Request failed");
                 $scope.ngc = data || "Request failed";
                 $scope.status = status;
             });

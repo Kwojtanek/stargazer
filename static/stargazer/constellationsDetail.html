@@ -1,12 +1,9 @@
-{% extends 'stargazer/base.html' %}
-
-{% block content %}
-{% verbatim %}
-<div class="container" ng-controller="ListCtrl" style="padding-top: 60px">
+<div class="container" ng-controller="constallationsDetailController" style="padding-top: 60px">
+    {{ constellation.abbreviation }}
 <table class="table table-hover table-condensed" >
     <thead>
     <tr>
-        <td>Catalogues</td>
+        <td>Catalogues                         </td>
         <td>Type</td>
         <td>Class</td>
         <td>RightAsc.</td>
@@ -23,12 +20,12 @@
     <tbody>
     <tr ng-repeat="ngc in ngcs.results">
         <a href="{{ ngc.pk }}">
-            <td><span ng-repeat="cat in ngc.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} nr.{{ cat.object_number }}</span><br></span></td>
+            <td><a href="{{ ngc.url }}"><span ng-repeat="cat in ngc.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} nr.{{ cat.object_number }}</span><br></span></a></td>
             <td>{{ ngc.type }}</td>
             <td>{{ ngc.classe }}</td>
             <td>{{ ngc.rightAsc }}</td>
             <td>{{ ngc.declination }}</td>
-            <td><a href="constellation/{{ ngc.constelation }}">{{ ngc.constelation }}</a></td>
+            <td><a href="#constellation/{{ ngc.constelation }}">{{ ngc.constelation }}</a></td>
             <td>{{ ngc.magnitudo }}</td>
             <td>{{ ngc.dimAxb }}</td>
             <td>{{ ngc.pa }}</td>
@@ -39,12 +36,9 @@
     </tr>
     </tbody>
 </table>
-    <span>
+        <span>
     <button ng-click="clickPrevious()"  type="button" class="btn btn-default">Previous</button>
 
     <button ng-click="clickNext()"  type="button" class="btn btn-default">Next</button>
         </span>
-</div>
-
-{% endverbatim %}
-{% endblock %}
+    </div>

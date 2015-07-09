@@ -3,6 +3,7 @@
 manage.py
 
 djangoSettings/
-static/
+static/*
+!static/stargazer/
 .idea/
 

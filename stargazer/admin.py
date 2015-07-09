@@ -1,13 +1,13 @@
 # coding=utf-8
 
 from .models import  Constellations as Constelation
-from .models import Ngc_list, Catalogues, Objects_list, NgcPhotos
+from .models import StellarObject, Catalogues, Objects_list, NgcPhotos
 from django.conf import settings
 from django.contrib import admin
 
 #TODO Cały admin do przepisania
 class ConstelationInline(admin.StackedInline):
-    model = Ngc_list
+    model = StellarObject
     extra = 0
 
 
@@ -65,6 +65,6 @@ class ObjectsInline(admin.TabularInline):
 #Catalogues_filtered = Catalogues.objects.exclude(pk=1)
 
 #And then include it in a admin declaration
-admin.site.register(Ngc_list, AdminNGC)
+admin.site.register(StellarObject, AdminNGC)
 admin.site.register(Constelation, AdminConst)
 admin.site.register(Catalogues, admin.ModelAdmin)

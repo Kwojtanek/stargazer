@@ -1,13 +1,14 @@
 /**
  * Created by root on 08.06.15.
  */
-sApp.controller('SearchCtrl', ['$scope', function($scope) {
+SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, SearchFactory) {
 
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues
     $scope.SearchConstellation = [];
     $scope.SearchTypes = [];
     $scope.SearchCatalogues = [];
+    $scope.SearchNgc = [];
 
 
     $( "#autocomplete" ).autocomplete({
@@ -24,7 +25,6 @@ sApp.controller('SearchCtrl', ['$scope', function($scope) {
             $( "#max_mag" ).val( ui.values[ 1 ]);
             $scope.MinMag = ui.values[ 0 ];
             $scope.MaxMag = ui.values[ 1 ];
-
         }
     });
     $scope.ChooseConst = function(){
@@ -49,9 +49,6 @@ sApp.controller('SearchCtrl', ['$scope', function($scope) {
     $scope.RemoveConst = function() {
         return $scope.SearchConstellation.splice($scope.SearchConstellation.indexOf(this.c),1);
     }
-    RemoveOb = function(ob,arr) {
-        return arr.splice(arr.indexOf(ob), 1);
-    }
     $scope.ResetFilters = function(){
         $scope.SearchConstellation.length = 0;
         $scope.SearchTypes.length = 0;
@@ -62,7 +59,6 @@ sApp.controller('SearchCtrl', ['$scope', function($scope) {
         $( "#min_mag" ).val(1.8);
         $( "#max_mag" ).val(18);
         $( "#slider" ).slider( "values", [ 1.8, 18 ] );
-
     }
     $scope.ChooseType = function(){
         if ($.inArray(this.t.value, $scope.SearchTypes ) == -1) {
@@ -71,10 +67,9 @@ sApp.controller('SearchCtrl', ['$scope', function($scope) {
         else {
             $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.value), 1)
         }
-
     }
     $scope.RemoveType = function(){
-        $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.value), 1);
+        $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t), 1);
     }
 
     $scope.ChooseCatalogue = function(){
@@ -84,10 +79,35 @@ sApp.controller('SearchCtrl', ['$scope', function($scope) {
         else {
             $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1)
         }
-
     }
     $scope.RemoveCatalogue = function(){
         $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1);
     }
-
+    $scope.SearchFor = function(page){
+        $scope.SearchNgc = SearchFactory.get(
+            {
+                page: page,
+                max_mag: $scope.MaxMag,
+                min_mag: $scope.MinMag,
+                type:  $scope.SearchTypes.toString(),
+                const: $scope.SearchConstellation.toString(),
+                cat: $scope.SearchCatalogues.toString()
+            }
+        )
+        $('body > section.container > table').show();
+        $('body > section.container > span').show();
+    }
+    page = 1;
+    $scope.clickNext = function(){
+        if ($scope.SearchNgc.next != null) {
+            page++;
+            $scope.SearchFor(page);
+        }
+    };
+    $scope.clickPrevious = function(){
+        if (page != 1) {
+            page--;
+            $scope.SearchFor(page);
+        }
+    };
 }]);

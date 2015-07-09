@@ -1,5 +1,105 @@
 .fixed {
-background-color : whitesmoke;
-position: fixed;
-border-bottom: 1px;
-    }
+    background-color : whitesmoke;
+    position: fixed;
+    border-bottom: 1px;
+}
+
+.choosen-const{
+    font-size: larger;
+    height: 34px;
+    border-radius: 7px;
+    background-color: #0384FF;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+.choosen {
+    background-color: #007fff;
+}
+
+#filter {
+
+    width: 100%;
+    background-image: url("/static/stargazer/css/img/blurred-background-16.jpg");
+    background-size: cover;
+    padding-bottom: 0px;
+
+}
+#filter-animated {
+    width: 100%;
+    padding-bottom: 0px;
+    background: linear-gradient(322deg, #262656, #e5bdcb, #578be4);
+    background-size: 400% 400%;
+
+    -webkit-animation: AnimationName 300s ease infinite;
+    -moz-animation: AnimationName 300s ease infinite;
+    animation: AnimationName 300s ease infinite;
+}
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 83%}
+    50%{background-position:100% 18%}
+    100%{background-position:0% 83%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 83%}
+    50%{background-position:100% 18%}
+    100%{background-position:0% 83%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 83%}
+    50%{background-position:100% 18%}
+    100%{background-position:0% 83%}
+}
+
+
+
+#search-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.under {
+    text-decoration: underline;
+    text-decoration-color: #ff6b7f;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+}
+.nav-i {
+    color: #666666;
+}
+.nav-i:hover {
+    color: #ff6b7f;
+    text-decoration: underline;
+    text-decoration-color: #666666;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    -webkit-text-decoration: underline;
+    -webkit-text-decoration-color: #666666;
+    -webkit-text-decoration-line: underline;
+    -webkit-text-decoration-style: solid;
+    -moz-text-decoration-color: #ff6b7f;
+    -moz-text-decoration: underline;
+    -moz-text-decoration-color: #666666;
+    -moz-text-decoration-line: underline;
+    -moz-text-decoration-style: solid;
+
+}
+
+#cat-button {
+    background-color: #4183D7;
+    border: none;
+
+}
+#type-button {
+        background-color: #59ABE3;
+    border: none;
+}
+#const-button {
+        background-color: #446CB3;
+    border: none;
+
+
+}
