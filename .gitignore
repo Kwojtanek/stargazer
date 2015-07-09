@@ -2,8 +2,10 @@
 
 manage.py
 
-djangoSettings/
+DjangoSettings/
 static/*
 !static/stargazer/
 .idea/
 
+
+DjangoSettings
