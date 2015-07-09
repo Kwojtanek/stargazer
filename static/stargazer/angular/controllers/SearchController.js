@@ -3,6 +3,8 @@
  */
 SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, SearchFactory) {
 
+    $scope.min_mag = 1.6;
+    $scope.max_mag = 18.1;
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues
     $scope.SearchConstellation = [];
@@ -17,9 +19,9 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     $( "div #slider" ).slider({
         step: 0.1,
         range: true,
-        max: 18.1,
-        min: 1.8,
-        values: [ 1.8, 18 ],
+        max: $scope.max_mag,
+        min: $scope.min_mag,
+        values: [ $scope.min_mag, $scope.max_mag],
         slide: function( event, ui ) {
             $( "#min_mag" ).val( ui.values[ 0 ]);
             $( "#max_mag" ).val( ui.values[ 1 ]);

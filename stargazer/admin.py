@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from .models import  Constellations as Constelation
-from .models import StellarObject, Catalogues, Objects_list, NgcPhotos
+from .models import StellarObject, Catalogues, Objects_list, ObjectPhotos
 from django.conf import settings
 from django.contrib import admin
 
@@ -29,7 +29,7 @@ class AdminConst(admin.ModelAdmin):
         ConstelationInline
     ]
 class ImageInline(admin.StackedInline):
-    model = NgcPhotos
+    model = ObjectPhotos
     extra = 0
 
 class AdminNGC(admin.ModelAdmin):

@@ -43,7 +43,7 @@
                     <div id="slider"></div>
 
                     <label for="min_mag">Min:</label>
-                    <input type="text" id="min_mag" readonly style="border:0; width: 24px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.8">
+                    <input type="text" id="min_mag" readonly style="border:0; width: 24px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 0.5">
                     <label for="max_mag" style="float:right">Max:</label>
                     <input type="text" id="max_mag" readonly style="border:0; width: 24px; float:right; background-color: transparent; font-weight:bold;" ng-model="MaxMag" ng-init="MaxMag = 18">
                 </div>
@@ -144,12 +144,13 @@
             <td>{{ ngc.classe }}</td>
             <td>{{ ngc.rightAsc }}</td>
             <td>{{ ngc.declination }}</td>
-            <td><a href="#constellation/{{ ngc.constelation }}">{{ ngc.constelation }}</a></td>
+            <td>{{ ngc.constelation }}</td>
             <td>{{ ngc.magnitudo }}</td>
             <td>{{ ngc.dimAxb }}</td>
             <td>{{ ngc.pa }}</td>
             <td>{{ ngc.id }},{{ ngc.id2 }},{{ ngc.id3 }}</td>
             <td>{{ ngc.notes }}</td>
+            <td><img src="{{ ngc.photos.thumb }}"></td>
 
     </tr>
     </tbody>

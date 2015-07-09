@@ -2,7 +2,7 @@
 __author__ = 'kuba'
 
 from rest_framework import serializers
-from .models import Objects_list, StellarObject, Constellations, Catalogues
+from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos
 
 #Backward Ngc Serializer
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -10,7 +10,19 @@ class NGCNestedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Objects_list
         fields = ('object_catalogue', 'object_number',)
-
+class PhotoSerializer(serializers.ModelSerializer):
+    thumb = serializers.ReadOnlyField(
+        read_only=True,
+    )
+    normal = serializers.ReadOnlyField(
+        read_only=True,
+    )
+    orginal = serializers.ReadOnlyField(
+        read_only=True
+    )
+    class Meta:
+        model = ObjectPhotos
+        fields =('thumb', 'normal', 'orginal')
 class NGCSerializer(serializers.ModelSerializer):
     catalogues = NGCNestedSerializer(
         many=True,
@@ -24,18 +36,11 @@ class NGCSerializer(serializers.ModelSerializer):
         view_name='SingleUrl',
         lookup_field='pk'
     )
-    catalogues_list = serializers.ReadOnlyField(
-        read_only=True,
+    photos = PhotoSerializer(
+        many=True,
+        read_only=True
     )
-
     #TODO dla każdego rozmiaru zdjęcia zwraca hiperlink, Do poprawy, bo błądzi.
-    """photos = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        many = True,
-        view_name='Media_url',
-        lookup_field='name'
-    )
-"""
     class Meta:
         model = StellarObject
 

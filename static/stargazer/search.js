@@ -1,3 +1,6 @@
+min_mag = 1.6;
+max_mag = 18.1;
+
 ConstList = [
     {
         "label": "Pegasus\n/ˈpɛɡəsəs/",

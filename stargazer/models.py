@@ -1,5 +1,6 @@
 # -*- coding=utf-8 -*-
 from django.db import models
+from DjangoSettings.settings import MEDIA_URL
 from .fields import DeclinationField
 from .thumbs import ImageWithThumbsField
 
@@ -66,12 +67,19 @@ class Objects_list(models.Model):
 
     def __unicode__(self):
         return u'%s number %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)), str(StellarObject.objects.get(pk=self.single_object.pk)))
-class NgcPhotos(models.Model):
+class ObjectPhotos(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True)
     photo = ImageWithThumbsField(upload_to='images', sizes=((410,230),(1280,718)))
     ngc_object = models.ForeignKey(StellarObject, related_name='photos')
 
     def __unicode__(self):
-        return self.name
+        return self.photo.url_410x230
+
+    #Na potrzeby serializera
+    def thumb(self):
+        return self.photo.url_410x230
+    def normal(self):
+        return self.photo.url_1280x718
+    def orginal(self):
+        return '%s%s' % (MEDIA_URL,self.photo.name)
 #TODO Wgrać Fixtury do zdjęć
-#TODO Dodaj metody tworzenia linków dla zdjęć różnych wielkości

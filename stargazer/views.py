@@ -6,7 +6,7 @@ from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 
 from .filters import StellarListFilter
-from .models import Objects_list, StellarObject, Catalogues, NgcPhotos, Constellations
+from .models import Objects_list, StellarObject, Catalogues, ObjectPhotos, Constellations
 from .serializer import NGCSerializer, ConstellationsSerializer, ObjectsSerializer, CatalogueSerializer
 
 #TODO napisz stronę 404 Not Found
