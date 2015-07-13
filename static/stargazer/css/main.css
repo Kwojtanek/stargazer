@@ -28,7 +28,7 @@
 #filter-animated {
     width: 100%;
     padding-bottom: 0px;
-    background: linear-gradient(322deg, #262656, #e5bdcb, #578be4);
+    background: linear-gradient(322deg, #262656, #bdc0e5, #578be4);
     background-size: 400% 400%;
 
     -webkit-animation: AnimationName 300s ease infinite;
@@ -62,29 +62,19 @@
     margin-right: auto;
 }
 .under {
-    text-decoration: underline;
-    text-decoration-color: #ff6b7f;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
+    font-weight: bold;
+        border-bottom: #FF6B7F solid 2px;
 }
 .nav-i {
     color: #666666;
+        text-decoration: none;
+
 }
 .nav-i:hover {
     color: #ff6b7f;
-    text-decoration: underline;
-    text-decoration-color: #666666;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    -webkit-text-decoration: underline;
-    -webkit-text-decoration-color: #666666;
-    -webkit-text-decoration-line: underline;
-    -webkit-text-decoration-style: solid;
-    -moz-text-decoration-color: #ff6b7f;
-    -moz-text-decoration: underline;
-    -moz-text-decoration-color: #666666;
-    -moz-text-decoration-line: underline;
-    -moz-text-decoration-style: solid;
+    border-bottom: #666 solid 2px;
+    text-decoration: none;
+
 
 }
 

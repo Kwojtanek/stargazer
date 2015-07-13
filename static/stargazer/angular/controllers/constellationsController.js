@@ -11,9 +11,7 @@ app.controller('constallationsDetailController', function( $routeParams, $scope,
         var ngcs = ConstNgcs.get({abbreviation: $routeParams.abbreviation, page: page});
         $scope.ngcs = ngcs;
     };
-
     getData();
-
     page = 1;
 $scope.clickNext = function(){
     if ($scope.ngcs.next != null) {

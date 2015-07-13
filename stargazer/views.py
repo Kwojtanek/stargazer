@@ -21,7 +21,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 # Strona glowna
 def MainView(request):
     return render_to_response(
-        'stargazer/ngc_list.html',
+        'stargazer/Browse.html',
         {'Catalogues': Catalogues.objects.all()}, RequestContext(request))
 
 # Endpointy API

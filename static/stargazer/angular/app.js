@@ -1,14 +1,12 @@
 var app = angular.module('appList', ['ngResource','ngRoute'])
 
 var SearchApp = angular.module('SearchApp', ['ngResource'])
-
-
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
         {
             controller: 'ListController',
-            templateUrl: '/static/stargazer/ngc_list.html'
+            templateUrl: '/static/stargazer/angular/routes/browse/StellarList.html',
         })
         .when('/constellation', {
             controller: 'constellationsController',
@@ -22,7 +20,7 @@ app.config(function($routeProvider){
             controller: 'CatalogueController',
             templateUrl: '/static/stargazer/Catalogue.html'
         })
-        .when('/catalogue/:name', {
+        .when('ngrou/catalogue/:name', {
             controller: 'CatalogueListController',
             templateUrl: '/static/stargazer/CatalogueLists.html'
         })

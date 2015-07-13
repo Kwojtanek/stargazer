@@ -7,14 +7,14 @@ from .views import ConstellationsViewDetailAPI, ConstellationsViewAPI, SingleCon
 from .views import CataloguesViewAPI, CataloguesDetailViewAPI, SingleCatalogueViewAPI
 
 urlpatterns = patterns('',
-    url(r'^$', MainView, name='MainUrl'),
-    url(r'^search/$', TemplateView.as_view(template_name="stargazer/search.html"), name='SearchUrl'),
+    url(r'^browse/$', MainView, name='MainUrl'),
+    url(r'^$', TemplateView.as_view(template_name="stargazer/Search.html"), name='SearchUrl'),
     url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
 
 
 
 # <----------------Endpointy api.-------------------->
-    url(r'^ngclistAPI$', StellarViewAPI.as_view(), name='ngclistUrl'),
+    url(r'^StellarlistAPI$', StellarViewAPI.as_view(), name='ngclistUrl'),
     url(r'^(?P<pk>[0-9_-]+)$', SingleView.as_view(), name='SingleUrl'),
 
     url(r'^catalogueAPI/(?P<name>[a-zA-Z0-9_-]+)$', SingleCatalogueViewAPI.as_view(), name='SingleCatalogueUrl'),

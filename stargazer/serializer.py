@@ -40,7 +40,6 @@ class NGCSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    #TODO dla każdego rozmiaru zdjęcia zwraca hiperlink, Do poprawy, bo błądzi.
     class Meta:
         model = StellarObject
 
