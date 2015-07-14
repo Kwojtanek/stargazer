@@ -1,10 +1,10 @@
 {
   "name": "stargazer",
-  "version": "0.1",
+  "version": "0.3",
   "authors": [
     "Kuba <kwojtanek@gmail.com>"
   ],
-  "description": "App for searching and filtering Ngc objects",
+  "description": "App for searching and filtering Stellar objects",
   "main": "stargazer",
   "keywords": [
     "django",
@@ -13,7 +13,7 @@
     "objects"
   ],
   "license": "MIT",
-  "homepage": "No yet",
+  "homepage": "https://github.com/Kwojtanek/stargazer",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -25,6 +25,7 @@
     "angular": "~1.3.15",
     "angular-route": "~1.3.15",
     "angular-resource": "~1.3.15",
+    "angular-animate": "~1.3.0",
     "jquery": "~2.1.4",
     "jquery-ui": "~1.11.4"
   }

@@ -57,10 +57,10 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         $scope.SearchCatalogues.length = 0;
 
         $scope.MaxMag = 18;
-        $scope.MinMag = 1.8;
-        $( "#min_mag" ).val(1.8);
+        $scope.MinMag = 1.6;
+        $( "#min_mag" ).val(1.6);
         $( "#max_mag" ).val(18);
-        $( "#slider" ).slider( "values", [ 1.8, 18 ] );
+        $( "#slider" ).slider( "values", [ 1.6, 18 ] );
     }
     $scope.ChooseType = function(){
         if ($.inArray(this.t.value, $scope.SearchTypes ) == -1) {

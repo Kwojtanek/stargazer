@@ -16,6 +16,7 @@
     <!-- CSS linki -->
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/main.css">
     <link rel="stylesheet" type="text/css" href="/static/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/ng-animate.css">
     <!-- TODO Napisać osobny wygląd dla jqueryUI -->
     <link rel="stylesheet" href="/static/jquery-ui/themes/smoothness/jquery-ui.min.css">
 </head>
@@ -43,7 +44,7 @@
                     <div id="slider"></div>
 
                     <label for="min_mag">Min:</label>
-                    <input type="text" id="min_mag" readonly style="border:0; width: 24px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.6 ">
+                    <input type="text" id="min_mag" readonly style="border:0; width: 24px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.6">
                     <label for="max_mag" style="float:right">Max:</label>
                     <input type="text" id="max_mag" readonly style="border:0; width: 24px; float:right; background-color: transparent; font-weight:bold;" ng-model="MaxMag" ng-init="MaxMag = 18">
                 </div>
@@ -138,8 +139,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="ngc in SearchNgc.results">
-        <td><a href="{{ ngc.url }}">{{ ngc.ngc_number}}</a></td>
+    <tr ng-animate="'animate'" ng-repeat="ngc in SearchNgc.results">
+        <td><a href="{{ ngc.url }}">{{ ngc.unique_name}}</a></td>
            <td><span ng-repeat="cat in ngc.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} nr.{{ cat.object_number }}</span><br></span></td>
             <td>{{ ngc.type }}</td>
             <td>{{ ngc.classe }}</td>
@@ -149,7 +150,7 @@
             <td>{{ ngc.magnitudo }}</td>
             <td>{{ ngc.dimAxb }}</td>
             <td>{{ ngc.pa }}</td>
-            <td>{{ ngc.id }},{{ ngc.id2 }},{{ ngc.id3 }}</td>
+            <td>{{ ngc.id1 }},{{ ngc.id2 }},{{ ngc.id3 }}</td>
             <td>{{ ngc.notes }}</td>
             <td><img ng-src="{{ ngc.photos[0].thumb }}" width="100" height="100"></td>
 

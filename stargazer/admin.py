@@ -33,12 +33,12 @@ class ImageInline(admin.StackedInline):
     extra = 0
 
 class AdminNGC(admin.ModelAdmin):
-    list_display = ["ngc_number",
+    list_display = ["unique_name",
                     "type", "type_shortcut", "classe",
                     "rightAsc", "declination", "constelation",
                     "magnitudo", "dimAxb", "description",
                     "id1", "id2", "id3", "notes"]
-    search_fields = ["ngc_number", "description",
+    search_fields = ["unique_name", "description",
                      "id1", "id2", "id3"]
 
     inlines = [ImageInline]

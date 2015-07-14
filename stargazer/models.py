@@ -24,7 +24,7 @@ class Constellations(models.Model):
 
 
 class StellarObject(models.Model):
-    ngc_number = models.CharField(max_length=7, unique=True)
+    unique_name = models.CharField(max_length=32, unique=True)
     type = models.CharField(max_length=100, blank=True,null=True)
     type_shortcut = models.CharField(max_length=12,blank=True,null=True)
     classe = models.CharField(max_length=12, blank=True,null=True)
@@ -45,7 +45,7 @@ class StellarObject(models.Model):
     notes = models.CharField(max_length=64, blank=True,null=True)
 
     def __unicode__(self):
-        return (self.ngc_number)
+        return (self.unique_name)
 
 
 class Catalogues(models.Model):

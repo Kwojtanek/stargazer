@@ -6,6 +6,4 @@ DjangoSettings/
 static/*
 !static/stargazer/
 .idea/
-
-
-DjangoSettings
+MEDIA
