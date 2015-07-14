@@ -10,11 +10,11 @@ app.config(function($routeProvider){
         })
         .when('/constellation', {
             controller: 'constellationsController',
-            templateUrl: '/static/stargazer/constellations.html'
+            templateUrl: '/static/stargazer/angular/routes/browse/Constellations.html'
         })
         .when('/constellation/:abbreviation', {
             controller: 'constallationsDetailController',
-            templateUrl: '/static/stargazer/constellationsDetail.html'
+            templateUrl: '/static/stargazer/angular/routes/browse/ConstellationsDetail.html'
         })
         .when('/catalogue', {
             controller: 'CatalogueController',
