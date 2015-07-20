@@ -20,15 +20,17 @@
 #filter {
 
     width: 100%;
-    background-image: url("/static/stargazer/css/img/blurred-background-16.jpg");
+
     background-size: cover;
     padding-bottom: 0px;
 
 }
+/*TODO Zdjęcie ma być nieruchome i powoli się pojawiać, a nie wjeżðżać razem z gradientem */
 #filter-animated {
     width: 100%;
     padding-bottom: 0px;
-    background: linear-gradient(322deg, #262656, #bdc0e5, #578be4);
+    background-color: #CA2700;
+    background: linear-gradient(322deg,#262656, #8f98e5, #578be4);
     background-size: 400% 400%;
 
     -webkit-animation: AnimationName 300s ease infinite;
