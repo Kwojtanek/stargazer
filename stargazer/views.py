@@ -37,6 +37,7 @@ class SearchAPI(generics.ListAPIView):
         c = self.request.QUERY_PARAMS.get('const', None)
         t = self.request.QUERY_PARAMS.get('type', None)
         C = self.request.QUERY_PARAMS.get('cat', None)
+        l = self.request.QUERY_PARAMS.get('lat', None)
         if c:
             c = c.split(',')
             q = q.filter(constelation__abbreviation__in=c)
@@ -46,7 +47,17 @@ class SearchAPI(generics.ListAPIView):
         if C:
             C = C.split(',')
             q = q.filter(catalogues__object_catalogue__name__in=C)
+        if l:
+            l = int(float(l))
+            ln = l
+            if l > 0:
+                ln -= 90
+                q = q.filter(declination__gte=str(ln))
+            if l < 0:
+                ln += 90
+                q = q.filter(declination__lte=str(ln))
         return q.order_by('magnitudo')
+
 
 
 class SingleView(generics.RetrieveAPIView):

@@ -10,7 +10,6 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     $scope.SearchConstellation = [];
     $scope.SearchTypes = [];
     $scope.SearchCatalogues = [];
-    $scope.SearchNgc = [];
 
 
     $( "#autocomplete" ).autocomplete({

@@ -61,7 +61,7 @@ class Catalogues(models.Model):
 
 
 class Objects_list(models.Model):
-    single_object = models.ForeignKey(StellarObject, related_name='catalogues')
+    single_object = models.ForeignKey(StellarObject, related_name='cataloagues')
     object_catalogue = models.ForeignKey(Catalogues, related_name='Catalogue')
     object_number = models.CharField(max_length=16)
 
