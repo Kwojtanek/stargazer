@@ -29,7 +29,6 @@
 #filter-animated {
     width: 100%;
     padding-bottom: 0px;
-    background-color: #CA2700;
     background: linear-gradient(322deg,#262656, #8f98e5, #578be4);
     background-size: 400% 400%;
 
@@ -94,4 +93,12 @@
     border: none;
 
 
+}
+
+table tr td {
+    padding-left: 0;
+    padding-right: 0;
+}
+[ng-click] {
+  cursor: pointer;
 }

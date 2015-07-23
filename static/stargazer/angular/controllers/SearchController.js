@@ -38,6 +38,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         $scope.SearchConstellation.length = 0;
         $scope.SearchTypes.length = 0;
         $scope.SearchCatalogues.length = 0;
+        $scope.visible = false; $scope.lat ='';
 
         $scope.MaxMag = 18;
         $scope.MinMag = 1.6;
@@ -50,14 +51,18 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         if ($scope.visible == false) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                $scope.lat = position.coords.latitude
-});
+                    $scope.lat = position.coords.latitude
+                });
             } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
+                return alert("Geolocation is not supported by this browser.");
             }
             return $scope.visible = true
         }
-        else $scope.lat ='';return $scope.visible = false
+        else {
+            $scope.visible = false;
+            $scope.lat ='';
+
+        }
     }
     $scope.ChooseConst = function(){
         var $acmp = $( "#autocomplete").val();
@@ -109,8 +114,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     // Submit przycisk
     $scope.SearchFor = function(page){
         $('body > div.box').fadeIn(300);
-        $('body > section.container > table').hide();
-        $('body > section.container > span').hide();
+        $('body > section.container > table').fadeOut(300);
+        $('body > section.container > span').fadeOut(300);
         SearchFactory.get(
             {
                 page: page,
@@ -119,12 +124,14 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
                 type:  $scope.SearchTypes.toString(),
                 const: $scope.SearchConstellation.toString(),
                 cat: $scope.SearchCatalogues.toString(),
-                lat: $scope.lat.toString()
+                lat: $scope.lat,
+                name: $scope.Name
             }
         ).$promise.then(function(ob){
                 $scope.SearchNgc = ob;
-                $('body > section.container > table').show();
-                $('body > section.container > span').show();
+
+                $('body > section.container > table').fadeIn(300);
+                $('body > section.container > span').fadeIn(300);
                 $('body > div.box').fadeOut(300);
             });
 
@@ -144,4 +151,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
             $scope.SearchFor(page);
         }
     };
+    //Caly tr jako link
+    $scope.trUrl = function(url){
+        window.location = url;
+    }
 }]);

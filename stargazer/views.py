@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 from django.shortcuts import render_to_response, HttpResponse
 from django.template import loader, Context, RequestContext
+from django.db.models import Q
 
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
@@ -38,6 +39,7 @@ class SearchAPI(generics.ListAPIView):
         t = self.request.QUERY_PARAMS.get('type', None)
         C = self.request.QUERY_PARAMS.get('cat', None)
         l = self.request.QUERY_PARAMS.get('lat', None)
+        n = self.request.QUERY_PARAMS.get('name', None)
         if c:
             c = c.split(',')
             q = q.filter(constelation__abbreviation__in=c)
@@ -56,9 +58,26 @@ class SearchAPI(generics.ListAPIView):
             if l < 0:
                 ln += 90
                 q = q.filter(declination__lte=str(ln))
-        return q.order_by('magnitudo')
+        qn = StellarObject.objects.none()
+        if n:
+            print type(n)
+            n = n.replace(',', ' ')
+            n = n.split()
 
+            #TODO Brzyćkie i niewydajne, do poprawienia!, a może Haystack
+            for x in n:
+                if x == 'm' or x == 'M':
+                    x = 'Messier'
+                if Catalogues.objects.filter(name=x).exists():
+                    qn = qn|q.filter(catalogues__object_catalogue__name__iexact=x)
+                if x.isdigit():
+                    qn = qn.filter(catalogues__object_number__exact=x)
 
+                else:
+                    qn = qn | (q.filter(Q(unique_name__icontains=x)|Q(id1__icontains=x)|Q(id__icontains=x)|Q(id3__icontains=x)|Q(notes__icontains=x)))
+            return qn.order_by('catalogues__object_number')
+        else:
+            return q.order_by('magnitudo')
 
 class SingleView(generics.RetrieveAPIView):
     serializer_class = NGCSerializer

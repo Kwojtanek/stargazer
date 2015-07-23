@@ -1,6 +1,6 @@
 var app = angular.module('appList', ['ngResource','ngRoute'])
 
-var SearchApp = angular.module('SearchApp', ['ngResource'])
+var SearchApp = angular.module('SearchApp', ['ngResource', 'ngAnimate'])
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
