@@ -1,30 +1,20 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/html">
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Search Stellar objects</title>
+    <title>Stellar objects browser</title>
 
-    <!-- Spiner -->
-
-    <link rel="stylesheet" href="/static/stargazer/css/loader.css">
     <!-- CSS linki -->
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/static/bootstrap/dist/css/bootstrap.min.css">
-    <!-- TODO Napisać osobny wygląd dla jqueryUI -->
-    <link rel="stylesheet" href="/static/jquery-ui-light/jquery-ui.min.css">
-    <link rel="stylesheet" href="/static/stargazer/css/animations.css">
-
 
     <!-- JS linki -->
     <script src="/static/jquery/dist/jquery.min.js" type="text/javascript"></script>
     <script src="/static/jquery-ui-light/jquery-ui.min.js"></script>
-
-    <script src="/static/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-
     <script src="/static/angular/angular.min.js" type="text/javascript"></script>
     <script src="/static/angular-resource/angular-resource.min.js" type="text/javascript"></script>
     <script src="/static/angular-animate/angular-animate.min.js" type="text/javascript"></script>
+    <script src="/static/angular-route/angular-route.min.js"></script>
 
     <!-- Angular linki -->
     <script src="/static/stargazer/angular/app.js" type="text/javascript"></script>
@@ -44,161 +34,19 @@
 {% block header %}
 {% endblock %}
 {% verbatim %}
-<section id="filter-animated">
-    <div  class="container">
-        <h2 style="color: white">Filters:</h2>
-        <form>
+<ng-view></ng-view>
+{% endverbatim %}
 
-            <div class="row">
+<div class="box">
+    <div class="loader1"><div class="loader-planet"></div> </div>
+</div>
 
-                <div class="col-sm-2">
-                    <button type="button" id="reset" class="btn btn-default" aria-label="Center Align" ng-click="ResetFilters()"><span class="glyphicon glyphicon-refresh"></span>Reset</button>
-                </div>
-                <div class="col-sm-8">
-                    <label for="slider">Magnitudo</label>
-                    <div id="slider"></div>
-
-                    <label for="min_mag">Min:</label>
-                    <input type="text" id="min_mag" readonly style="border:0; width: 24px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.6">
-                    <label for="max_mag" style="float:right">Max:</label>
-                    <input type="text" id="max_mag" readonly style="border:0; width: 24px; float:right; background-color: transparent; font-weight:bold;" ng-model="MaxMag" ng-init="MaxMag = 18">
-                </div>
-                <div class="col-sm-2">
-                    <button type="button" id="VisibleOnly" class="btn btn-default" aria-label="Center Align" data-toggle="button" ng-click="VisibleOnly()">
-                        Visible Only
-                        <span ng-if='visible' class="animate-if glyphicon glyphicon-ok" aria-hidden="true">
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <div class="row" style="min-height: 34px">
-                <div class="col-sm-12 center-block">
-                    <div class="input-group">
-                        <button type="button" class="btn btn-default btn-info" id="const-button" aria-label="Center Align" ng-repeat="c in SearchConstellation" ng-click="RemoveConst()">
-                            {{ c }}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <button type="button" class="btn btn-default btn-info" id="type-button" aria-label="Center Align" ng-repeat="t in SearchTypes" ng-click="RemoveType()">
-                            {{ t }}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <button type="button" class="btn btn-default btn-info" id="cat-button" aria-label="Center Align" ng-repeat="cat in SearchCatalogues" ng-click="RemoveCatalogue()">
-                            {{ cat }}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="input-group" >
-                        <input id="autocomplete" class="form-control" placeholder="Constellation" ng-model="Constellation" >
-
-                <span class="input-group-btn">
-
-            <button type="button" class="btn btn-primary" ng-click="ChooseConst()" >Add</button>
-                    </span>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <input type="text" class="form-control" ng-model="Name" placeholder="Type name or nr. e.g. m 31, andromeda, NGC 224" >
-
-                </div>
-                <div class="col-md-4">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" >
-                            Types <span class="caret"></span>
-                        </button>
-                        <ul data-toggle="dropdown" class="dropdown-menu" role="tablist">
-                            <li ng-repeat="t in Types" style="white-space: nowrap;"  >
-                                <a role="menuitem" tabindex="-1" href="#" ng-click="ChooseType()">{{ t.label }}</a>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" >
-                            Catalogues <span class="caret"></span>
-                        </button>
-                        <ul data-toggle="dropdown" class="dropdown-menu" role="tablist">
-                            <li ng-repeat="cat in Catalogues" style="white-space: nowrap;">
-                                <a role="menuitem" tabindex="-1" href="#" ng-click="ChooseCatalogue()" >{{ cat }}</a>
-                            </li>
-
-                        </ul>
-
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <input type="submit" id="search-button"  class="btn btn-default" value="search" ng-click="SearchFor(1)"/>
-            </div>
-        </form>
-
-    </div>
-</section>
-<!-- TODO Lista obiektów jako dyrektywa -->
-<section class="container">
-    <h3>Results: {{ SearchNgc.count }}</h3>
-    <table class="table table-hover table-condensed">
-        <thead>
-        <tr>
-            <td>#</td>
-            <td>Catalogues</td>
-            <td>Type</td>
-            <td>Class</td>
-            <td>RightAsc.</td>
-            <td>Declination</td>
-            <td>constellation</td>
-            <td>Mag.</td>
-            <td>DimAxb</td>
-            <td>P.A.</td>
-            <td>Other names</td>
-            <td>notes</td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="ngc in SearchNgc.results" ng-click="trUrl(ngc.url)">
-            <td>{{ ngc.unique_name}}</td>
-            <td><span ng-repeat="cat in ngc.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></td>
-            <td>{{ ngc.type }}</td>
-            <td>{{ ngc.classe }}</td>
-            <td>{{ ngc.rightAsc }}</td>
-            <td>{{ ngc.declination }}</td>
-            <td>{{ ngc.constelation }}</td>
-            <td>{{ ngc.magnitudo }}</td>
-            <td>{{ ngc.dimAxb }}</td>
-            <td>{{ ngc.pa }}</td>
-            <td>{{ ngc.id1 }},{{ ngc.id2 }},{{ ngc.id3 }}</td>
-            <td>{{ ngc.notes }}</td>
-            <td><a  ng-if="ngc.photos[0].orginal" href="{{ ngc.photos[0].orginal }}"><img ng-src="{{ ngc.photos[0].thumb }}" width="100" height="100"></a> </td>
-
-        </tr>
-        </a>
-        </tbody>
-    </table>
-    <!--TODO Automatyczne doładywanie następnej listy bez przycisków -->
-        <span>
-    <button ng-click="clickPrevious()"  type="button" class="btn btn-default">Previous</button>
-
-    <button ng-click="clickNext()"  type="button" class="btn btn-default">Next</button>
-        </span>
-
-</section>
 <script type="text/javascript">
     $(document).ready(function() {
         $('body').hide().fadeIn(1000);
-        $('body > section.container > table').hide();
-        $('body > section.container > span').hide();
         $('body > div.container > nav > span:nth-child(1) > a').addClass( "under b");
 
     });
 </script>
-{% endverbatim %}
-<div class="box">
-    <div class="loader1"><div class="loader-planet"></div> </div>
-</div>
 </body>
 </html>

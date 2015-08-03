@@ -1,6 +1,6 @@
 var app = angular.module('appList', ['ngResource','ngRoute'])
 
-var SearchApp = angular.module('SearchApp', ['ngResource', 'ngAnimate'])
+var SearchApp = angular.module('SearchApp', ['ngResource', 'ngAnimate', 'ngRoute'])
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
@@ -23,6 +23,14 @@ app.config(function($routeProvider){
         .when('ngrou/catalogue/:name', {
             controller: 'CatalogueListController',
             templateUrl: '/static/stargazer/CatalogueLists.html'
+        })
+});
+SearchApp.config(function($routeProvider){
+    $routeProvider
+        .when('/',
+        {
+            controller: 'SearchCtrl',
+            templateUrl: '/static/stargazer/angular/routes/search/SearchView.html',
         })
 });
 //TODO Dopisz kontroler dla katalogów

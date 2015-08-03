@@ -38,7 +38,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         $scope.SearchConstellation.length = 0;
         $scope.SearchTypes.length = 0;
         $scope.SearchCatalogues.length = 0;
-        $scope.visible = false; $scope.lat ='';
+        $scope.visible = false; $scope.lat =''; $('#VisibleOnly').removeClass('btn-icon-vis');
 
         $scope.MaxMag = 18;
         $scope.MinMag = 1.6;
@@ -52,15 +52,18 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     $scope.lat = position.coords.latitude
+                    $scope.visible = true;
                 });
             } else {
                 return alert("Geolocation is not supported by this browser.");
             }
+            $('#VisibleOnly').addClass('btn-icon-vis');
             return $scope.visible = true
         }
         else {
             $scope.visible = false;
             $scope.lat ='';
+            $('#VisibleOnly').removeClass('btn-icon-vis');
 
         }
     }
@@ -130,8 +133,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         ).$promise.then(function(ob){
                 $scope.SearchNgc = ob;
 
-                $('body > section.container > table').fadeIn(300);
-                $('body > section.container > span').fadeIn(300);
+                $('body > ng-view > section').fadeIn(300);
                 $('body > div.box').fadeOut(300);
             });
 

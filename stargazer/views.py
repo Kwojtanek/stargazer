@@ -34,30 +34,30 @@ class SearchAPI(generics.ListAPIView):
     filter_class = StellarListFilter
 
     def get_queryset(self):
-        q = StellarObject.objects.all()
-        c = self.request.QUERY_PARAMS.get('const', None)
-        t = self.request.QUERY_PARAMS.get('type', None)
-        C = self.request.QUERY_PARAMS.get('cat', None)
-        l = self.request.QUERY_PARAMS.get('lat', None)
+        stellarquery = StellarObject.objects.all()
+        constellation = self.request.QUERY_PARAMS.get('const', None)
+        type_ = self.request.QUERY_PARAMS.get('type', None)
+        catalogue = self.request.QUERY_PARAMS.get('cat', None)
+        latitude = self.request.QUERY_PARAMS.get('lat', None)
         n = self.request.QUERY_PARAMS.get('name', None)
-        if c:
-            c = c.split(',')
-            q = q.filter(constelation__abbreviation__in=c)
-        if t:
-            t = t.split(',')
-            q = q.filter(type_shortcut__in=t)
-        if C:
-            C = C.split(',')
-            q = q.filter(catalogues__object_catalogue__name__in=C)
-        if l:
-            l = int(float(l))
-            ln = l
-            if l > 0:
+        if constellation:
+            constellation = constellation.split(',')
+            stellarquery = stellarquery.filter(constelation__abbreviation__in=constellation)
+        if type_:
+            type_ = type_.split(',')
+            stellarquery = stellarquery.filter(type_shortcut__in=type_)
+        if catalogue:
+            catalogue = catalogue.split(',')
+            stellarquery = stellarquery.filter(catalogues__object_catalogue__name__in=catalogue)
+        if latitude:
+            latitude = int(float(latitude))
+            ln = latitude
+            if latitude > 0:
                 ln -= 90
-                q = q.filter(declination__gte=str(ln))
-            if l < 0:
+                stellarquery = stellarquery.filter(declination__gte=str(ln))
+            if latitude < 0:
                 ln += 90
-                q = q.filter(declination__lte=str(ln))
+                stellarquery = stellarquery.filter(declination__lte=str(ln))
         qn = StellarObject.objects.none()
         if n:
             print type(n)
@@ -69,15 +69,15 @@ class SearchAPI(generics.ListAPIView):
                 if x == 'm' or x == 'M':
                     x = 'Messier'
                 if Catalogues.objects.filter(name=x).exists():
-                    qn = qn|q.filter(catalogues__object_catalogue__name__iexact=x)
+                    qn = qn|stellarquery.filter(catalogues__object_catalogue__name__iexact=x)
                 if x.isdigit():
                     qn = qn.filter(catalogues__object_number__exact=x)
 
                 else:
-                    qn = qn | (q.filter(Q(unique_name__icontains=x)|Q(id1__icontains=x)|Q(id__icontains=x)|Q(id3__icontains=x)|Q(notes__icontains=x)))
+                    qn = qn | (stellarquery.filter(Q(unique_name__icontains=x)|Q(id1__icontains=x)|Q(id__icontains=x)|Q(id3__icontains=x)|Q(notes__icontains=x)))
             return qn.order_by('catalogues__object_number')
         else:
-            return q.order_by('magnitudo')
+            return stellarquery.order_by('magnitudo')
 
 class SingleView(generics.RetrieveAPIView):
     serializer_class = NGCSerializer
