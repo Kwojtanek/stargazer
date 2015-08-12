@@ -33,8 +33,20 @@ ng-view >form {
 section > h2 {
     flex-basis: 100%;
 }
+#brightness {
+    display: inherit;
+    background-color: #ABB1BE;
+    flex: 1 0 550px;
+    order: 2;
+
+}
+.maxmindiv {
+    text-align: center;
+    color: #ffffff;
+    width: 100px;  }
 #slider {
     text-align:center;
+    height: 74px;
 }
 /* Slider */
 .ui-slider-handle {
@@ -42,11 +54,8 @@ section > h2 {
     height: 100%;
     background-color: #00599D;
 }
-#filter-animated > div:nth-child(3) {
-    flex: 1 0 550px;
-    order: 2;
-}
-#filter-animated > div:nth-child(3) > div:nth-child(2) {
+
+#brightness > div:nth-child(2) {
     flex-basis: 100%;
 }
 .ui-slider-horizontal .ui-slider-range {
@@ -62,11 +71,9 @@ section > h2 {
     background-position: 0 0;
 }
 .ui-widget-header {
-    border: 1px solid #aaaaaa;
     background: #ffffff;
     color: #222222;
     font-weight: bold;
-    border: solid 3px #ffffff;
 }
 #slider::after {
     content: "Brightness";
@@ -75,21 +82,12 @@ section > h2 {
     color: #ABB1BE;
     top: 28px;
 }
-#slider{ background-color: #ABB1BE}
-Inherited from
-.ui-widget-content {
-    border: 1px solid #aaaaaa;
-    background: #ffffff;
-    color: #222222;
-}
 .ui-widget {
     font-family: Verdana,Arial,sans-serif;
     font-size: 1.1em;
 }
 .ui-slider {
     position: relative;
-    text-align: left;
-    border-bottom: solid #ffffff ;
 }
 #search-grp {
     flex-basis: 100%;
@@ -114,23 +112,37 @@ Inherited from
 
 }
 #type-button {
-        background-color: #0894FF;
+    background-color: #0894FF;
 }
 #const-button {
-        background-color: #00599D;
+    background-color: #00599D;
 
 
 }
 #const-group {
     order: 5;
     display: inherit;
+    flex: 1 0 300px;
 }
 #const-group > input {
-    flex-basis: 200px;
-    border-bottom: 0;
+    flex: 1;
 }
 #const-group > button {
-    margin-left: -5px;
+    flex: 1;
+}
+#search-field {
+    flex: 2 1 350px;
+    order: 6;
+}
+#search-field > input {
+    width: 100%;
+}
+#types {
+    order: 7;
+}
+#catalogues {
+    order: 8;
+    border-right: 0;
 }
 /* Autocomplete */
 .ui-menu .ui-menu-item {
@@ -178,7 +190,7 @@ body > section.container {
     color: inherit;
     background: none;
     cursor: pointer;
-    padding: 25px 70px;
+    padding: 25px 55px;
     display: inline-flex;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -188,7 +200,7 @@ body > section.container {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
-        border: 3px solid #fff;
+    border: 3px solid #fff;
     color: #fff;
 }
 
@@ -216,8 +228,16 @@ tr:hover {
     background-color: #0078D7;
     color: #ffffff;
 }
-tr:hover:first-child {
-    background-color: none;
+thead tr:hover:first-child {
+    background: none;
+    color: inherit;
+}
+thead tr {
+    text-transform: uppercase;
+    font-size: larger;
+}
+thead tr td {
+    padding-left: 5px;
 }
 input {
     height: 74px;
@@ -239,13 +259,7 @@ input {
     background-position: right center;
     background-size: 65%;
 }
-.maxmindiv {
-    text-align: center;
-    background-color: #abb1be;
-    color: #ffffff;
-    width: 100px;
-    border-bottom: solid #ffffff ;
-}
+
 .btn-icon {
     background-image: url("/static/stargazer/css/img/refresh.svg");
     background-repeat: no-repeat;
@@ -256,12 +270,20 @@ input {
     border-right: none;
     order: 3;
 }
+.btn-icon-notvis {
+    background-image: url("/static/stargazer/css/img/circle-cross.svg");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 65%;
+}
+
 .btn-icon-vis {
     background-image: url("/static/stargazer/css/img/check.svg");
     background-repeat: no-repeat;
     background-position: right center;
     background-size: 65%;
 }
+
 body > ng-view > section {
     display: none;
 }
@@ -328,15 +350,19 @@ body > div.box{
     0%{transform:rotate(0deg);}
     100%{transform:rotate(360deg);}
 }
-table tr td {
-    padding-left: 0;
-    padding-right: 0;
-}
 [ng-click] {
-  cursor: pointer;
+    cursor: pointer;
 }
-
-/* -------------------------------------Very Large---------------------------------------------------------- */
+#buttons {
+    width: 100%;
+    background-color: rgba(53, 57, 62, 0.75);
+    position: fixed;
+    bottom: 0
+}
+#buttons:hover {
+    background-color: rgba(53, 57, 62, 0.95);
+}
+/* -------------------------------------Large---------------------------------------------------------- */
 @media only screen
 and (min-width : 1824px) {
     #navbar{
@@ -353,34 +379,200 @@ and (min-width : 1824px) {
         border: 3px solid #fff;
 
     }
+        #results {
+        margin: 0 15% 74px 15%;
+    }
+        #catalogues {
+            border-right: solid white;
+        }
 
 }
-@media only screen and (max-width : 1024px) {
-    #reset {
-        border-left: none;
-        order: 1;
-        flex-basis: 50%;
+/* -------------------------------------Normal---------------------------------------------------------- */
 
-
+@media only screen and (min-width : 1025px) and (max-width: 1280px){
+            table {
+        width:100%
     }
-
-    #VisibleOnly {
-        order: 2;
-        flex-basis: 50%;
-
+    tr > td:nth-child(4) {
+        display: none;
     }
-
-    #filter-animated > div:nth-child(3) {
-        order: 3;
+    tr > td:nth-child(5) {
+        display: none;
+    }
+    tr > td:nth-child(6) {
+        display: none;
+    }
+    tr > td:nth-child(9) {
+        display: none;
+    }
+    tr > td:nth-child(10) {
+        display: none;
+    }
+    #const-group {
+        flex: 1 1 50%;
+    }
+    #search-field {
+        order:8;
+        flex: 1 1 100%
+    }
+    #types {
+        order: 6;
+        flex: 1 1 25%;
+    }
+    #types > button {
+        width: 100%;
+    }
+    #catalogues {
+        order: 7;
+        flex: 1 1 25%;
+    }
+    #catalogues > button {
+        width: 100%;
     }
 }
+    #catalogues > button {
+        border-right: none;
+    }
 
-/* -------------------------------------Small---------------------------------------------------------- */
+/* -------------------------------------mobile---------------------------------------------------------- */
+/*Portrait*/
 @media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
-#reset{
-    flex-basis: 100%0;
-}}
+and (max-width : 400px) {
 
+    tr > td:nth-child(7) {
+        display: none;
+    }
+}
+@media only screen
+and (max-width : 480px) {
+    #filter-animated{
+        flex-wrap: wrap;
 
+    }
+    #filter-animated > * {
+        flex: 1 1 100%;
+        border-right: none;
+        border-left: none;
+    }
+    #filter-animated > * > button {
+        width: 100%;
+    }
+    #reset {}
+    #brightness {
+        flex: 1 1 100%;
+        display: inherit;
+        flex-wrap: wrap;
+    }
+    #brightness > div:nth-child(2) {
+        order: 3;
+        width: 100%;
+    }
+    #brightness > div:first-child {
+        order: 1;
+        flex: 1 1 50%;
+    }
+    #brightness > div:last-child {
+        order: 2;
+        flex: 1 1 50%;
+    }
+    table {
+        width:100%
+    }
+    tr > td:nth-child(2) {
+        display: none;
+    }
+    tr > td:nth-child(4) {
+        display: none;
+    }
+    tr > td:nth-child(5) {
+        display: none;
+    }
+    tr > td:nth-child(6) {
+        display: none;
+    }
+    tr > td:nth-child(9) {
+        display: none;
+    }
+    tr > td:nth-child(10) {
+        display: none;
+    }
+    tr > td:nth-child(12) {
+        display: none;
+    }
+    tr > td:last-child {
+        display: none;
+    }
+    #buttons > button {
+        width: 49%;
+    }
+    #buttons > button:last-child {
+        border-right: none;
+    }
+}
+@media only screen
+and (max-width : 400px) {
+
+    tr > td:nth-child(7) {
+        display: none;
+    }
+}
+/*Landscape*/
+@media screen and (min-width: 481px) and (max-width: 720px){
+    tr > td:last-child {
+        display: none;
+    }
+}
+
+/* -------------------------------------Tablet and small pc---------------------------------------------------------- */
+
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+    #reset {
+        flex: 1 1 50%;
+        text-align: center;
+
+    }
+    #brightness {
+        order: 3;
+        flex: 1 1 50%;
+    }
+    #VisibleOnly {
+        flex: 1 1 50%;
+        order: 2;
+    }
+    #search-field {
+        flex: 1 1 100%;
+    }
+    #types {
+        flex: 1 1 50%;
+    }
+
+    #types > button {
+        width: 100%;
+        border-left: none;
+    }
+    #catalogues {
+        flex: 1 1 50%;
+    }
+    #catalogues > button {
+        width: 100%;
+        border-right: none;
+    }
+        table {
+        width:100%
+    }
+    tr > td:nth-child(4) {
+        display: none;
+    }
+    tr > td:nth-child(5) {
+        display: none;
+    }
+    tr > td:nth-child(6) {
+        display: none;
+    }
+    tr > td:nth-child(9) {
+        display: none;
+    }
+    tr > td:nth-child(10) {
+        display: none;
+    }
+}

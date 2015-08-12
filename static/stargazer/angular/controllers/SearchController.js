@@ -38,7 +38,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         $scope.SearchConstellation.length = 0;
         $scope.SearchTypes.length = 0;
         $scope.SearchCatalogues.length = 0;
-        $scope.visible = false; $scope.lat =''; $('#VisibleOnly').removeClass('btn-icon-vis');
+        $scope.visible = false; $scope.lat ='';
 
         $scope.MaxMag = 18;
         $scope.MinMag = 1.6;
@@ -57,14 +57,11 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
             } else {
                 return alert("Geolocation is not supported by this browser.");
             }
-            $('#VisibleOnly').addClass('btn-icon-vis');
             return $scope.visible = true
         }
         else {
             $scope.visible = false;
             $scope.lat ='';
-            $('#VisibleOnly').removeClass('btn-icon-vis');
-
         }
     }
     $scope.ChooseConst = function(){
@@ -155,6 +152,6 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     };
     //Caly tr jako link
     $scope.trUrl = function(url){
-        window.location = url;
+        window.location = '#/'.concat(url);
     }
 }]);

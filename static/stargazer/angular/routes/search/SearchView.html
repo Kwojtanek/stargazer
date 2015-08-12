@@ -7,30 +7,23 @@
         <button class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()">
             Reset</button>
 
-        <div style="display: inline-flex; height: 74px">
+        <div id="brightness">
             <div class="maxmindiv">
                 <label for="min_mag">Min:</label>
                 <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.6">
             </div>
 
-            <div style="height: 71px; background-color: #ABB1BE; border: 0" >
-                <div id="slider" style="height:  100%" ></div>
+            <div>
+                <div id="slider"></div>
             </div>
             <div class="maxmindiv">
                 <label for="max_mag">Max:</label>
                 <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="MaxMag" ng-init="MaxMag = 18">
             </div>
         </div>
-        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a" ng-click="VisibleOnly()"  style="height: 74px">
+        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
             Visible Only
-                        <span ng-if='visible' class="btn-icon-vis">
-                        </span>
         </button>
-
-
-
-
-
         <div id="search-grp">
             <button type="button" id="const-button" ng-repeat="c in SearchConstellation" ng-click="RemoveConst()">
                 {{ c }}
@@ -52,11 +45,12 @@
                 <button type="button" ng-click="ChooseConst()" class="button btn-1 btn-1a" >Add</button>
             </div>
         </div>
-        <input style="order: 6;flex-basis: 400px" type="text" class="form-control" ng-model="Name" placeholder="Type name or nr. e.g. m 31, andromeda, NGC 224" >
-
-        <div id="types" style="order:7">
+        <div id="search-field">
+        <input type="text" class="form-control" ng-model="Name" placeholder="Type name or nr. e.g. m 31, andromeda, NGC 224" >
+        </div>
+        <div id="types">
             <button type="button" class="button btn-1 btn-1a">
-                Types &#9660;
+                Types&#9660;
             </button>
             <ul class="dropdown-menu" style="list-style-type:none">
                 <li ng-repeat="t in Types" style="white-space: nowrap;" ng-click="ChooseType()" >
@@ -64,9 +58,9 @@
                 </li>
             </ul>
         </div>
-        <div id="catalogues" style="order:8">
+        <div id="catalogues">
             <button type="button" class="button btn-1 btn-1a">
-                Catalogues &#9660;
+                Catalogues&#9660;
             </button>
             <ul  class="dropdown-menu" style="list-style-type:none">
                 <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-click="ChooseCatalogue()">
@@ -80,7 +74,7 @@
     </section>
 </form>
 <!-- TODO Lista obiektów jako dyrektywa -->
-<section class="container" style="margin-bottom: 74px;">
+<section id="results">
     <h3>Results: {{ SearchNgc.count }}</h3>
     <table style="border: 0" cellspacing="0" cellpadding="0">
         <thead>
@@ -91,16 +85,17 @@
             <td>Class</td>
             <td>RightAsc.</td>
             <td>Declination</td>
-            <td>constellation</td>
+            <td>Const.</td>
             <td>Mag.</td>
             <td>DimAxb</td>
             <td>P.A.</td>
             <td>Other names</td>
             <td>notes</td>
+            <td>img</td>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="ngc in SearchNgc.results" ng-click="trUrl(ngc.url)">
+        <tr ng-repeat="ngc in SearchNgc.results" ng-click="trUrl(ngc.id)">
             <td>{{ ngc.unique_name}}</td>
             <td><span ng-repeat="cat in ngc.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></td>
             <td>{{ ngc.type }}</td>
@@ -119,13 +114,9 @@
         </tbody>
     </table>
     <!--TODO Automatyczne doładywanie następnej listy bez przycisków -->
-    <section style="width: 100%; background-color: #35393E; position: fixed; bottom: 0">
+    <section id="buttons">
         <button ng-click="clickPrevious()"  type="button" class="button btn-1 btn-1a prevNext">Previous</button>
 
         <button ng-click="clickNext()"  type="button" class="button btn-1 btn-1a prevNext">Next</button>
     </section>
 </section>
-<style>
-
-</style>
-</script>
