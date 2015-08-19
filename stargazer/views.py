@@ -60,7 +60,6 @@ class SearchAPI(generics.ListAPIView):
                 stellarquery = stellarquery.filter(declination__lte=str(ln))
         qn = StellarObject.objects.none()
         if n:
-            print type(n)
             n = n.replace(',', ' ')
             n = n.split()
 
@@ -75,7 +74,7 @@ class SearchAPI(generics.ListAPIView):
 
                 else:
                     qn = qn | (stellarquery.filter(Q(unique_name__icontains=x)|Q(id1__icontains=x)|Q(id__icontains=x)|Q(id3__icontains=x)|Q(notes__icontains=x)))
-            return qn.order_by('catalogues__object_number')
+            return qn.order_by('magnitudo').distinct()
         else:
             return stellarquery.order_by('magnitudo')
 

@@ -1,5 +1,19 @@
 module.exports = function(grunt) {
     grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        jshint: {
+            dev: {
+                src: ['/static/stargazer/**/*.js']
+            }
+        },
+        autoprefixer: {
+            options: {
+                // Task-specific options go here.
+            },
+            your_target: {
+                src: 'static/stargazer/css/mainflex.css'
+            }
+        },
         shell: {
             pythonServer: {
                 options: {
@@ -16,7 +30,8 @@ module.exports = function(grunt) {
             }
         }
     });
-
+    grunt.loadNpmTasks('grunt-autoprefixer');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-shell');
     grunt.registerTask('default', ['shell:pythonServer']);
     grunt.registerTask('pycharm', ['shell:pyCharm']);

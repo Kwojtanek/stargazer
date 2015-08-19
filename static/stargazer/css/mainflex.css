@@ -41,6 +41,7 @@ section > h2 {
 
 }
 .maxmindiv {
+    padding-left: 8px;
     text-align: center;
     color: #ffffff;
     width: 100px;  }
@@ -62,6 +63,42 @@ section > h2 {
     top: 0;
     height: 74px;
 }
+.ui-slider-handle {
+    width: 3px;
+    height: 100%;
+    background-color: #003660;
+    position: absolute;
+    z-index: 20;
+}
+/*
+.ui-slider-handle {
+    top: 6px;
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    z-index: 20;
+    left: 150px;
+    background: transparent;
+    border-left: 10px solid #003660;
+    border-top: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 30px solid transparent;
+}
+.ui-slider-handle:before {
+    background: transparent;
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+        z-index: 20;
+    left: -50px;
+    top: -30px;
+    border-left: 30px solid transparent;
+    border-top: 30px solid transparent;
+    border-right: 10px solid #003660;
+    border-bottom: 30px solid transparent;
+}
+*/
 .ui-slider .ui-slider-range {
     position: absolute;
     z-index: 1;
@@ -109,14 +146,15 @@ section > h2 {
 }
 #cat-button {
     background-color: #229DFC;
-
+    margin-left: 0;
 }
 #type-button {
     background-color: #0894FF;
+    margin-left: 0;
 }
 #const-button {
     background-color: #00599D;
-
+    margin-left: 0;
 
 }
 #const-group {
@@ -148,13 +186,11 @@ section > h2 {
 .ui-menu .ui-menu-item {
     position: relative;
     margin: 0;
-    padding: 3px 1em 3px .4em;
     cursor: pointer;
     min-height: 0;
 }
 .ui-menu {
     list-style: none;
-    padding: 0;
     margin: 0;
     display: block;
     outline: none;
@@ -166,8 +202,7 @@ section > h2 {
     cursor: default;
 }
 .ui-menu-item {
-    background-color: #ffffff;
-    margin-bottom: 10px;
+    padding: 10px 25px 10px 25px;
 }
 .ui-menu-item:hover{
     background-color: #0078d7;
@@ -292,10 +327,46 @@ body > ng-view > section {
     border-bottom: none;
     border-left: none;
 }
+#results {
+    margin-bottom: 100px;
+}
+#results > * {
+    width: 100%;
+}
+.ui-autocomplete {
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background-color: #abb1be;
+}
+.ui-autocomplete >* {
+    border-bottom: solid 1px ;
+    background-color: #abb1be;
+
+}
+.ui-autocomplete > *:hover {
+    background-color: #0078D7;
+    border-bottom: solid 1px #0078D7 ;
+
+}
 /* Dropdown */
 .dropdown-menu{
+    color: #ffffff;
+    min-width: 252px;
+    margin: 0;
+    padding: 0;
     position: absolute;
-    display: none;
+    background-color: #abb1be;
+}
+.dropdown-menu >* {
+    padding: 10px 25px 10px 25px;
+    border-bottom: solid 1px ;
+}
+.dropdown-menu > *:hover {
+    background-color: #0078D7;
+    border-bottom: solid 1px #0078D7 ;
+
 }
 /* Loadder */
 body > div.box{
@@ -357,7 +428,8 @@ body > div.box{
     width: 100%;
     background-color: rgba(53, 57, 62, 0.75);
     position: fixed;
-    bottom: 0
+    bottom: 0;
+    height: 78px;
 }
 #buttons:hover {
     background-color: rgba(53, 57, 62, 0.95);
@@ -379,18 +451,22 @@ and (min-width : 1824px) {
         border: 3px solid #fff;
 
     }
-        #results {
+    #results {
+        width: 70%;
         margin: 0 15% 74px 15%;
     }
-        #catalogues {
-            border-right: solid white;
-        }
+    #catalogues {
+        border-right: solid white;
+    }
+    #buttons {
+        width: 70%;
+    }
 
 }
 /* -------------------------------------Normal---------------------------------------------------------- */
 
 @media only screen and (min-width : 1025px) and (max-width: 1280px){
-            table {
+    table {
         width:100%
     }
     tr > td:nth-child(4) {
@@ -430,9 +506,9 @@ and (min-width : 1824px) {
         width: 100%;
     }
 }
-    #catalogues > button {
-        border-right: none;
-    }
+#catalogues > button {
+    border-right: none;
+}
 
 /* -------------------------------------mobile---------------------------------------------------------- */
 /*Portrait*/
@@ -557,7 +633,7 @@ and (max-width : 400px) {
         width: 100%;
         border-right: none;
     }
-        table {
+    table {
         width:100%
     }
     tr > td:nth-child(4) {
@@ -576,3 +652,31 @@ and (max-width : 400px) {
         display: none;
     }
 }
+
+#search-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.under {
+    font-weight: bold;
+    border-bottom: #FF6B7F solid 2px;
+}
+.nav-i {
+    color: #666666;
+    text-decoration: none;
+
+}
+.nav-i:hover {
+    color: #ff6b7f;
+    border-bottom: #666 solid 2px;
+    text-decoration: none;
+
+
+}
+
+
+

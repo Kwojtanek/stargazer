@@ -109,7 +109,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     $scope.RemoveCatalogue = function(){
         $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1);
     }
-
+    $scope.TypeList = true;
+    $scope.CatList = true;
 
     // Submit przycisk
     $scope.SearchFor = function(page){

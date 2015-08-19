@@ -49,20 +49,20 @@
         <input type="text" class="form-control" ng-model="Name" placeholder="Type name or nr. e.g. m 31, andromeda, NGC 224" >
         </div>
         <div id="types">
-            <button type="button" class="button btn-1 btn-1a">
+            <button type="button" class="button btn-1 btn-1a" ng-click="TypeList=!TypeList">
                 Types&#9660;
             </button>
-            <ul class="dropdown-menu" style="list-style-type:none">
+            <ul class="dropdown-menu" ng-hide="TypeList" style="list-style-type:none">
                 <li ng-repeat="t in Types" style="white-space: nowrap;" ng-click="ChooseType()" >
                     {{ t.label }}
                 </li>
             </ul>
         </div>
         <div id="catalogues">
-            <button type="button" class="button btn-1 btn-1a">
+            <button type="button" class="button btn-1 btn-1a" ng-click="CatList=!CatList">
                 Catalogues&#9660;
             </button>
-            <ul  class="dropdown-menu" style="list-style-type:none">
+            <ul ng-hide="CatList"  class="dropdown-menu" style="list-style-type:none">
                 <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-click="ChooseCatalogue()">
                     {{ cat }}
                 </li>
