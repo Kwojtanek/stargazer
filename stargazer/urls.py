@@ -25,5 +25,4 @@ urlpatterns = patterns('',
     url(r'^constellationsAPI$', ConstellationsViewAPI.as_view(), name='ConstellationsUrl'),
     url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$', ConstellationsViewDetailAPI.as_view(), name='ConstellationsDetailUrl'),
 
-    url(r'^test', TemplateView.as_view(template_name='test.html') )
 )
