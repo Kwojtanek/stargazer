@@ -48,13 +48,10 @@ section > h2 {
 #slider {
     text-align:center;
     height: 74px;
+    cursor: ew-resize;
+
 }
 /* Slider */
-.ui-slider-handle {
-    width: 2px;
-    height: 100%;
-    background-color: #00599D;
-}
 
 #brightness > div:nth-child(2) {
     flex-basis: 100%;
@@ -369,7 +366,7 @@ body > ng-view > section {
 
 }
 /* Loadder */
-body > div.box{
+div.box{
     display: none;
 }
 .loader1{
@@ -678,5 +675,30 @@ and (max-width : 400px) {
 
 }
 
+.ok {
+    background-image: url("/static/stargazer/css/img/small-ok.svg");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 45%;
+}
 
+input::-webkit-input-placeholder{
+        color: #ff6b7f;
 
+}
+input:-ms-input-placeholder{
+        color: #ff6b7f;
+
+}
+input::-ms-input-placeholder{
+        color: #ff6b7f;
+
+}
+input:-moz-placeholder{
+        color: #ff6b7f;
+
+}
+input::-moz-placeholder{
+        color: #ff6b7f;
+
+}

@@ -63,7 +63,7 @@
                 Catalogues&#9660;
             </button>
             <ul ng-hide="CatList"  class="dropdown-menu" style="list-style-type:none">
-                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-click="ChooseCatalogue()">
+                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-click="ChooseCatalogue($event)">
                     {{ cat }}
                 </li>
             </ul>

@@ -83,3 +83,11 @@ class ObjectPhotos(models.Model):
     def orginal(self):
         return '%s%s' % (MEDIA_URL,self.photo.name)
 #TODO Wgrać Fixtury do zdjęć
+
+class AstroCharts(models.Model):
+    file_name = models.CharField(max_length=16)
+    maxAscension = models.TimeField()
+    minAscension = models.TimeField()
+    maxDeclination = DeclinationField(blank=True,null=True)
+    minDeclination = DeclinationField(blank=True,null=True)
+    magnitudo = models.DecimalField(max_digits=3, decimal_places=1)

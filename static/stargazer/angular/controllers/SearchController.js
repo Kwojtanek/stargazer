@@ -38,13 +38,15 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         $scope.SearchConstellation.length = 0;
         $scope.SearchTypes.length = 0;
         $scope.SearchCatalogues.length = 0;
-        $scope.visible = false; $scope.lat ='';
+        $scope.visible = false;
+        $scope.lat ='';
 
         $scope.MaxMag = 18;
         $scope.MinMag = 1.6;
         $( "#min_mag" ).val(1.6);
         $( "#max_mag" ).val(18);
         $( "#slider" ).slider( "values", [ 1.6, 18 ] );
+        $('*> ul > li').removeClass('ok')
     }
 
     $scope.VisibleOnly = function(){
@@ -57,7 +59,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
             } else {
                 return alert("Geolocation is not supported by this browser.");
             }
-            return $scope.visible = true
+            $scope.visible = true
         }
         else {
             $scope.visible = false;
@@ -88,22 +90,28 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     }
     $scope.ChooseType = function(){
         if ($.inArray(this.t.value, $scope.SearchTypes ) == -1) {
-            $scope.SearchTypes.push(this.t.value)
+            $scope.SearchTypes.push(this.t.value);
+            $(event.target).addClass('ok');
+
         }
         else {
             $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.value), 1)
+            $(event.target).removeClass('ok');
+
         }
     }
     $scope.RemoveType = function(){
         $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t), 1);
     }
 
-    $scope.ChooseCatalogue = function(){
+    $scope.ChooseCatalogue = function(event){
         if ($.inArray(this.cat, $scope.SearchCatalogues ) == -1) {
-            $scope.SearchCatalogues.push(this.cat)
+            $scope.SearchCatalogues.push(this.cat);
+            $(event.target).addClass('ok');
         }
         else {
             $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1)
+            $(event.target).removeClass('ok');
         }
     }
     $scope.RemoveCatalogue = function(){
@@ -114,7 +122,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
 
     // Submit przycisk
     $scope.SearchFor = function(page){
-        $('body > div.box').fadeIn(300);
+        $('div.box').fadeIn(300);
         $('body > section.container > table').fadeOut(300);
         $('body > section.container > span').fadeOut(300);
         SearchFactory.get(
@@ -132,7 +140,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
                 $scope.SearchNgc = ob;
 
                 $('body > ng-view > section').fadeIn(300);
-                $('body > div.box').fadeOut(300);
+                $('div.box').fadeOut(300);
             });
 
     }

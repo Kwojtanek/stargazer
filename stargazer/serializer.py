@@ -2,7 +2,7 @@
 __author__ = 'kuba'
 
 from rest_framework import serializers
-from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos
+from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos, AstroCharts
 
 #Backward Ngc Serializer
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectPhotos
         fields =('thumb', 'normal', 'orginal')
-class NGCSerializer(serializers.ModelSerializer):
+class StellarObjectSerializer(serializers.ModelSerializer):
     catalogues = NGCNestedSerializer(
         many=True,
         read_only=True
@@ -68,3 +68,9 @@ class CatalogueSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Catalogues
+
+
+class MapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AstroCharts
+        fields = ('file_name','magnitudo')

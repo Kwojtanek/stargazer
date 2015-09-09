@@ -1,0 +1,142 @@
+<!doctype html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/bootstrap/dist/css/bootstrap.min.css">
+
+    <title>Stellar objects API</title>
+
+    <!-- CSS linki -->
+</head>
+{% include 'stargazer/Header.html' %}
+
+<body>
+{% block header %}
+{% endblock %}
+<section>
+    <h1>Api description</h1>
+    <span>
+        The API endpoint is available under <a href="/searchAPI?format=json">/searchAPI?format=json</a> URL.</br>
+        Via GET params you can filter the list. </br>
+        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and&&max_mag=10">/searchAPI?format=json&const=and&&max_mag=10</a> </br>
+        For some params it's posible to provide list of values. To do that separate them with comas. </br>
+        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and,her,cas&max_mag=10">/searchAPI?format=json&const=and,her,cas&&max_mag=10</a> </br>
+
+
+    </span>
+    <h3>Available Params</h3>
+    <table>
+        <thead><tr><td>Param</td><td>Type</td><td>example</td><td>multiple</td><td>Description</td></tr></thead>
+        <tbody>
+        <tr><td>const</td><td>String</td><td>her</td><td>true</td><td>Constellation shortcut, list of constellations shortcuts available <a href="/static/stargazer/search.js">Here</a> on ConstList JSON value variable</td></tr>
+        <tr><td>max_mag</td><td>Float</td><td>10.2</td><td>false</td><td>Maximum Magnitudo. </td></tr>
+        <tr><td>min_mag</td><td>Float</td><td>2.7</td><td>false</td><td>Minimum Magnitudo</td></tr>
+        <tr><td>type</td><td>String</td><td>Gx</td><td>true</td><td>Type shortcut, list of Types  of objects shortcuts available <a href="/static/stargazer/search.js">Here</a> on SearchTypes JSON value variable</td></tr>
+        <tr><td>cat</td><td>String</td><td>Messier</td><td>true</td><td>Catalogue name, list of catalogues available <a href="/static/stargazer/search.js">Here</a> on SearchCatalogues variable</td></tr>
+        <tr><td>lat</td><td>Float</td><td>19.23521</td><td>false</td><td>Latitude, geographical coordinate. Essentially excludes objects that are never visible from your position</td> </tr>
+        <tr><td>page_size</td><td>Integer</td><td>100</td><td>false</td><td>number of provided items in list. Dafault 25. Maximum available size is 500.</td></tr>
+        <tr><td>name</td><td>string</td><td>andromeda</td><td>false</td><td>Full text search of db with provided string</td></tr>
+        <tr><td>page</td><td>Integer</td><td>3</td><td>false</td><td>Number of page. List of objects is divided</td></tr>
+        </tbody>
+    </table>
+</section>
+<section>
+    <h3>JSON data returned</h3>
+    <span>
+        <h4>Example</h4>
+        <code>
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 224,
+            "catalogues": [
+                {
+                    "object_catalogue": "NGC",
+                    "object_number": "224"
+                },
+                {
+                    "object_catalogue": "PGC",
+                    "object_number": "2557"
+                },
+                {
+                    "object_catalogue": "Messier",
+                    "object_number": "31"
+                }
+            ],
+            "constelation": "and",
+            "url": "http://127.0.0.1:8000/224",
+            "photos": [
+                {
+                    "thumb": "/media/images/foto_063.410x230.jpg",
+                    "normal": "/media/images/foto_063.1280x718.jpg",
+                    "orginal": "/media/images/foto_063.jpg"
+                },
+                {
+                    "thumb": "/media/images/m31.410x230.jpg",
+                    "normal": "/media/images/m31.1280x718.jpg",
+                    "orginal": "/media/images/m31.jpg"
+                }
+            ],
+            "unique_name": "224",
+            "type": "Galaxy",
+            "type_shortcut": "Gx",
+            "classe": "Sb",
+            "rightAsc": "00:42:44",
+            "declination": "41°16'6\"",
+            "magnitudo": 4.3,
+            "dimAxb": "189.1 x 61.7",
+            "pa": 35,
+            "description": "!!! eeB, eL, vmE (Andromeda); = M31",
+            "id1": "UGC 454",
+            "id2": "MCG 7-2-16",
+            "id3": "ZWG 535.17, Andromeda nebula",
+            "notes": ""
+        }
+    ]
+}
+            </code>
+    </span>
+    <span>
+        <h4>Description of returned data</h4>
+        <table>
+            <thead>
+            <tr><td>value</td><td>Description</td></tr>
+            </thead>
+            <tbody><tr><td>count</td><td>Count of returned objects</td></tr>
+            <tr><td>next/previous</td><td>Link to next or previous page</td></tr>
+            <tr><td>results</td><td>List of objects that fulfils search params. Main data is kept there</td></tr></tbody>
+        </table>
+
+    </span>
+        <span>
+        <h4>Description of results</h4>
+        <table>
+            <thead>
+            <tr><td>value</td><td>Description</td></tr>
+            </thead>
+            <tbody><tr><td>id</td><td>unique number</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>constelation</td><td>Shortcut of constellation. List of constellations shortcuts available <a href="/static/stargazer/search.js">Here</a> on ConstList JSON value variable</td></tr></tbody>
+        <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+            <tr><td>catalogues</td><td>List of catalogues that object is in</td></tr>
+        </table>
+
+    </span>
+</section>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('body').hide().fadeIn(1000);
+        $('body > div.container > nav > span:nth-child(3) > a').css('border-bottom', 'solid 3px 0078D7');
+
+    });
+</script>
+</body>
+</html>

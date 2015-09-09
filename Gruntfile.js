@@ -25,7 +25,7 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true
                 },
-                command: ['cd /home/kuba/Pulpit/pycharm/bin',
+                command: ['cd /usr/local/pycharm-4.5.3/bin',
                     'sudo sh pycharm.sh'].join('&&')
             }
         }

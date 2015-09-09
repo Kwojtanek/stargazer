@@ -47,7 +47,7 @@ ConstList = [
         "value": "hyi"
     },
     {
-        "label": "Perseus\n/ˈpɜrsiəs, ˈpɜrsjuːs/",
+        "label": "Perseus\n/ˈpɜrsiəs,",
         "value": "per"
     },
     {
@@ -63,7 +63,7 @@ ConstList = [
         "value": "for"
     },
     {
-        "label": "Horologium\n/ˌhɒrəˈlɒdʒiəm/, /ˌhɒrəˈloʊdʒiəm/",
+        "label": "Horologium\n/ˌhɒrəˈlɒdʒiəm/",
         "value": "hor"
     },
     {
@@ -247,7 +247,7 @@ ConstList = [
         "value": "aps"
     },
     {
-        "label": "Triangulum Australe\n/traɪˈæŋɡjʊləm ɔːˈstræliː/, /traɪˈæŋɡjʊləm ɔːˈstreɪliː/",
+        "label": "Triangulum Australe\n/traɪˈæŋɡjʊləm ɔːˈstræliː/",
         "value": "tra"
     },
     {
@@ -255,7 +255,7 @@ ConstList = [
         "value": "ser"
     },
     {
-        "label": "Corona Borealis\n/kɵˈroʊnə ˌbɔəriˈælɨs/, /kɒˈroʊnə bɔəriˈeɪlɨs/",
+        "label": "Corona Borealis\n/kɵˈroʊnə ˌbɔəriˈælɨs/",
         "value": "crb"
     },
     {
@@ -287,7 +287,7 @@ ConstList = [
         "value": "sgr"
     },
     {
-        "label": "Corona Australis\n/kɵˈroʊnə ʔɔːˈstrælɨs/, /kɵˈroʊnə ʔɔːˈstreɪlɨs/",
+        "label": "Corona Australis\n/kɵˈroʊnə ʔɔːˈstrælɨs/",
         "value": "cra"
     },
     {
