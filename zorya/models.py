@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 from django.db import models
-from DjangoSettings.settings import MEDIA_URL
+from DjangoSettings.DevSettings import MEDIA_URL
 from .fields import DeclinationField
 from .thumbs import ImageWithThumbsField
 
@@ -30,6 +30,7 @@ class StellarObject(models.Model):
     classe = models.CharField(max_length=12, blank=True,null=True)
     rightAsc = models.TimeField(blank=True,null=True)
     declination = DeclinationField(blank=True,null=True)
+    distance = models.IntegerField(blank=True, null=True)
 
     constelation = models.ForeignKey(Constellations, related_name='ngcs')
 
@@ -43,6 +44,7 @@ class StellarObject(models.Model):
     id2 = models.CharField(max_length=32, blank=True,null=True)
     id3 = models.CharField(max_length=32, blank=True,null=True)
     notes = models.CharField(max_length=64, blank=True,null=True)
+    overview = models.TextField(blank=True,null=True)
 
     def __unicode__(self):
         return (self.unique_name)
@@ -69,7 +71,8 @@ class Objects_list(models.Model):
         return u'%s number %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)), str(StellarObject.objects.get(pk=self.single_object.pk)))
 class ObjectPhotos(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True)
-    photo = ImageWithThumbsField(upload_to='images', sizes=((410,230),(1280,718)))
+    photo = ImageWithThumbsField(upload_to='images', sizes=((410,230),(1280,718)), blank=True, null=True)
+    photo_url = models.URLField(blank=True,null=True)
     ngc_object = models.ForeignKey(StellarObject, related_name='photos')
 
     def __unicode__(self):
@@ -77,11 +80,21 @@ class ObjectPhotos(models.Model):
 
     #Na potrzeby serializera
     def thumb(self):
-        return self.photo.url_410x230
+        if self.photo:
+            return self.photo.url_410x230
+        else:
+            return self.photo_url
     def normal(self):
-        return self.photo.url_1280x718
+        if self.photo:
+            return self.photo.url_1280x718
+        else:
+            return self.photo_url
     def orginal(self):
-        return '%s%s' % (MEDIA_URL,self.photo.name)
+        if self.photo:
+            return '%s%s' % (MEDIA_URL,self.photo.name)
+        else:
+            return self.photo_url
+
 #TODO Wgrać Fixtury do zdjęć
 
 class AstroCharts(models.Model):

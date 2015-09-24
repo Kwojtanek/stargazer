@@ -1,8 +1,8 @@
 from rest_framework import generics
-from stargazer.models import StellarObject, Constellations, Catalogues, Objects_list
-from stargazer.serializer import StellarObjectSerializer, ConstellationsSerializer, CatalogueSerializer, \
+from zorya.models import StellarObject, Constellations, Catalogues, Objects_list
+from zorya.serializer import StellarObjectSerializer, ConstellationsSerializer, CatalogueSerializer, \
     ObjectsSerializer
-from stargazer.views import StandardResultsSetPagination
+from zorya.views import StandardResultsSetPagination
 
 __author__ = 'root'
 

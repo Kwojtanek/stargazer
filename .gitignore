@@ -2,6 +2,8 @@
 
 manage.py
 
+AstroCharts/
+node_modules/
 DjangoSettings/
 static/*
 !static/stargazer/

@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             dev: {
-                src: ['/static/stargazer/**/*.js']
+                src: ['/static/zorya/**/*.js']
             }
         },
         autoprefixer: {
@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                 // Task-specific options go here.
             },
             your_target: {
-                src: 'static/stargazer/css/mainflex.css'
+                src: 'static/zorya/css/mainflex.css'
             }
         },
         shell: {

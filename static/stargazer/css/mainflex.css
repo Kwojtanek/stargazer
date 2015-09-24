@@ -130,15 +130,15 @@ section > h2 {
 }
 #search-grp > button {
     height: 74px;
-    margin-left: 3px;
+    margin: 0;
     min-width: 74px;
     border: 0;
     color: #ffffff;
     text-transform: uppercase;
     font-size: 1.3em;
-    background-image: url("/static/stargazer/css/img/cross.svg");
     background-repeat: no-repeat;
     background-position: right top;
+    background-image: url("/static/stargazer/css/img/cross.svg");
     background-size: 45%;
 }
 #cat-button {
@@ -215,11 +215,11 @@ body > section.container {
 
 /* Buttony */
 .button  {
+        height: 74px;
+
     width: auto;
-    border: none;
     font-family: inherit;
     font-size: inherit;
-    color: inherit;
     background: none;
     cursor: pointer;
     padding: 25px 55px;
@@ -237,6 +237,7 @@ body > section.container {
 }
 
 .button:after {
+    height: 74px;
     content: '';
     position: absolute;
     z-index: -1;
@@ -286,16 +287,12 @@ input {
     order: 1;
 }
 .btn-icon {
-    background-image: url("/static/stargazer/css/img/refresh.svg");
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: url("/static/stargazer/css/img/refresh.svg") no-repeat right center;
     background-size: 65%;
 }
 
 .btn-icon {
-    background-image: url("/static/stargazer/css/img/refresh.svg");
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: url("/static/stargazer/css/img/refresh.svg") no-repeat right center;
     background-size: 65%;
 }
 #VisibleOnly {
@@ -303,16 +300,12 @@ input {
     order: 3;
 }
 .btn-icon-notvis {
-    background-image: url("/static/stargazer/css/img/circle-cross.svg");
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: url("/static/stargazer/css/img/circle-cross.svg") no-repeat right center;
     background-size: 65%;
 }
 
 .btn-icon-vis {
-    background-image: url("/static/stargazer/css/img/check.svg");
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: url("/static/stargazer/css/img/check.svg") no-repeat right center;
     background-size: 65%;
 }
 
@@ -366,7 +359,7 @@ body > ng-view > section {
 
 }
 /* Loadder */
-div.box{
+.box{
     display: none;
 }
 .loader1{
@@ -374,7 +367,7 @@ div.box{
     height: 90px;
     width: 90px;
     border-radius: 80px;
-    border: 3px solid rgba(0, 120, 215, 0.70);
+    border: 3px solid rgba(53, 57, 62, 1);
 
     top: 28%;
     top: -webkit-calc(50% - 43px);
@@ -651,12 +644,9 @@ and (max-width : 400px) {
 }
 
 #search-button {
-    margin-top: 20px;
-    margin-bottom: 20px;
     font-size: 1.5em;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px auto;
 }
 .under {
     font-weight: bold;
@@ -676,29 +666,25 @@ and (max-width : 400px) {
 }
 
 .ok {
-    background-image: url("/static/stargazer/css/img/small-ok.svg");
-    background-repeat: no-repeat;
-    background-position: right center;
+    background: url("/static/stargazer/css/img/small-ok.svg") no-repeat right center;
     background-size: 45%;
 }
-
+input {
+    text-align: center;
+}
 input::-webkit-input-placeholder{
-        color: #ff6b7f;
+    text-align: center;
+    color: #ABB1BE
+}
 
+input:-ms-input-placeholder{
+    color: #ABB1BE
 }
 input:-ms-input-placeholder{
-        color: #ff6b7f;
-
-}
-input::-ms-input-placeholder{
-        color: #ff6b7f;
-
+    color: #ABB1BE
 }
 input:-moz-placeholder{
-        color: #ff6b7f;
-
+    color: #ABB1BE
 }
-input::-moz-placeholder{
-        color: #ff6b7f;
-
-}
+input::-moz-placeholder {
+    color: #ABB1BE}
