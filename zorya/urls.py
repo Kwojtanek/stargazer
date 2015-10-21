@@ -1,7 +1,7 @@
 __author__ = 'kuba'
 from django.conf.urls import url, patterns
 from django.views.generic import TemplateView
-from .views import MainView
+from .views import MainView, UpdateAPI
 from .appviews.mapviews import mapapi
 
 from .appviews.searchviews import SearchAPI
@@ -32,8 +32,10 @@ urlpatterns = patterns('',
                        url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$', ConstellationsViewDetailAPI.as_view(),
                            name='ConstellationsDetailUrl'),
 
-                       url(r'^mapApi$', mapapi),
+                       url(r'^mapAPI$', mapapi),
                        url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
+
+                       url(r'^updateAPI/(?P<pk>[0-9_-]+)', UpdateAPI, name='UpdateUrl')
 
 
 
