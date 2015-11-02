@@ -11,13 +11,25 @@ body {
 }
 #navbar {
     flex-basis: 100%;
+    margin: 0 15% 0 15%;
+}
+#navbar > h1 > a{
+    text-decoration: None;
+    box-sizing: border-box;
+    color: rgb(51, 51, 51);
+    display: block;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    height: 39px;
+    line-height: 39px;
 }
 ng-view {
     flex-basis: 100%;
 
 }
 ng-view >form {
-    margin: 0;
+    margin: 5px 0 0 0;
     background-color: #0078D7;
 }
 #filter-animated {
@@ -212,10 +224,13 @@ section > h2 {
 body > section.container {
     display: none;
 }
-
+.main{
+    margin: 0 15% 0 15%;
+    width: 100%;
+}
 /* Buttony */
 .button  {
-        height: 74px;
+    height: 74px;
 
     width: auto;
     font-family: inherit;
@@ -318,7 +333,7 @@ body > ng-view > section {
     border-left: none;
 }
 #results {
-    margin-bottom: 100px;
+    margin-bottom: 85px;
 }
 #results > * {
     width: 100%;
@@ -361,13 +376,21 @@ body > ng-view > section {
 /* Loadder */
 .box{
     display: none;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    padding-right: 30px;
+    animation: pulsate 10s infinite;
+    right: 0;
+    top: 0;
 }
 .loader1{
     position: relative;
-    height: 90px;
-    width: 90px;
+    height: 140px;
+    width: 140px;
     border-radius: 80px;
-    border: 3px solid rgba(53, 57, 62, 1);
+    border: 5px solid rgba(53, 57, 62, 1);
 
     top: 28%;
     top: -webkit-calc(50% - 43px);
@@ -387,18 +410,18 @@ body > ng-view > section {
     position: absolute;
     top: -10px;
     left: 20px;
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
     background-color: #0078d7;
 }
 .loader-planet {
-    top: 20px;
-    left: 20px;
+    top: 35px;
+    left: 35px;
     position: absolute;
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
     background-color: #0078d7;
 }
 
@@ -416,23 +439,35 @@ body > ng-view > section {
 }
 #buttons {
     width: 100%;
-    background-color: rgba(53, 57, 62, 0.75);
     position: fixed;
     bottom: 0;
     height: 78px;
-}
-#buttons:hover {
     background-color: rgba(53, 57, 62, 0.95);
 }
+#buttons > button {
+    height: 100%;
+    background-color: rgba(53, 57, 62, 0.95);
+    border: 0;
+    width: 50%;
+}
+#buttons > button:last-child{
+    position: absolute;
+    right: 0;
+
+}
+#buttons > button:hover {
+    background-color: rgba(238, 238, 238, 1);
+}
+
+
 /* -------------------------------------Large---------------------------------------------------------- */
 @media only screen
 and (min-width : 1824px) {
-    #navbar{
-        margin: 0 15% 0 15%;
-    }
+
     #filter-animated {
         margin: 0 15% 0 15%;
     }
+
     #reset{
         border: 3px solid #fff;
 
@@ -443,7 +478,7 @@ and (min-width : 1824px) {
     }
     #results {
         width: 70%;
-        margin: 0 15% 74px 15%;
+        margin: 0 15% 200px 15%;
     }
     #catalogues {
         border-right: solid white;
@@ -456,6 +491,7 @@ and (min-width : 1824px) {
 /* -------------------------------------Normal---------------------------------------------------------- */
 
 @media only screen and (min-width : 1025px) and (max-width: 1280px){
+
     table {
         width:100%
     }
@@ -592,6 +628,7 @@ and (max-width : 400px) {
 /* -------------------------------------Tablet and small pc---------------------------------------------------------- */
 
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
+
     #reset {
         flex: 1 1 50%;
         text-align: center;
@@ -648,17 +685,15 @@ and (max-width : 400px) {
     display: block;
     margin: 20px auto;
 }
-.under {
-    font-weight: bold;
-    border-bottom: #FF6B7F solid 2px;
-}
 .nav-i {
     color: #666666;
     text-decoration: none;
-
+    font-weight: 700;
+    text-transform: UPPERCASE;
+    padding: 10px 10px 10px 10px;
 }
 .nav-i:hover {
-    color: #ff6b7f;
+    color: #a9a9a9;
     border-bottom: #666 solid 2px;
     text-decoration: none;
 
@@ -671,20 +706,50 @@ and (max-width : 400px) {
 }
 input {
     text-align: center;
+    font-weight: 700;
 }
 input::-webkit-input-placeholder{
+    font-weight: 700;
     text-align: center;
     color: #ABB1BE
 }
 
 input:-ms-input-placeholder{
+    font-weight: 700;
     color: #ABB1BE
 }
 input:-ms-input-placeholder{
+    font-weight: 700;
     color: #ABB1BE
 }
 input:-moz-placeholder{
+    font-weight: 700;
     color: #ABB1BE
 }
 input::-moz-placeholder {
+    font-weight: 700;
     color: #ABB1BE}
+
+#nav-active {
+    color: #FFF;
+    text-decoration: none;
+    font-weight: 700;
+    background-color: #0078D7;
+    text-transform: UPPERCASE;
+    padding: 10px 10px 10px 10px;
+}
+#nav-active:hover {
+    color: #666666;
+    text-decoration: none;
+    font-weight: 700;
+    background-color: #eeeeee;
+    text-transform: UPPERCASE;
+    padding: 10px 10px 10px 10px;
+}
+
+@-webkit-keyframes pulsate
+{
+      0%   {background-color: rgba(53, 57, 62, 0.1);}
+      50%  {background: rgba(53, 57, 62, 0.32);}
+      100% {background: rgba(53, 57, 62, 0.11);}
+}

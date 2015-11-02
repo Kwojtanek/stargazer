@@ -19,7 +19,7 @@ from rest_framework import status
 #TODO Mixins
 # Paginatory
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 25
+    page_size = 50
     page_size_query_param = 'page_size'
     max_page_size = 500
 
@@ -29,15 +29,18 @@ def MainView(request):
         'Browse.html',
         {'Catalogues': Catalogues.objects.all()}, RequestContext(request))
 
-@api_view(['POST'])
+@api_view(['POST','GET'])
 def UpdateAPI(request, pk):
-
-    serializer = StellarObjectSerializer(StellarObject.objects.get(pk=pk), data=request.data, partial=True, context={'request': request})
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    if 'sk' in request.GET and request.GET['sk'] == 'tajnykod0123':
+        serializer = StellarObjectSerializer(StellarObject.objects.get(pk=pk), data=request.data, partial=True, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status.HTTP_401_UNAUTHORIZED)
+
 
 
 

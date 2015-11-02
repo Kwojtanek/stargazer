@@ -7,6 +7,7 @@
 
     <!-- CSS linki -->
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/dropdown.css">
     <!-- JS linki -->
     <script src="/static/jquery/dist/jquery.min.js"></script>
     <script src="/static/jquicust/jquery-ui.min.js"></script>
@@ -39,7 +40,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('body').hide().fadeIn(1000);
-        $('body > div.container > nav > span:nth-child(1) > a').addClass( "under b");
+        search_butt =document.getElementsByClassName('nav-i')[0];
+        search_butt.id = 'nav-active';
+        search_butt.href = '/#/';
 
     });
 </script>

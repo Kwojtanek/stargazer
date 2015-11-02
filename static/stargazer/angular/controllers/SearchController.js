@@ -12,6 +12,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     $scope.SearchCatalogues = [];
     $scope.visible = false;
     $scope.lat = ''
+    $scope.ddtypes = ddtypes
 
     // JQueryUI
     $( "#autocomplete" ).autocomplete({
@@ -89,13 +90,13 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         return $scope.SearchConstellation.splice($scope.SearchConstellation.indexOf(this.c),1);
     }
     $scope.ChooseType = function(){
-        if ($.inArray(this.t.value, $scope.SearchTypes ) == -1) {
-            $scope.SearchTypes.push(this.t.value);
+        if ($.inArray(this.t.uniname, $scope.SearchTypes ) == -1) {
+            $scope.SearchTypes.push(this.t.uniname);
             $(event.target).addClass('ok');
 
         }
         else {
-            $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.value), 1)
+            $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.uniname), 1)
             $(event.target).removeClass('ok');
 
         }
@@ -130,7 +131,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
                 page: page,
                 max_mag: $scope.MaxMag,
                 min_mag: $scope.MinMag,
-                type:  $scope.SearchTypes.toString(),
+                otype:  $scope.SearchTypes.toString(),
                 const: $scope.SearchConstellation.toString(),
                 cat: $scope.SearchCatalogues.toString(),
                 lat: $scope.lat,

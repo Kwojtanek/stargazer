@@ -3,25 +3,25 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/static/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
+    <link rel='stylesheet' type="text/css" href="/static/bootstrap/dist/css/bootstrap.min.css">
 
     <title>Stellar objects API</title>
 
     <!-- CSS linki -->
 </head>
-{% include 'Header.html' %}
-
 <body>
+{% include 'Header.html' %}
 {% block header %}
 {% endblock %}
-<section>
+<section class="main">
     <h1>Api description</h1>
     <span>
         The API endpoint is available under <a href="/searchAPI?format=json">/searchAPI?format=json</a> URL.</br>
         Via GET params you can filter the list. </br>
-        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and&&max_mag=10">/searchAPI?format=json&const=and&&max_mag=10</a> </br>
+        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and&max_mag=10">/searchAPI?format=json&const=and&max_mag=10</a> </br>
         For some params it's posible to provide list of values. To do that separate them with comas. </br>
-        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and,her,cas&max_mag=10">/searchAPI?format=json&const=and,her,cas&&max_mag=10</a> </br>
+        <b>Example:</b></br> <a href="/searchAPI?format=json&const=and,her,cas&max_mag=10">/searchAPI?format=json&const=and,her,cas&max_mag=10</a> </br>
 
 
     </span>
@@ -41,63 +41,58 @@
         </tbody>
     </table>
 </section>
-<section>
+<section class="main">
     <h3>JSON data returned</h3>
     <span>
         <h4>Example</h4>
-        <code>
-{
-    "count": 1,
-    "next": null,
-    "previous": null,
-    "results": [
+        <code>{
+    "id": 224,
+    "catalogues": [
         {
-            "id": 224,
-            "catalogues": [
-                {
-                    "object_catalogue": "NGC",
-                    "object_number": "224"
-                },
-                {
-                    "object_catalogue": "PGC",
-                    "object_number": "2557"
-                },
-                {
-                    "object_catalogue": "Messier",
-                    "object_number": "31"
-                }
-            ],
-            "constelation": "and",
-            "url": "http://127.0.0.1:8000/224",
-            "photos": [
-                {
-                    "thumb": "/media/images/foto_063.410x230.jpg",
-                    "normal": "/media/images/foto_063.1280x718.jpg",
-                    "orginal": "/media/images/foto_063.jpg"
-                },
-                {
-                    "thumb": "/media/images/m31.410x230.jpg",
-                    "normal": "/media/images/m31.1280x718.jpg",
-                    "orginal": "/media/images/m31.jpg"
-                }
-            ],
-            "unique_name": "224",
-            "type": "Galaxy",
-            "type_shortcut": "Gx",
-            "classe": "Sb",
-            "rightAsc": "00:42:44",
-            "declination": "41°16'6\"",
-            "magnitudo": 4.3,
-            "dimAxb": "189.1 x 61.7",
-            "pa": 35,
-            "description": "!!! eeB, eL, vmE (Andromeda); = M31",
-            "id1": "UGC 454",
-            "id2": "MCG 7-2-16",
-            "id3": "ZWG 535.17, Andromeda nebula",
-            "notes": ""
+            "object_catalogue": "NGC",
+            "object_number": "224"
+        },
+        {
+            "object_catalogue": "PGC",
+            "object_number": "2557"
+        },
+        {
+            "object_catalogue": "Messier",
+            "object_number": "31"
         }
-    ]
-}
+    ],
+    "constelation": "and",
+    "url": "http://www.zorya.co/224",
+    "photos": [
+        {
+            "thumb": "/media/images/foto_063.410x230.jpg",
+            "normal": "/media/images/foto_063.1280x718.jpg",
+            "orginal": "/media/images/foto_063.jpg"
+        },
+        {
+            "thumb": "/media/images/m31.410x230.jpg",
+            "normal": "/media/images/m31.1280x718.jpg",
+            "orginal": "/media/images/m31.jpg"
+        }
+    ],
+    "unique_name": "224",
+    "type": "Galaxy",
+    "type_shortcut": "Galaxy",
+    "classe": "SA(s)b",
+    "rightAsc": "00:42:44",
+    "declination": "41°16'7\"",
+    "distance": null,
+    "otype": "Galaxy",
+    "magnitudo": 4.4,
+    "dimAxb": "189.1 x 61.7",
+    "pa": 35,
+    "description": "!!! eeB, eL, vmE (Andromeda); = M31",
+    "id1": "UGC 454",
+    "id2": "MCG 7-2-16",
+    "id3": "ZWG 535.17, Andromeda nebula",
+    "notes": "",
+    "overview": "The Andromeda Galaxy..."
+            }
             </code>
     </span>
     <span>
@@ -132,11 +127,11 @@
     </span>
 </section>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('body').hide().fadeIn(1000);
-        $('body > div.container > nav > span:nth-child(3) > a').css('border-bottom', 'solid 3px 0078D7');
+        search_butt =document.getElementsByClassName('nav-i')[2];
+        search_butt.id = 'nav-active';
+        search_butt.href = '#';
 
-    });
+
 </script>
 </body>
 </html>

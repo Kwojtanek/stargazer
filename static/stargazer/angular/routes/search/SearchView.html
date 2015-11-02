@@ -39,25 +39,93 @@
 
 
 
+
+
+
+
+
         <div id="const-group" >
-            <input id="autocomplete" class="form-control" placeholder="Type constellation" ng-model="Constellation" >
+            <input id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" >
             <div class="btn-group">
                 <button type="button" ng-click="ChooseConst()" class="button btn-1 btn-1a" >Add</button>
             </div>
         </div>
         <div id="search-field">
-        <input type="text" class="form-control" ng-model="Name" placeholder="Type name or nr. e.g. m 31, andromeda, NGC 224" >
+            <input type="text" class="form-control" ng-model="Name" placeholder="Add name or nr. e.g. m 31, andromeda, NGC 224" >
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div id="types">
             <button type="button" class="button btn-1 btn-1a" ng-click="TypeList=!TypeList">
                 Types&#9660;
             </button>
             <ul class="dropdown-menu" ng-hide="TypeList" style="list-style-type:none">
-                <li ng-repeat="t in Types" style="white-space: nowrap;" ng-click="ChooseType()" >
-                    {{ t.label }}
+                <li ng-repeat="t in ddtypes" style="white-space: nowrap;" ng-click="ChooseType()" >
+                    {{ t.uniname }}
                 </li>
+                <li><h4>Advanced</h4></li>
             </ul>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div id="catalogues">
             <button type="button" class="button btn-1 btn-1a" ng-click="CatList=!CatList">
                 Catalogues&#9660;

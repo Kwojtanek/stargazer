@@ -19,7 +19,7 @@ class SearchAPI(generics.ListAPIView):
     def get_queryset(self):
         stellarquery = StellarObject.objects.all()
         constellation = self.request.query_params.get('const', None)
-        type_ = self.request.query_params.get('type', None)
+        type_ = self.request.query_params.get('otype', None)
         catalogue = self.request.query_params.get('cat', None)
         latitude = self.request.query_params.get('lat', None)
         n = self.request.query_params.get('name', None)
@@ -28,7 +28,7 @@ class SearchAPI(generics.ListAPIView):
             stellarquery = stellarquery.filter(constelation__abbreviation__in=constellation)
         if type_:
             type_ = type_.split(',')
-            stellarquery = stellarquery.filter(type_shortcut__in=type_)
+            stellarquery = stellarquery.filter(otype__in=type_)
         if catalogue:
             catalogue = catalogue.split(',')
             stellarquery = stellarquery.filter(catalogues__object_catalogue__name__in=catalogue)
