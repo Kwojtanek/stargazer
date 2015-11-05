@@ -11,8 +11,9 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     $scope.SearchTypes = [];
     $scope.SearchCatalogues = [];
     $scope.visible = false;
-    $scope.lat = ''
-    $scope.ddtypes = ddtypes
+    $scope.lat = '';
+    $scope.ddtypes = ddtypes;
+    $scope.advanced = false;
 
     // JQueryUI
     $( "#autocomplete" ).autocomplete({
@@ -90,7 +91,21 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         return $scope.SearchConstellation.splice($scope.SearchConstellation.indexOf(this.c),1);
     }
     $scope.ChooseType = function(){
-        if ($.inArray(this.t.uniname, $scope.SearchTypes ) == -1) {
+        if ($scope.advanced == true){
+        if ($.inArray(this.ot.value, $scope.SearchTypes ) == -1) {
+            $scope.SearchTypes.push(this.ot.value);
+            $(event.target).addClass('ok');
+
+        }
+        else {
+            $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.ot.value), 1)
+            $(event.target).removeClass('ok');
+
+        }
+            }
+        else if ($scope.advanced == false)
+        {
+                    if ($.inArray(this.t.uniname, $scope.SearchTypes ) == -1) {
             $scope.SearchTypes.push(this.t.uniname);
             $(event.target).addClass('ok');
 
@@ -99,6 +114,18 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
             $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.uniname), 1)
             $(event.target).removeClass('ok');
 
+        }
+
+        }
+    }
+    $scope.ChooseAdvanced = function() {
+        if ($scope.advanced == true) {
+            $scope.advanced = false;
+            $scope.SearchTypes.length = 0;
+        }
+        else {
+            $scope.advanced = true;
+            $scope.SearchTypes.length = 0;
         }
     }
     $scope.RemoveType = function(){
@@ -131,6 +158,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
                 page: page,
                 max_mag: $scope.MaxMag,
                 min_mag: $scope.MinMag,
+                adv: $scope.advanced,
                 otype:  $scope.SearchTypes.toString(),
                 const: $scope.SearchConstellation.toString(),
                 cat: $scope.SearchCatalogues.toString(),
@@ -162,6 +190,6 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     };
     //Caly tr jako link
     $scope.trUrl = function(url){
-        window.location = '#/'.concat(url);
+        window.open('/'.concat(url), '_blank');
     }
 }]);

@@ -23,12 +23,16 @@ class SearchAPI(generics.ListAPIView):
         catalogue = self.request.query_params.get('cat', None)
         latitude = self.request.query_params.get('lat', None)
         n = self.request.query_params.get('name', None)
+        adv = self.request.query_params.get('adv',None)
         if constellation:
             constellation = constellation.split(',')
             stellarquery = stellarquery.filter(constelation__abbreviation__in=constellation)
         if type_:
             type_ = type_.split(',')
-            stellarquery = stellarquery.filter(otype__in=type_)
+            if adv == 'true':
+                stellarquery = stellarquery.filter(type_shortcut__in=type_)
+            else:
+                stellarquery = stellarquery.filter(otype__in=type_)
         if catalogue:
             catalogue = catalogue.split(',')
             stellarquery = stellarquery.filter(catalogues__object_catalogue__name__in=catalogue)

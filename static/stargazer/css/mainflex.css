@@ -1,5 +1,6 @@
 /* -------------------------------------Common--------------------------------------------------------- */
 body {
+    min-height: 2000px;
     font-family: segoe ui, Arial, sans-serif;
     margin: 0;
     display: flex;
@@ -136,6 +137,7 @@ section > h2 {
     position: relative;
 }
 #search-grp {
+    display: inline-flex;
     flex-basis: 100%;
     height: 74px;
     order:4;
@@ -238,7 +240,6 @@ body > section.container {
     background: none;
     cursor: pointer;
     padding: 25px 55px;
-    display: inline-flex;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
@@ -355,24 +356,7 @@ body > ng-view > section {
     border-bottom: solid 1px #0078D7 ;
 
 }
-/* Dropdown */
-.dropdown-menu{
-    color: #ffffff;
-    min-width: 252px;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    background-color: #abb1be;
-}
-.dropdown-menu >* {
-    padding: 10px 25px 10px 25px;
-    border-bottom: solid 1px ;
-}
-.dropdown-menu > *:hover {
-    background-color: #0078D7;
-    border-bottom: solid 1px #0078D7 ;
 
-}
 /* Loadder */
 .box{
     display: none;
@@ -445,6 +429,7 @@ body > ng-view > section {
     background-color: rgba(53, 57, 62, 0.95);
 }
 #buttons > button {
+    display: inline;
     height: 100%;
     background-color: rgba(53, 57, 62, 0.95);
     border: 0;

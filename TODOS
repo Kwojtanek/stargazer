@@ -1,0 +1,28 @@
+Kluczowe:
+Widok pojedyńczego obiektu X
+Indeksowanie wyszukiwania X
+Factory dla map X
+Cachowanie statycznych Stron X
+Podpiąć google adwords X
+Stworzenie pliku dla botów X
+Podpięcie pod alladin'a X
+Service przekazujący $scope między kontrolerami
+
+
+Pomńiejsze:
+LOGO
+Dokumentacja aplikacji
+Menu jako panel na górze po przesunięciu strony X
+Skończyć dokumentację API X
+Możliwość ręcznego przeszukiwania bazy.Browse. X
+Pozbyć się jquery z kontrolerów X
+Automatyczne doładowywanie następnych części listy. X
+
+
+Zrobione:
+Dropdawny oparte na css nie angular V
+Poprawa widoku przycisków V
+Poprawa widoku wyświetlania listy V
+Endpoint API do wgrywania obiektów V
+Skraper wiki pobierający zdjęcia z wiki i opisów. V
+Skraper Simbad do pobieranie dodatkowych informacji V

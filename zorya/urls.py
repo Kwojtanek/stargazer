@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 
                        # <----------------Endpointy api.-------------------->
                        url(r'^StellarlistAPI$', StellarViewAPI.as_view(), name='StellarlistUrl'),
-                       url(r'^(?P<pk>[0-9_-]+)$', SingleView.as_view(), name='SingleUrl'),
+                       url(r'^(?P<pk>[0-9_-]+)$', TemplateView.as_view(), name='SingleUrl'),
                        url(r'^singleAPI/(?P<pk>[0-9_-]+)$', SingleView.as_view(), name='SingleUrl'),
 
 

@@ -1,0 +1,128 @@
+button  {
+	display: block;
+}
+#advanced {
+	background-color: #003660;
+}
+#types > button:hover  + .dropdown-menu {
+	display: block;
+
+}
+#catalogues > button:hover  + .dropdown-menu {
+	display: block;
+}
+.dropdown-menu > li > ul {
+	display: none;
+}
+.single-type:hover > ul {
+	display: block;
+}
+
+.dropdown-menu {
+	display: none;
+	z-index: 100;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    background-color: #abb1be;
+	width: 190px;
+}
+.dropdown-menu >* {
+    padding: 10px 25px 10px 25px;
+    border-bottom: solid 1px ;
+}
+.dropdown-menu > *:hover {
+    background-color: #0078D7;
+    border-bottom: solid 1px #0078D7 ;
+
+}
+.dropdown-menu:hover {
+	display: block;
+}
+.otype {
+	list-style-type: none;
+    position: relative;
+    top: 0;
+	z-index: 101;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    background-color: #abb1be;
+}
+.otype > *:hover {
+    background-color: #0078D7;
+    border-bottom: solid 1px #0078D7 ;
+
+}
+.single-type {
+	height: 20px;
+	padding: 10px 25px 10px 25px;
+    border-bottom: solid 1px ;
+
+}
+#catalogues > ul {
+		width: 255.5px;
+	}
+.otype {
+		left: 165px;
+    	top: -29px;
+		width: 255.5px;
+}
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+	.dropdown-menu {
+		width: 50vw;
+	}
+#catalogues > ul {
+		width: 50vw;
+	}
+	.otype {
+    left: -40px;
+    margin-left: 50vw;
+    width: 50vw;
+}
+}
+@media only screen
+and (max-width : 480px) {
+	.dropdown-menu {
+		width: 100vw;
+	}
+	#catalogues > ul {
+		width: 100vw;
+	}
+		.otype {
+    left: -40px;
+    margin-left: 50vw;
+    width: 50vw;
+}
+	body {
+		min-height: 1600px;
+	}
+
+}
+@media only screen and (min-width : 1025px) and (max-width: 1280px) {
+.dropdown-menu {
+	width: 25%;
+}
+		#catalogues > ul {
+		width: 25%;
+	}
+	.otype {
+    left: 110%;
+    width: 125%;
+}
+}
+@media only screen
+and (min-width : 1824px) {
+	.dropdown-menu {
+		width: 190px;
+	}
+	.otype {
+		left: 165px;
+    	top: -29px;
+		width: 255px;
+}
+	#catalogues > ul {
+		width: 255.5px;
+	}
+}
