@@ -1,0 +1,15 @@
+.main {
+display: flex;
+
+}
+.half-cell {
+    flex: 1 1 50%;
+}
+.astromap {
+    width: 100vw;
+    height: 100vh;
+
+    color: #35393e;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #666;
+}

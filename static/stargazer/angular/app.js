@@ -1,6 +1,6 @@
 var app = angular.module('appList', ['ngResource','ngRoute'])
 
-var SearchApp = angular.module('SearchApp', ['ngResource', 'ngAnimate', 'ngRoute'])
+
 app.config(function($routeProvider){
     $routeProvider
         .when('/',
@@ -20,11 +20,15 @@ app.config(function($routeProvider){
             controller: 'CatalogueController',
             templateUrl: '/static/stargazer/Catalogue.html'
         })
-        .when('ngrou/catalogue/:name', {
+        .when('/catalogue/:name', {
             controller: 'CatalogueListController',
             templateUrl: '/static/stargazer/CatalogueLists.html'
         })
 });
+
+
+var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute'])
+
 SearchApp.config(function($routeProvider){
     $routeProvider
         .when('/',
@@ -32,6 +36,14 @@ SearchApp.config(function($routeProvider){
             controller: 'SearchCtrl',
             templateUrl: '/static/stargazer/angular/routes/search/SearchView.html',
         })
+        .when('/:id',
+        {
+            controller : 'SingleViewCtrl',
+            templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
+        })
+        .otherwise({
+        redirectTo: '/'
+      });
 });
 //TODO Dopisz kontroler dla katalogów
 //TODO Kontroller do pojedyńczego obiektu

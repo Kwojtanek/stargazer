@@ -1,7 +1,8 @@
 /* -------------------------------------Common--------------------------------------------------------- */
 body {
-    min-height: 2000px;
+    min-height: 1360px;
     font-family: segoe ui, Arial, sans-serif;
+    font-size: large;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
@@ -12,7 +13,7 @@ body {
 }
 #navbar {
     flex-basis: 100%;
-    margin: 0 15% 0 15%;
+    padding: 0 15% 8px 15%;
 }
 #navbar > h1 > a{
     text-decoration: None;
@@ -30,7 +31,7 @@ ng-view {
 
 }
 ng-view >form {
-    margin: 5px 0 0 0;
+    margin: 0;
     background-color: #0078D7;
 }
 #filter-animated {
@@ -227,8 +228,11 @@ body > section.container {
     display: none;
 }
 .main{
-    margin: 0 15% 0 15%;
-    width: 100%;
+    padding: 1px 15% 10% 15%;
+    color: #35393e;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #666;
+
 }
 /* Buttony */
 .button  {
@@ -325,7 +329,7 @@ input {
     background-size: 65%;
 }
 
-body > ng-view > section {
+#results {
     display: none;
 }
 .prevNext {
@@ -673,7 +677,7 @@ and (max-width : 400px) {
 .nav-i {
     color: #666666;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 900;
     text-transform: UPPERCASE;
     padding: 10px 10px 10px 10px;
 }

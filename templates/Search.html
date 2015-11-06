@@ -8,6 +8,8 @@
     <!-- CSS linki -->
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/dropdown.css">
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/singleview.css">
+    <link rel="stylesheet" href="http://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css" />
     <!-- JS linki -->
     <script src="/static/jquery/dist/jquery.min.js"></script>
     <script src="/static/jquicust/jquery-ui.min.js"></script>
@@ -19,30 +21,41 @@
     <!-- Angular linki -->
     <script src="/static/stargazer/angular/app.js" ></script>
     <script src="/static/stargazer/search.js" ></script>
+    <script src="http://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" type="text/javascript" charset="utf-8"></script>
+
 
 
     <!-- Kontrollery -->
+    <script src="/static/stargazer/angular/controllers/SingleViewController.js"></script>
     <script src="/static/stargazer/angular/controllers/SearchController.js"></script>
     <!-- Dyrektywy -->
     <script src="/static/stargazer/angular/directives/EnterDirective.js"></script>
     <!-- Services -->
-    <script src="/static/stargazer/angular/services/SearchFactory.js"></script>
+    <script src="/static/stargazer/angular/services/SearchFactories.js"></script>
+    <script>
+        function log(){
+            console.log(document.body.scrollTop)
+        }
+    </script>
 </head>
 {% include 'Header.html' %}
 
-<body ng-app="SearchApp" ng-controller="SearchCtrl"  ng-cloak>
+<body ng-app="SearchApp">
 {% block header %}
 {% endblock %}
 {% verbatim %}
 <ng-view></ng-view>
 {% endverbatim %}
-
-<script type="text/javascript">
+{% block footer %}
+{% endblock %}
+<script type="text/javascript" >
     $(document).ready(function() {
         $('body').hide().fadeIn(1000);
         search_butt =document.getElementsByClassName('nav-i')[0];
         search_butt.id = 'nav-active';
         search_butt.href = '/#/';
+
+
 
     });
 </script>

@@ -1,7 +1,19 @@
 /**
  * Created by root on 08.06.15.
  */
-SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, SearchFactory) {
+SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', function($scope, SearchFactory,CommonData) {
+
+    document.getElementById('nav-active').innerHTML = "Search"
+
+    $scope.CommonData  = CommonData.get()
+    if ($scope.CommonData.hasOwnProperty('index') === true){
+        $scope.StellarObject = $scope.CommonData;
+        $('#results').fadeIn(300);
+        console.log(true)
+    }
+    else {
+        console.log(false)
+    }
 
     $scope.min_mag = 1.6;
     $scope.max_mag = 18.1;
@@ -151,8 +163,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     // Submit przycisk
     $scope.SearchFor = function(page){
         $('div.box').fadeIn(300);
-        $('body > section.container > table').fadeOut(300);
-        $('body > section.container > span').fadeOut(300);
+        $('#results').fadeOut(300);
+
         SearchFactory.get(
             {
                 page: page,
@@ -166,9 +178,9 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
                 name: $scope.Name
             }
         ).$promise.then(function(ob){
-                $scope.SearchNgc = ob;
+                $scope.StellarObject = ob;
 
-                $('body > ng-view > section').fadeIn(300);
+                $('#results').fadeIn(300);
                 $('div.box').fadeOut(300);
             });
 
@@ -177,7 +189,7 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
     //Wczytywanie kolejnych stron
     page = 1;
     $scope.clickNext = function(){
-        if ($scope.SearchNgc.next != null) {
+        if ($scope.StellarObject.next != null) {
             page++;
             $scope.SearchFor(page);
         }
@@ -189,7 +201,11 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', function($scope, 
         }
     };
     //Caly tr jako link
-    $scope.trUrl = function(url){
-        window.open('/'.concat(url), '_blank');
+    $scope.trUrl = function(id, $index){
+        /*
+        window.open('#/'.concat(url), '_blank');
+        */
+        CommonData.set($scope.StellarObject,$index);
+        window.location = '#/'.concat(id);
     }
 }]);

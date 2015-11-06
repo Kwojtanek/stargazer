@@ -1,0 +1,18 @@
+<section class="main">
+    <div class="half-cell">
+    <h1><span>Names:</span></h1>
+<h2><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h2>
+    <h4><span>{{ MainObject.id1 }} {{ MainObject.id2 }} {{ MainObject.id3 }}</span></h4>
+    <h4><span>{{ ngc.notes }}{{ MainObject.unique_name }}</span></h4>
+        </div>
+    <div class="half-cell"><h1>Overview:</h1>
+    <span id="overwiev">{{ MainObject.overview }}</span></div>
+</section>
+<section class="astromap">
+    <div id="aladin-lite-div" style="width:100%;height:100%;"></div>
+<script type="text/javascript">
+</script>
+</section>
+<script>
+    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!"
+</script>

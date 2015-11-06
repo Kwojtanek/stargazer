@@ -5,8 +5,6 @@ Factory dla map X
 Cachowanie statycznych Stron X
 Podpiąć google adwords X
 Stworzenie pliku dla botów X
-Podpięcie pod alladin'a X
-Service przekazujący $scope między kontrolerami
 
 
 Pomńiejsze:
@@ -20,6 +18,8 @@ Automatyczne doładowywanie następnych części listy. X
 
 
 Zrobione:
+Podpięcie pod alladin'a V
+Service przekazujący $scope między kontrolerami V
 Dropdawny oparte na css nie angular V
 Poprawa widoku przycisków V
 Poprawa widoku wyświetlania listy V
