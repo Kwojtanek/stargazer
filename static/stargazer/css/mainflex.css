@@ -227,13 +227,7 @@ section > h2 {
 body > section.container {
     display: none;
 }
-.main{
-    padding: 1px 15% 10% 15%;
-    color: #35393e;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #666;
 
-}
 /* Buttony */
 .button  {
     height: 74px;
@@ -680,6 +674,8 @@ and (max-width : 400px) {
     font-weight: 900;
     text-transform: UPPERCASE;
     padding: 10px 10px 10px 10px;
+    -webkit-transition:  400ms; /* Safari */
+    transition: 400ms;
 }
 .nav-i:hover {
     color: #a9a9a9;

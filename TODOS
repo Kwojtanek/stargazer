@@ -1,5 +1,6 @@
 Kluczowe:
-Widok pojedyńczego obiektu X
+Dopisać słownik pojęć
+
 Indeksowanie wyszukiwania X
 Factory dla map X
 Cachowanie statycznych Stron X
@@ -18,6 +19,9 @@ Automatyczne doładowywanie następnych części listy. X
 
 
 Zrobione:
+Widok pojedyńczego obiektu V
+przekazywacz filtrów V
+obliczacz Fov dla alladin'a V
 Podpięcie pod alladin'a V
 Service przekazujący $scope między kontrolerami V
 Dropdawny oparte na css nie angular V

@@ -1,5 +1,5 @@
-min_mag = 1.6;
-max_mag = 18.1;
+var min_mag = 1.6;
+var max_mag = 20.6;
 
 ConstList = [
     {

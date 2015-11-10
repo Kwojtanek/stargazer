@@ -26,7 +26,7 @@ button  {
 	padding: 0;
 	position: absolute;
 	background-color: #abb1be;
-	width: 190px;
+	width: 202px;
 }
 .dropdown-menu >* {
 	padding: 10px 25px 10px 25px;
@@ -43,12 +43,15 @@ button  {
 .otype {
 	list-style-type: none;
 	position: relative;
-	top: 0;
 	z-index: 101;
 	color: #ffffff;
 	margin: 0;
 	padding: 0;
 	background-color: #abb1be;
+	overflow: hidden;
+	left: 197px;
+	top: -31px;
+	width: 265px;
 }
 .otype > *:hover {
 	background-color: #0078D7;
@@ -62,12 +65,7 @@ button  {
 
 }
 #catalogues > ul {
-	width: 255px;
-}
-.otype {
-	left: 185px;
-	top: -28px;
-	width: 255px;
+	width: 271px;
 }
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
 	.dropdown-menu {
@@ -114,14 +112,14 @@ and (max-width : 480px) {
 @media only screen
 and (min-width : 1824px) {
 	.dropdown-menu {
-		width: 190px;
+		width: 202px;
 	}
 	.otype {
-		left: 185px;
-		top: -28px;
-		width: 255px;
+		left: 197px;
+		top: -31px;
+		width: 268px;
 	}
 	#catalogues > ul {
-		width: 255px;
+		width: 271px;
 	}
 }

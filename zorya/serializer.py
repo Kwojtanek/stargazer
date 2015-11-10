@@ -51,6 +51,9 @@ class StellarObjectSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    Fov = serializers.ReadOnlyField(
+        read_only=True
+    )
 
     class Meta:
         model = StellarObject

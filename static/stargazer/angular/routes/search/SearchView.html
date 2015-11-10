@@ -10,7 +10,7 @@
         <div id="brightness">
             <div class="maxmindiv">
                 <label for="min_mag">Min:</label>
-                <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="MinMag" ng-init="MinMag = 1.6">
+                <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MinMag" ng-init="MinMag = 1.6">
             </div>
 
             <div>
@@ -18,17 +18,24 @@
             </div>
             <div class="maxmindiv">
                 <label for="max_mag">Max:</label>
-                <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="MaxMag" ng-init="MaxMag = 18">
+                <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag" ng-init="MaxMag = 20.7">
             </div>
         </div>
-        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
+        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
             Visible Only
         </button>
         <div id="search-grp">
-            <button type="button" id="const-button" ng-repeat="c in SearchConstellation" ng-click="RemoveConst()">
+            <button type="button" id="const-button" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()">
                 {{ c }}
             </button>
+            <button type="button" id="type-button" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()">
+                {{ t }}
+            </button>
+            <button type="button" id="cat-button"  ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()">
+                {{ cat }}
+            </button>
         </div>
+
 
 
 
@@ -45,7 +52,7 @@
             </div>
         </div>
         <div id="search-field">
-            <input type="text" class="form-control" ng-model="Name" placeholder="Add name or nr. e.g. m 31, andromeda, NGC 224" >
+            <input type="text" class="form-control" ng-model="filters.Name" placeholder="Add name or nr. e.g. m 31, andromeda, NGC 224" >
         </div>
 
 
@@ -82,13 +89,16 @@
                 Types&#9660;
             </button>
             <ul class="dropdown-menu" style="list-style-type:none">
-                <li  class="single-type" ng-if="advanced" ng-repeat="t in ddtypes" style="white-space: nowrap;" >{{ t.uniname }} &#9654
-                    <ul class="otype"><li ng-repeat="ot in t.data" ng-click="ChooseType()" class="single-type">{{ ot.label }}</li></ul>
+                <li  class="single-type" ng-if="filters.advanced"  ng-repeat="t in ddtypes" style="white-space: nowrap;" >{{ t.uniname }} &#9654
+                    <ul class="otype"><li ng-repeat="ot in t.data" ng-class="{'ok': filters.SearchTypes.indexOf(ot.value) != -1}" ng-click="ChooseType()" class="single-type">{{ ot.label }}</li></ul>
                 </li>
-                <li ng-if="!advanced" ng-repeat="t in ddtypes" style="white-space: nowrap;" ng-click="ChooseType()" >
+
+
+                <!-- NieZaawansowane wyszukiwanie -->
+                <li ng-if="!filters.advanced" ng-class="{'ok': filters.SearchTypes.indexOf(t.uniname) != -1}" ng-repeat="t in ddtypes" style="white-space: nowrap;" ng-click="ChooseType()" >
                     {{ t.uniname }}
                 </li>
-                <li id="advanced" ng-click="ChooseAdvanced()" ng-class="advanced ? 'btn-icon-vis' : 'btn-icon-notvis'"><h4 >Advanced</h4></li>
+                <li id="advanced" ng-click="ChooseAdvanced()" ng-class="filters.advanced ? 'btn-icon-vis' : 'btn-icon-notvis'"><h4 >Advanced</h4></li>
             </ul>
         </div>
 
@@ -128,7 +138,7 @@
                 Catalogues&#9660;
             </button>
             <ul class="dropdown-menu" style="list-style-type:none">
-                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-click="ChooseCatalogue($event)">
+                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-class="{'ok': filters.SearchCatalogues.indexOf(cat) != -1}" ng-click="ChooseCatalogue()">
                     {{ cat }}
                 </li>
             </ul>

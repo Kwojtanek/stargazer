@@ -1,4 +1,6 @@
 # -*- coding=utf-8 -*-
+import re
+
 from django.db import models
 from DjangoSettings.DevSettings import MEDIA_URL
 from .fields import DeclinationField
@@ -63,6 +65,35 @@ class StellarObject(models.Model):
 
     def __unicode__(self):
         return (self.unique_name)
+
+    def Fov(self):
+        """
+        Function returns Field of view that will be passed to alladin
+        """
+        x = 0
+        if self.dimAxb:
+            pattern = re.compile('\d+.\d+')
+            numb = re.findall(pattern,self.dimAxb)
+            if len(numb) == 0:
+                return 10
+            for n in numb:
+                if n >= x:
+                    x = n
+            x  = float(x)/100
+            if x > 1:
+                return x*5
+            if x <= 1:
+                return x*10
+            if x <= 0.1:
+                return x*25
+            else:
+                return 10
+
+        else:
+            return 10
+
+
+
 
 
 class Catalogues(models.Model):

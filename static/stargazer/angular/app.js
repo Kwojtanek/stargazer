@@ -45,5 +45,6 @@ SearchApp.config(function($routeProvider){
         redirectTo: '/'
       });
 });
+
 //TODO Dopisz kontroler dla katalogów
 //TODO Kontroller do pojedyńczego obiektu

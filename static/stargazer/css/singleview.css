@@ -1,15 +1,93 @@
+
 .main {
-display: flex;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    flex-flow: row wrap;
+    padding: 1px 10% 5%  10%;
+    color: #35393e;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #666;
 
 }
 .half-cell {
     flex: 1 1 50%;
 }
-.astromap {
-    width: 100vw;
+#astromap {
     height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     color: #35393e;
-    background-color: #f1f1f1;
+    background-color: #22313F;
     border-bottom: 1px solid #666;
+}
+#overview {
+    display:inline-block;
+    text-indent: 40px;
+    letter-spacing: 1px;
+}
+.single-photo {
+    min-width: 80vw;
+    min-height: 100vh;
+}
+#main-photos {
+    padding: 1px 10% 5% 10%
+}
+#sources {
+    background-color: #35393E ;
+    color: #f1f1f1;
+}
+.aladin-container {
+    border: none;
+}
+aside#navigation-bar {
+    position: fixed;
+    right: -46px;
+    top: 30%;
+    z-index: 200;
+    width: 130px;
+}
+aside#navigation-bar > section{
+    text-align: left;
+    padding: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 900;
+    text-transform: UPPERCASE;
+    -webkit-transition:  400ms; /* Safari */
+    transition: 400ms;
+}
+aside#navigation-bar > section > * {
+    width: 130px;
+    padding: 10px;
+    margin: 2px;
+    display: inline-block;
+    background-color: #35393E;
+    transition: 400ms;
+
+}
+aside#navigation-bar > section > *:hover {
+    margin-left: -77px;
+    background-color: #0078D7;
+
+}
+aside#navigation-bar > section:first-child > *:first-child {
+    width: 130px;
+    padding: 10px;
+    margin-left: -50px;
+    display: inline-block;
+    background-color: #0078D7;
+    transition: 400ms;
+
+}
+aside#navigation-bar > section:first-child > *:first-child:hover {
+
+}
+#astrocharts {
+    background-image: url("/static/chart4mag9.svg");
+    background-repeat: no-repeat;
 }

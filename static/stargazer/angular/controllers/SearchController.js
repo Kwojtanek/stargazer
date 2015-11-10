@@ -2,94 +2,114 @@
  * Created by root on 08.06.15.
  */
 SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', function($scope, SearchFactory,CommonData) {
-
+    $scope.Types = SearchTypes;
+    $scope.Catalogues = SearchCatalogues;
+    $scope.ddtypes = ddtypes;
     document.getElementById('nav-active').innerHTML = "Search"
 
     $scope.CommonData  = CommonData.get()
     if ($scope.CommonData.hasOwnProperty('index') === true){
         $scope.StellarObject = $scope.CommonData;
+        $scope.filters = $scope.CommonData.filters;
+        $( "div #slider" ).slider({
+            step: 0.1,
+            range: true,
+            max: max_mag,
+            min: min_mag,
+            values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
+            slide: function( event, ui ) {
+                $( "#min_mag" ).val($scope.filters.MinMag);
+                $( "#max_mag" ).val($scope.filters.MaxMag)
+            }
+        });
+
+
+        /*
+            if ($.inArray(this.innerHTML, $scope.filters.SearchCatalogues) != -1 || $.inArray(this.innerHTML, $scope.filters.SearchTypes) != -1) {
+                this.classList.add("ok")
+            }
+        })
+        */
         $('#results').fadeIn(300);
-        console.log(true)
     }
     else {
-        console.log(false)
-    }
+        $scope.filters = {}
+        $scope.filters.visible = false;
+        $scope.filters.advanced = false;
+        $scope.filters.SearchConstellation = [];
+        $scope.filters.SearchTypes = [];
+        $scope.filters.SearchCatalogues = [];
+        $scope.filters.lat = '';
+        $scope.filters.MinMag = min_mag;
+        $scope.filters.MaxMag = max_mag;
+        $( "div #slider" ).slider({
+            step: 0.1,
+            range: true,
+            max: max_mag,
+            min: min_mag,
+            values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
+            slide: function( event, ui ) {
+                $( "#min_mag" ).val( ui.values[ 0 ]);
+                $( "#max_mag" ).val( ui.values[ 1 ]);
+                $scope.filters.MinMag = ui.values[ 0 ];
+                $scope.filters.MaxMag = ui.values[ 1 ];
+            }
+        });
 
-    $scope.min_mag = 1.6;
-    $scope.max_mag = 18.1;
-    $scope.Types = SearchTypes;
-    $scope.Catalogues = SearchCatalogues
-    $scope.SearchConstellation = [];
-    $scope.SearchTypes = [];
-    $scope.SearchCatalogues = [];
-    $scope.visible = false;
-    $scope.lat = '';
-    $scope.ddtypes = ddtypes;
-    $scope.advanced = false;
+    }
 
     // JQueryUI
     $( "#autocomplete" ).autocomplete({
         source: ConstList
     });
-    $( "div #slider" ).slider({
-        step: 0.1,
-        range: true,
-        max: $scope.max_mag,
-        min: $scope.min_mag,
-        values: [ $scope.min_mag, $scope.max_mag],
-        slide: function( event, ui ) {
-            $( "#min_mag" ).val( ui.values[ 0 ]);
-            $( "#max_mag" ).val( ui.values[ 1 ]);
-            $scope.MinMag = ui.values[ 0 ];
-            $scope.MaxMag = ui.values[ 1 ];
-        }
-    });
-
-
-
     //Przyciski
     $scope.ResetFilters = function(){
-        $scope.SearchConstellation.length = 0;
-        $scope.SearchTypes.length = 0;
-        $scope.SearchCatalogues.length = 0;
-        $scope.visible = false;
-        $scope.lat ='';
+        $scope.filters.SearchConstellation.length = 0;
+        $scope.filters.MaxMag = max_mag;
+        $scope.filters.MinMag = min_mag;
+        $scope.filters.SearchTypes.length = 0;
+        $scope.filters.SearchCatalogues.length = 0;
+        $scope.filters.visible = false;
+        $scope.filters.lat ='';
 
-        $scope.MaxMag = 18;
-        $scope.MinMag = 1.6;
-        $( "#min_mag" ).val(1.6);
-        $( "#max_mag" ).val(18);
-        $( "#slider" ).slider( "values", [ 1.6, 18 ] );
+        $( "#min_mag" ).val(min_mag);
+        $( "#max_mag" ).val(max_mag);
+        $( "#slider" ).slider( "values", [ min_mag, max_mag ] );
         $('*> ul > li').removeClass('ok')
     }
 
     $scope.VisibleOnly = function(){
-        if ($scope.visible == false) {
+        if ($scope.filters.visible == false) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    $scope.lat = position.coords.latitude
-                    $scope.visible = true;
-                });
+                    latitude = position.coords.latitude
+                    $scope.filters.lat = position.coords.latitude
+                    $scope.filters.visible = true;
+                    console.log('>>')
+
+                })
             } else {
+                console.log('><')
                 return alert("Geolocation is not supported by this browser.");
             }
-            $scope.visible = true
+            $scope.filters.visible = true;
         }
         else {
-            $scope.visible = false;
-            $scope.lat ='';
+            console.log('<')
+            $scope.filters.visible = false;
+            $scope.filters.lat ='';
         }
     }
     $scope.ChooseConst = function(){
         var $acmp = $( "#autocomplete").val();
         $scope.Constellation = $acmp;
         // Sprawdza czy Została dodana taka konstelacja i czy nie jest pusta
-        if ($.inArray($acmp,$scope.SearchConstellation ) == -1 && $acmp != '') {
+        if ($.inArray($acmp,$scope.filters.SearchConstellation ) == -1 && $acmp != '') {
             // Sprawdza czy istnieje taka konstelacja iterując przez ConstList
             for (var index = 0; index < ConstList.length; index++){
                 if (ConstList[index].value == $acmp)
                 {
-                    $scope.SearchConstellation.push($scope.Constellation);
+                    $scope.filters.SearchConstellation.push($scope.Constellation);
                     $scope.Constellation = null;
                 }
             }
@@ -100,62 +120,58 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
         };
     };
     $scope.RemoveConst = function() {
-        return $scope.SearchConstellation.splice($scope.SearchConstellation.indexOf(this.c),1);
+        return $scope.filters.SearchConstellation.splice($scope.filters.SearchConstellation.indexOf(this.c),1);
     }
     $scope.ChooseType = function(){
-        if ($scope.advanced == true){
-        if ($.inArray(this.ot.value, $scope.SearchTypes ) == -1) {
-            $scope.SearchTypes.push(this.ot.value);
-            $(event.target).addClass('ok');
+        if ($scope.filters.advanced == true){
+            if ($.inArray(this.ot.value, $scope.filters.SearchTypes ) == -1) {
+                $scope.filters.SearchTypes.push(this.ot.value);
+                $scope.filters.SearchTypes.Visible = true;
 
-        }
-        else {
-            $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.ot.value), 1)
-            $(event.target).removeClass('ok');
-
-        }
             }
-        else if ($scope.advanced == false)
+            else {
+                $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.ot.value), 1)
+
+            }
+        }
+        else if ($scope.filters.advanced == false)
         {
-                    if ($.inArray(this.t.uniname, $scope.SearchTypes ) == -1) {
-            $scope.SearchTypes.push(this.t.uniname);
-            $(event.target).addClass('ok');
+            if ($.inArray(this.t.uniname, $scope.filters.SearchTypes ) == -1) {
+                $scope.filters.SearchTypes.push(this.t.uniname);
 
-        }
-        else {
-            $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t.uniname), 1)
-            $(event.target).removeClass('ok');
+            }
+            else {
+                $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t.uniname), 1)
 
-        }
+            }
 
         }
     }
     $scope.ChooseAdvanced = function() {
-        if ($scope.advanced == true) {
-            $scope.advanced = false;
-            $scope.SearchTypes.length = 0;
+        if ($scope.filters.advanced == true) {
+            $scope.filters.advanced = false;
+            $scope.filters.SearchTypes.length = 0;
         }
         else {
-            $scope.advanced = true;
-            $scope.SearchTypes.length = 0;
+            $scope.filters.advanced = true;
+            $scope.filters.SearchTypes.length = 0;
+            $scope.filters.SearchTypes.length = 0;
         }
     }
     $scope.RemoveType = function(){
-        $scope.SearchTypes.splice($scope.SearchTypes.indexOf(this.t), 1);
+        $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t), 1);
     }
 
-    $scope.ChooseCatalogue = function(event){
-        if ($.inArray(this.cat, $scope.SearchCatalogues ) == -1) {
-            $scope.SearchCatalogues.push(this.cat);
-            $(event.target).addClass('ok');
+    $scope.ChooseCatalogue = function(){
+        if ($.inArray(this.cat, $scope.filters.SearchCatalogues ) == -1) {
+            $scope.filters.SearchCatalogues.push(this.cat);
         }
         else {
-            $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1)
-            $(event.target).removeClass('ok');
+            $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1)
         }
     }
     $scope.RemoveCatalogue = function(){
-        $scope.SearchCatalogues.splice($scope.SearchCatalogues.indexOf(this.cat), 1);
+        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1);
     }
     $scope.TypeList = true;
     $scope.CatList = true;
@@ -164,18 +180,19 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
     $scope.SearchFor = function(page){
         $('div.box').fadeIn(300);
         $('#results').fadeOut(300);
+        $scope.filters.page = page
 
         SearchFactory.get(
             {
                 page: page,
-                max_mag: $scope.MaxMag,
-                min_mag: $scope.MinMag,
-                adv: $scope.advanced,
-                otype:  $scope.SearchTypes.toString(),
-                const: $scope.SearchConstellation.toString(),
-                cat: $scope.SearchCatalogues.toString(),
-                lat: $scope.lat,
-                name: $scope.Name
+                max_mag: $scope.filters.MaxMag,
+                min_mag: $scope.filters.MinMag,
+                adv: $scope.filters.advanced,
+                otype:  $scope.filters.SearchTypes.toString(),
+                const: $scope.filters.SearchConstellation.toString(),
+                cat: $scope.filters.SearchCatalogues.toString(),
+                lat: $scope.filters.lat,
+                name: $scope.filters.Name
             }
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
@@ -187,7 +204,6 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
     }
 
     //Wczytywanie kolejnych stron
-    page = 1;
     $scope.clickNext = function(){
         if ($scope.StellarObject.next != null) {
             page++;
@@ -203,9 +219,9 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
     //Caly tr jako link
     $scope.trUrl = function(id, $index){
         /*
-        window.open('#/'.concat(url), '_blank');
-        */
-        CommonData.set($scope.StellarObject,$index);
+         window.open('#/'.concat(url), '_blank');
+         */
+        CommonData.set($scope.StellarObject,$index, $scope.filters);
         window.location = '#/'.concat(id);
     }
 }]);

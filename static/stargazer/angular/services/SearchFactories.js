@@ -13,9 +13,10 @@ SearchApp.factory('SingleViewFactory', function($resource){
 
 SearchApp.factory('CommonData', function() {
     var savedData = {};
-    function set(data, index) {
+    function set(data, index, filters) {
         savedData = data;
         savedData.index = index
+        savedData.filters = filters
     };
     function get() {
         return savedData;

@@ -19,8 +19,10 @@ class DeclinationField(models.Field):
         d = value/3600
         m = (value - d*3600)/ 60
         s = value - d*3600 - m * 60
-        deg_sign = u'\u00b0'
-        return u'%s%s%s\'%s"' % (d, deg_sign, m, s)
+        #deg_sign = u'\u00b0'
+        #return u'%s%s%s\'%s"' % (d, deg_sign, m, s)
+        return u'%s %s %s' % (d,  m, s)
+
 
     def get_db_prep_value(self, value, connection, prepared=True):
         if value is None:
