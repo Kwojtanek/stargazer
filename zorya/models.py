@@ -6,7 +6,6 @@ from DjangoSettings.DevSettings import MEDIA_URL
 from .fields import DeclinationField
 from .thumbs import ImageWithThumbsField
 
-
 class Constellations(models.Model):
     """
     Class for constellation object, Every Stellar Object is releted to only one constellation.

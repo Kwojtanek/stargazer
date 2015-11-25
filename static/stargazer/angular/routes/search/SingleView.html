@@ -1,4 +1,4 @@
-<main class="main" xmlns="http://www.w3.org/1999/html" id="names">
+<main class="main" xmlns="http://www.w3.org/1999/html" id="names" >
     <section class="half-cell" style="align-self: flex-start;">
 <h1><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h1>
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
@@ -7,18 +7,22 @@
     <section class="half-cell" ng-if="MainObject.overview" ><h1>Overview:</h1>
     <span id="overwiev">{{ MainObject.overview }}</span></section>
 </main>
-<main class="main" id="details"><h1 style="flex-basis: 100%">Details:</h1>
+<main class="main" id="details" ng-if="MainObject"><h1 style="flex-basis: 100%">Details:</h1>
 <section style="flex-basis: 100%">
     <table>
         <h3>Catalogues:</h3>
         <tr ng-repeat="cat in MainObject.catalogues">
             <td>{{ cat.object_catalogue }}</td>
             <td>{{ cat.object_number }}</td>
+            <hr>
         </tr>
+
     </table>
+                <hr>
+
 </section>
-<section style="column-count: 2; -webkit-column-count: 2; -moz-column-count: 2; margin: 20px;">
-    <p class="single-detail" ng-if="MainObject.constelation"><b>Constellation:</b>{{ MainObject.constelation }} !!!POPRAW</p>
+<section id="details-columns">
+    <p class="single-detail" ng-if="MainObject.constelation"><b>Constellation:</b>{{ getConstelationName()}}</p>
     <p class="single-detail" ng-if="MainObject.otype"><b>Uniform type:</b> {{ MainObject.otype }}</p>
     <p class="single-detail" ng-if="MainObject.type"><b>Type:</b> {{ MainObject.type }}</p>
     <p class="single-detail" ng-if="MainObject.type_shortcut"><b>Type shortcut:</b> {{ MainObject.type_shortcut }}</p>
@@ -44,19 +48,37 @@
 
 
 </section></main>
-<main id="astromap" >
+<main id="astromap">
     <section id="aladin-lite-div" style="width:80%;height:100%; border: none"></section>
-<script type="text/javascript">
-</script>
 </main>
-<main ng-if="MainObject.photos[0]"class="main" id="main-photos">
+<main ng-if="MainObject.photos[0]"class="main" id="main-photos" ng-if="MainObject">
     <h2 style="flex-basis: 100%">Photos:</h2>
     <section class="single-photo" ng-repeat="photo in MainObject.photos">
         <img ng-src="{{ photo.orginal }}" height="100%" width="100%">
     </section>
 </main>
-<main id="astrocharts" class="main" ng-if="MainObject.magnitudo <= 12.6">
+
+
+
+<main id="astrocharts" class="main" ng-if="MainObject" >
     <h2 style="flex-basis: 100%">Sky Charts:</h2>
+    <!--mapy -->
+    <section  id="search-charts" ng-if="MainObject.magnitudo <= 12.6">
+        <div ng-click="getCharts()">
+        <img src="/static/stargazer/css/img/search.svg">
+        <p>Search for charts</p>
+    </div><a ng-repeat="c in  charts.results" href="{{ c.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ c.max_mag }}</div></a></section>
+
+
+    <!-- Brak map -->
+    <section ng-if="MainObject.magnitudo > 12.6"><h1>
+        <img src="/static/stargazer/css/img/search.svg">
+        <p>We are sorry but page includes maps only up to 12.6 <!--a href="/glossary#magnitudo">magnitudo</a --></p>
+    </h1>
+        <h2 ng-click="getCharts()" style="color: #0279d7;text-decoration: underline; display: inline-flex;">Search despite all</h2>
+    </section>
+
+
 </main>
 <main id="sources" class="main"><section class="half-cell">
     <h2>Sources:</h2>
@@ -64,19 +86,28 @@
     <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
 </section></main>
 <script>
-    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!"
+    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!";
+        $( document ).ajaxStart(function() {
+            $(".log").text("Triggered ajaxStart handler.");
+        });
 </script>
+<style>
+    #navbar {
+        padding: 0 10% 8px 10%;
+    }
+</style>
 <aside id="navigation-bar">
     <section>
-        <h3>Nav:</h3>
+        <h3><img src="/static/stargazer/css/img/list.svg"></h3>
     </section>
     <section><a ng-click="scrollTo('names')"><span>Top</span></a>
         <a ng-click="scrollTo('details')"><span>Details</span></a>
         <a ng-click="scrollTo('astromap')"><span>Astro Maps</span></a>
         <a ng-if="MainObject.photos[0].orginal" ng-click="scrollTo('main-photos')"><span>Photos</span></a>
         <a ng-click="scrollTo('astrocharts')"><span>Sky Charts</span></a>
-        <a ng-click="scrollTo('sources')"><span>Footer</span></a>
     </section>
 </aside>
-<div ng-click="nextIndex(MainObject.id)" style="width: 200px; height: 200px; background-color: #003eff; position: fixed; bottom: 0;right: 0 "></div>
-<div ng-click="leastIndex(MainObject.id)" style="width: 200px; height: 200px; background-color: #003eff; position: fixed; bottom: 0; left: 0"></div>
+
+
+<div ng-if="lastObject" ng-click="leastIndex(MainObject.id)" class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">{{ lastObject }}</div>
+<div ng-if="nextObject" ng-click="nextIndex(MainObject.id)" class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">{{ nextObject }}</div>

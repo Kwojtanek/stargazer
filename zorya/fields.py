@@ -12,14 +12,13 @@ __author__ = 'kuba'
 class DeclinationField(models.Field):
     """ Pole deklinacji przechowuje dane jako Integer. Zwraca je pod postacia ciagu znakow w formacie 00°00'00 \
     Deklinacja jest miarą kąta i nie może być większa niż 90stopni"""
-
     def from_db_value(self, value, expression, connection, context):
         if value is None:
             return value
         d = value/3600
         m = (value - d*3600)/ 60
         s = value - d*3600 - m * 60
-        #deg_sign = u'\u00b0'
+        deg_sign = u'\u00b0'
         #return u'%s%s%s\'%s"' % (d, deg_sign, m, s)
         return u'%s %s %s' % (d,  m, s)
 

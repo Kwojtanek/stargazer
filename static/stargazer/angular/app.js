@@ -27,7 +27,7 @@ app.config(function($routeProvider){
 });
 
 
-var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute'])
+var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute','ngAnimate'])
 
 SearchApp.config(function($routeProvider){
     $routeProvider

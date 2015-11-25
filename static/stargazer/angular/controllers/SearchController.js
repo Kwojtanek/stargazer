@@ -1,16 +1,23 @@
 /**
  * Created by root on 08.06.15.
  */
-SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', function($scope, SearchFactory,CommonData) {
+SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'CommonData', function($scope, $window, SearchFactory,CommonData) {
+    // True if page waits for another part of list
+    $scope.pending = false;
+
+    // Data that will be displayed $scope.results
+
+
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues;
     $scope.ddtypes = ddtypes;
-    document.getElementById('nav-active').innerHTML = "Search"
+    document.getElementById('nav-active').innerHTML = "Search";
 
     $scope.CommonData  = CommonData.get()
     if ($scope.CommonData.hasOwnProperty('index') === true){
         $scope.StellarObject = $scope.CommonData;
         $scope.filters = $scope.CommonData.filters;
+        $scope.results = $scope.CommonData.results;
         $( "div #slider" ).slider({
             step: 0.1,
             range: true,
@@ -25,11 +32,11 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
 
 
         /*
-            if ($.inArray(this.innerHTML, $scope.filters.SearchCatalogues) != -1 || $.inArray(this.innerHTML, $scope.filters.SearchTypes) != -1) {
-                this.classList.add("ok")
-            }
-        })
-        */
+         if ($.inArray(this.innerHTML, $scope.filters.SearchCatalogues) != -1 || $.inArray(this.innerHTML, $scope.filters.SearchTypes) != -1) {
+         this.classList.add("ok")
+         }
+         })
+         */
         $('#results').fadeIn(300);
     }
     else {
@@ -42,6 +49,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
         $scope.filters.lat = '';
         $scope.filters.MinMag = min_mag;
         $scope.filters.MaxMag = max_mag;
+        $scope.filters.page = 1;
+        $scope.filters.ordering = 'magnitudo'
         $( "div #slider" ).slider({
             step: 0.1,
             range: true,
@@ -55,6 +64,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
                 $scope.filters.MaxMag = ui.values[ 1 ];
             }
         });
+        $scope.results = [];
+
 
     }
 
@@ -180,7 +191,8 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
     $scope.SearchFor = function(page){
         $('div.box').fadeIn(300);
         $('#results').fadeOut(300);
-        $scope.filters.page = page
+        $scope.filters.page = page;
+        $scope.results= []
 
         SearchFactory.get(
             {
@@ -192,10 +204,12 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
                 const: $scope.filters.SearchConstellation.toString(),
                 cat: $scope.filters.SearchCatalogues.toString(),
                 lat: $scope.filters.lat,
-                name: $scope.filters.Name
+                name: $scope.filters.Name,
+                orderby: $scope.filters.ordering
             }
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
+                    $scope.results = ob.results;
 
                 $('#results').fadeIn(300);
                 $('div.box').fadeOut(300);
@@ -204,24 +218,64 @@ SearchApp.controller('SearchCtrl', ['$scope', 'SearchFactory', 'CommonData', fun
     }
 
     //Wczytywanie kolejnych stron
-    $scope.clickNext = function(){
-        if ($scope.StellarObject.next != null) {
-            page++;
-            $scope.SearchFor(page);
-        }
-    };
-    $scope.clickPrevious = function(){
-        if (page != 1) {
-            page--;
-            $scope.SearchFor(page);
-        }
-    };
+
     //Caly tr jako link
     $scope.trUrl = function(id, $index){
         /*
          window.open('#/'.concat(url), '_blank');
          */
-        CommonData.set($scope.StellarObject,$index, $scope.filters);
+        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results);
         window.location = '#/'.concat(id);
+    }
+
+    //Function downloads new data on scrolling bottom
+    $window.onscroll = function(){
+        // Checks if firs part of Data has been downloaded and next data exists
+        if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
+            if (document.body.scrollTop >  document.body.scrollHeight - 2200){
+                if (!$scope.pending) {
+                    $scope.pending = true
+                    console.log(document.body.scrollTop)
+                    $scope.filters.page ++
+                    SearchFactory.get(
+
+                        {
+                            page: $scope.filters.page,
+                            max_mag: $scope.filters.MaxMag,
+                            min_mag: $scope.filters.MinMag,
+                            adv: $scope.filters.advanced,
+                            otype:  $scope.filters.SearchTypes.toString(),
+                            const: $scope.filters.SearchConstellation.toString(),
+                            cat: $scope.filters.SearchCatalogues.toString(),
+                            lat: $scope.filters.lat,
+                            name: $scope.filters.Name,
+                            orderby: $scope.filters.ordering
+                        },console.log('data loading')
+                    ).$promise.then(function(ob){
+                            $scope.pending = false;
+                            $scope.StellarObject = ob;
+                            for (var i = 0; i < ob.results.length; i++){
+                                $scope.results.push(ob.results[i]);
+                                }
+
+                        })
+                }
+
+            }
+        }
+    }
+    $scope.orderBy =function(data){
+        if ($scope.filters.ordering == data) {
+            $scope.filters.ordering = ''.concat('-',data)
+        }
+        else if ($scope.filters.ordering == ''.concat('-',data))
+        {
+           $scope.filters.ordering = '';
+        }
+        else if ($scope.filters.ordering == '') {
+            $scope.filters.ordering = data;
+        }
+        else { $scope.filters.ordering = data}
+        console.log($scope.filters.ordering)
     }
 }]);

@@ -52,6 +52,8 @@ section > h2 {
     background-color: #ABB1BE;
     flex: 1 0 550px;
     order: 2;
+    height: 74px;
+
 
 }
 .maxmindiv {
@@ -266,16 +268,26 @@ body > section.container {
     color: #666666;
     background: #fff;
 }
+
 tr {
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
+    border-bottom: #666 solid 2px;
+    height: 105px;
 }
-tr:hover {
-    background-color: #0078D7;
-    color: #ffffff;
+td {
+    text-align: center;
 }
-thead tr:hover:first-child {
+#results tr {
+    transition: 400ms;
+}
+#results tr:hover {
+    background-color: #ffbf00;
+    color: #676767;
+
+}
+#results thead tr:hover:first-child {
     background: none;
     color: inherit;
 }
@@ -322,10 +334,11 @@ input {
     background: url("/static/stargazer/css/img/check.svg") no-repeat right center;
     background-size: 65%;
 }
-
+/*
 #results {
     display: none;
 }
+*/
 .prevNext {
     border-top: none;
     border-bottom: none;
@@ -416,6 +429,52 @@ input {
     0%{transform:rotate(0deg);}
     100%{transform:rotate(360deg);}
 }
+
+/* Small Loader */
+#small-loader{
+    position: relative;
+    height: 140px;
+    width: 140px;
+    border-radius: 80px;
+    border: 5px solid rgba(53, 57, 62, 1);
+
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader1 6s linear infinite;
+    animation: loader1 6s linear infinite;
+}
+
+#small-loader:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #0078d7;
+}
+#small-loader-planet {
+    top: 35px;
+    left: 35px;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    background-color: #0078d7;
+}
+
+
+
+
+
 [ng-click] {
     cursor: pointer;
 }
@@ -440,6 +499,17 @@ input {
 }
 #buttons > button:hover {
     background-color: rgba(238, 238, 238, 1);
+}
+
+.orderby {
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    background-color: #d7d7d7;
+    transition: 400ms;
+
+}
+.orderby:hover {
+    box-shadow: 0 0 0 12px rgba(195, 195, 195, 0.75);
 }
 
 
@@ -547,6 +617,8 @@ and (max-width : 480px) {
         flex: 1 1 100%;
         display: inherit;
         flex-wrap: wrap;
+        height: 74px;
+
     }
     #brightness > div:nth-child(2) {
         order: 3;
@@ -620,6 +692,7 @@ and (max-width : 400px) {
     #brightness {
         order: 3;
         flex: 1 1 50%;
+        height: 74px;
     }
     #VisibleOnly {
         flex: 1 1 50%;

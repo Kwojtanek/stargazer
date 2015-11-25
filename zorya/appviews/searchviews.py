@@ -24,6 +24,7 @@ class SearchAPI(generics.ListAPIView):
         latitude = self.request.query_params.get('lat', None)
         n = self.request.query_params.get('name', None)
         adv = self.request.query_params.get('adv',None)
+        orderby =self.request.query_params.get('orderby', None)
         if constellation:
             constellation = constellation.split(',')
             stellarquery = stellarquery.filter(constelation__abbreviation__in=constellation)
@@ -63,6 +64,24 @@ class SearchAPI(generics.ListAPIView):
                     qn = qn | (stellarquery.filter(
                         Q(unique_name__icontains=x) | Q(id1__icontains=x) | Q(id__icontains=x) | Q(
                             id3__icontains=x) | Q(notes__icontains=x)))
-            return qn.order_by('magnitudo').distinct()
+            if orderby:
+                #Konstelacja jest related field
+                if orderby == 'constelation':
+                    return qn.order_by('constelation__abbreviation')
+                if orderby == '-constelation':
+                    return qn.order_by('-constelation__abbreviation')
+                else:
+                    return qn.order_by(orderby)
+            else:
+                return qn.order_by('magnitudo').distinct()
         else:
-            return stellarquery.order_by('magnitudo')
+            if orderby:
+                if orderby == 'constelation':
+                    return stellarquery.order_by('constelation__abbreviation')
+                if orderby == '-constelation':
+                    return stellarquery.order_by('-constelation__abbreviation')
+                else:
+                    return stellarquery.order_by(orderby)
+
+            else:
+                return stellarquery.order_by('magnitudo')
