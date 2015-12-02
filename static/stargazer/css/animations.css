@@ -26,31 +26,3 @@
 .animate-switch.ng-enter.ng-enter-active {
   top:0;
 }
-
-.mainview-animation.ng-enter {
-  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; /* Safari/Chrome */
-  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; /* Firefox */
-  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; /* Opera */
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s; /* IE10+ and Future Browsers */
-}
-
-/**
- * Pre animation -> enter
- */
-.mainview-animation.ng-enter{
-  /* The animation preparation code */
-  opacity: 0;
-}
-
-/**
- * Post animation -> enter
- */
-.mainview-animation.ng-enter.ng-enter-active {
-  /* The animation code itself */
-  opacity: 1;
-}
-.mainview-animation.ng-hide {
-  left: -100%;
-  opacity:0;
-  padding:0 10px;
-}

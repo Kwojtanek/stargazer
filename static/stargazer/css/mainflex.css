@@ -512,6 +512,17 @@ input {
     box-shadow: 0 0 0 12px rgba(195, 195, 195, 0.75);
 }
 
+#SearchAgain {
+    color: #ffffff;
+    background-color: #FF4900;
+    content: 'Search Again';
+    transition: 400ms;
+}
+#SearchAgain:hover {
+    background-color: #FFF;
+    color: #35393E;
+
+}
 
 /* -------------------------------------Large---------------------------------------------------------- */
 @media only screen

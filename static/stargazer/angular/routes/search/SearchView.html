@@ -1,4 +1,4 @@
-<form xmlns="http://www.w3.org/1999/html" onscroll="scrollLoad()">
+<form>
     <section id="filter-animated" >
         <h2 style="color: white">Filters:</h2>
 
@@ -18,7 +18,7 @@
             </div>
             <div class="maxmindiv">
                 <label for="max_mag">Max:</label>
-                <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag"">
+                <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag">
             </div>
         </div>
         <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
@@ -88,46 +88,49 @@
         </div>
     </section>
 </form>
-<!-- TODO Lista obiektów jako dyrektywa -->
+
+
+
+
 <section id="results">
     <h3>Results: {{ StellarObject.count }}</h3>
-    <table style="border: 0" cellspacing="0" cellpadding="0">
+    <table style="border: 0">
         <thead>
         <tr style="background-color: #EBEBEB;">
             <td>#<p></p></td>
             <td>Catalogues<p></p></td>
             <td ng-click="orderBy('type')"  class='orderby'>Type <div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="type">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-type">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-type">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="type">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div>            </td>
             <td ng-click="orderBy('classe')" class='orderby'>Class<div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="classe">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-classe">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-classe">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="classe">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div>            </td>
             <td ng-click="orderBy('rightAsc')" class='orderby'>RightAsc.
                 <div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="rightAsc">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-rightAsc">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-rightAsc">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="rightAsc">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div>   </td>
             <td ng-click="orderBy('declination')" class='orderby'>Declination
                 <div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="declination">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-declination">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-declination">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="declination">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div></td>
             <td ng-click="orderBy('constelation')" class='orderby'>Const.
                 <div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="constelation">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-constelation">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-constelation">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="constelation">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div></td>
             <td ng-click="orderBy('magnitudo')" class='orderby'>Mag.
                 <div class="animate-switch-container" ng-switch on="filters.ordering">
-                                <p class="animate-switch" ng-switch-when="magnitudo">&#x25BC</p>
-                                <p class="animate-switch" ng-switch-when="-magnitudo">&#x25B2</p>
+                                <p class="animate-switch" ng-switch-when="-magnitudo">&#x25BC</p>
+                                <p class="animate-switch" ng-switch-when="magnitudo">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div></td>
             <td>DimAxb<p></p></td>
@@ -138,7 +141,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="obj in results" ng-click="trUrl(obj.id, $index)" href="/#/{{ obj.id }}" data-href="/#/{{ obj.id }}" style="min-height: 105px" ng-animate="'animate'">
+        <tr ng-repeat="obj in results" ng-click="trUrl(obj.id, $index)" href="/#/{{ obj.id }}" data-href="/#/{{ obj.id }}" style="min-height: 105px">
             <td>{{ obj.unique_name}}</td>
             <td><span ng-repeat="cat in obj.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></td>
             <td>{{ obj.type }}</td>

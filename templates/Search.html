@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Stellar objects browser</title>
+    <title>Sky objects browser</title>
 
     <!-- CSS linki -->
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" href="/static/stargazer/css/animations.css">
     <link rel="stylesheet" href="/static/stargazer/css/aladin.css" />
     <!-- JS linki -->
+
+    <!-- Keywords -->
+    <meta name="keywords" content="astrocharts, skycharts, sky maps, skymaps, ngc catalogue, ngc, messier, sky maps free">
 
     <!-- favicons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-touch-icon-57x57.png">
@@ -56,9 +59,8 @@
     <!-- Services -->
     <script src="/static/stargazer/angular/services/SearchFactories.js"></script>
 </head>
-{% include 'Header.html' %}
-
 <body ng-app="SearchApp">
+{% include 'Header.html' %}
 {% block header %}
 {% endblock %}
 {% verbatim %}

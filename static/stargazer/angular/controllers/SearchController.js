@@ -4,7 +4,6 @@
 SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'CommonData', function($scope, $window, SearchFactory,CommonData) {
     // True if page waits for another part of list
     $scope.pending = false;
-
     // Data that will be displayed $scope.results
 
 
@@ -25,8 +24,10 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
             min: min_mag,
             values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
             slide: function( event, ui ) {
-                $( "#min_mag" ).val($scope.filters.MinMag);
-                $( "#max_mag" ).val($scope.filters.MaxMag)
+                $( "#min_mag" ).val( ui.values[ 0 ]);
+                $( "#max_mag" ).val( ui.values[ 1 ]);
+                $scope.filters.MinMag = ui.values[ 0 ];
+                $scope.filters.MaxMag = ui.values[ 1 ];
             }
         });
 
@@ -189,6 +190,9 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
     // Submit przycisk
     $scope.SearchFor = function(page){
+        butt = $('#search-btn > input');
+        butt.attr('value', 'Search');
+        butt.removeAttr('id', 'SearchAgain');
         $('div.box').fadeIn(300);
         $('#results').fadeOut(300);
         $scope.filters.page = page;
@@ -209,7 +213,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
             }
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
-                    $scope.results = ob.results;
+                $scope.results = ob.results;
 
                 $('#results').fadeIn(300);
                 $('div.box').fadeOut(300);
@@ -230,11 +234,15 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
     //Function downloads new data on scrolling bottom
     $window.onscroll = function(){
+        if ($scope.StellarObject && $scope.StellarObject.next == null ){
+            console.log('Sorry search parameters changed, press enter to procceed')
+        }
         // Checks if firs part of Data has been downloaded and next data exists
-        if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
-            if (document.body.scrollTop >  document.body.scrollHeight - 2200){
+        if (document.body.scrollTop >  document.body.scrollHeight - 2200){
+            if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
+
                 if (!$scope.pending) {
-                    $scope.pending = true
+                    $scope.pending = true;
                     console.log(document.body.scrollTop)
                     $scope.filters.page ++
                     SearchFactory.get(
@@ -256,7 +264,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             $scope.StellarObject = ob;
                             for (var i = 0; i < ob.results.length; i++){
                                 $scope.results.push(ob.results[i]);
-                                }
+                            }
 
                         })
                 }
@@ -265,12 +273,20 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         }
     }
     $scope.orderBy =function(data){
+        // If order by is changed no next page will be loaded
+        if ($scope.StellarObject && $scope.StellarObject.next !== null){
+            butt = $('#search-btn > input');
+            butt.attr('value', 'search Again');
+            butt.attr('id', 'SearchAgain');
+            $scope.StellarObject.next = null;
+        }
+
         if ($scope.filters.ordering == data) {
             $scope.filters.ordering = ''.concat('-',data)
         }
         else if ($scope.filters.ordering == ''.concat('-',data))
         {
-           $scope.filters.ordering = '';
+            $scope.filters.ordering = '';
         }
         else if ($scope.filters.ordering == '') {
             $scope.filters.ordering = data;
