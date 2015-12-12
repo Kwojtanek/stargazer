@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ MainObject.catalogues.all.0.object_catalogue }} {{ MainObject.catalogues.all.0.object_number }}</title>
+
+
+
+    <meta name="google-site-verification" content="4dVBhsu0btHKs-iGGCzK_r8k7BPVSKcmKXZDP2gkqK0" />
+
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/style.min.css"/>
+    <!-- JS linki -->
+
+    <!-- Keywords -->
+    <meta name="keywords" content="stellar object, {{ MainObject.type }}, {{ MainObject.id1 }}, {{ MainObject.id2 }}, {{ MainObject.id3 }}, astrocharts, skycharts, sky maps, skymaps, ngc catalogue, ngc, messier, sky map">
+
+    <!-- favicons -->
+    <!-- Angular linki -->
+</head>
+<body>
+<header id="navbar">
+    <h1 style="font-size: 1.65em;
+    margin-bottom: 10px;;"><a href="/" target="_self">Zorya.co</a></h1>
+    <p style="margin-top: 0;">Stellar Objects search engine</p>
+    <nav style="display: inline-block">
+        <span><a href="/" class="nav-i" target="_self">Search</a></span>
+        <!-- span><a href="/browse" class="nav-i" target="_self">Browse</a></span -->
+        <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
+    </nav>
+</header>
+<main class="main" id="names">
+    <section class="half-cell" style="align-self: flex-start;">
+        <h1><span>{% for cat in MainObjects.catalogues %}
+            <span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}
+            </span><br>{% endfor %}</span></h1>
+        <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
+        <h4><span>{{ MainObject.notes }}{{ MainObject.unique_name }}</span></h4>
+    </section>
+    <section class="half-cell"><h1>Overview:</h1>
+        <span id="overwiev">{{ MainObject.overview }}</span></section>
+</main>
+<main class="main" id="details">
+    <h1>Details:</h1>
+    <section style="flex-basis: 100%">
+        <h3>Catalogues:</h3>
+        <table>
+            {% for cat in MainObject.catalogues.all %}
+                <tr>
+                    <td style="display: table-cell">{{ cat.object_catalogue }}</td>
+                    <td style="display: table-cell">{{ cat.object_number }}</td>
+                </tr>
+
+            {% endfor %}
+            <hr>
+
+        </table>
+        <hr>
+    </section>
+    <section id="details-columns">
+        <p class="single-detail"><b>Constellation:</b>{{ MainObject.constelation }}</p>
+        <p class="single-detail"><b>Uniform type:</b> {{ MainObject.otype }}</p>
+        <p class="single-detail"><b>Type:</b> {{ MainObject.type }}</p>
+        <p class="single-detail"><b>Type shortcut:</b> {{ MainObject.type_shortcut }}</p>
+        <p class="single-detail"><b>Class:</b> {{ MainObject.classe }}</p>
+        <p class="single-detail"><b>Right Ascension:</b> {{ MainObject.rightAsc }}</p>
+        <p class="single-detail"><b>Declination:</b> {{ MainObject.declination }}</p>
+        <p class="single-detail"><b>Distance:</b> {{ MainObject.distance }}</p>
+        <p class="single-detail"><b>Magnitudo:</b> {{ MainObject.magnitudo }}</p>
+        <p class="single-detail"><b>Visible size:</b> {{ MainObject.dimAxb }}</p>
+        <p class="single-detail"><b>Position angle:</b> {{ MainObject.pa }}</p>
+        <p class="single-detail"><b>Description:</b> {{ MainObject.description }}</p>
+        <p class="single-detail"><b>Other names:</b>
+            <span>{{ MainObject.id1 }}</span>
+            <span>{{ MainObject.id2 }}</span>
+            <span>{{ MainObject.id3 }}</span>
+        </p>
+    </section></main>
+<main>
+</main>
+<main class="main" id="main-photos">
+    <h2 style="flex-basis: 100%">Photos:</h2>
+    {% for photo in MainObject.photos.all %}
+
+        <section class="single-photo">
+            <img src="{{ photo.orginal }}" height="100%" width="100%">
+        </section>
+    {% endfor %}
+
+</main>
+<main id="astrocharts" class="main">
+    <h2 style="flex-basis: 100%">Sky Charts:</h2>
+    <p>Click on one bellow to download map</p>
+    <!--mapy -->
+    {% if MainObject.magnitudo <= 12.6 %}
+        <section  id="search-charts">
+            <div>
+                <img src="/static/stargazer/css/img/search.svg">
+                <p>Found charts</p>
+            </div>
+            {% for chart in charts %}
+                <a href="{{ chart.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ chart.mag }}</div></a>
+            {% endfor %}
+        </section>
+{% endif %}
+    {% if MainObject.magnitudo > 12.6%}
+        <!-- Brak map -->
+        <section><h2>
+            <img src="/static/stargazer/css/img/search.svg">
+            <p>We are sorry but page includes maps only up to 12.6 </p><!--a href="/glossary#magnitudo">magnitudo</a -->
+        </h2>
+        </section>
+    {% endif %}
+
+
+</main>
+{% if MainObject.otype %}
+    <main id="sources" class="main" style="width: 100%"><section class="half-cell">
+        <h2>Sources:</h2>
+        {% if MainObject.overview %}
+            <p><a href="https://en.wikipedia.org/wiki/{{ MainObject.catalogues.all.0.object_catalogue }} {{ MainObject.catalogues.all.0.object_number }}">Wikipedia</a></p>
+        {% endif %}
+        <p><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues.all.0.object_catalogue }}_{{ MainObject.catalogues.all.0.object_number }}">Simbad Database</a></p>
+    </section></main>
+{% endif %}
+<aside id="navigation-bar">
+    <section>
+        <h3><img src="/static/stargazer/css/img/list.svg"></h3>
+    </section>
+    <section><span>Top</span>
+        <span>Details</span>
+        <span>Astro Maps</span>
+        <span>Photos</span>
+        <span>Sky Charts</span>
+
+    </section>
+</aside>
+<footer style="    justify-content: center;
+    flex-flow: row wrap; display: flex">
+    <section class="half-cell" style="align-self: baseline;">
+        <h2>Contacts:</h2>
+        <button class="btn-1a button" style="width: 280px">Report Bug</button>
+        <button class="btn-1a button" style="margin-top: 5px;padding: 0 30px;width: 280px">Leave message</button>
+    </section>
+    <section class="half-cell" style="align-self: baseline;">
+        <h2>Info:</h2>
+        <p><a href="http://www.zorya.co/sitemap.xml">Sitemap</a></p>
+    </section>
+    <p style="text-align: center">Copyright 2016 ©</p>
+</footer>
+</body>
+</html>

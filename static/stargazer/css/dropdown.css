@@ -2,7 +2,7 @@ button  {
 	display: block;
 }
 #advanced {
-	background-color: #003660;
+	background-color: #ffbf00;
 }
 #types > button:hover  + .dropdown-menu {
 	display: block;

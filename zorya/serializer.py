@@ -2,7 +2,7 @@
 __author__ = 'kuba'
 
 from rest_framework import serializers
-from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos, AstroCharts
+from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos, AstroCharts, BugTracker, ContactApplet
 
 
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class StellarObjectSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
-    Fov = serializers.ReadOnlyField(
+    fov = serializers.ReadOnlyField(
         read_only=True
     )
 
@@ -74,8 +74,7 @@ class ConstellationsSerializer(serializers.ModelSerializer):
     """
      Serializer dla konstelacji
     """
-    NGCS_number = serializers.ReadOnlyField(
-        source='numNGCS',
+    stellarobscount = serializers.ReadOnlyField(
         read_only=True,
     )
 
@@ -84,8 +83,7 @@ class ConstellationsSerializer(serializers.ModelSerializer):
 
 
 class CatalogueSerializer(serializers.ModelSerializer):
-    NGCS_number = serializers.ReadOnlyField(
-        source='numNGCS',
+    stellarobscount = serializers.ReadOnlyField(
         read_only=True,
     )
 
@@ -97,3 +95,11 @@ class MapSerializer(serializers.ModelSerializer):
     class Meta:
         model = AstroCharts
         fields = ('file_name', 'magnitudo')
+
+class BugTrackerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BugTracker
+
+class ContactAppletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactApplet

@@ -6,17 +6,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     $scope.pending = false;
     // Data that will be displayed $scope.results
 
-
-    $scope.Types = SearchTypes;
-    $scope.Catalogues = SearchCatalogues;
-    $scope.ddtypes = ddtypes;
-    document.getElementById('nav-active').innerHTML = "Search";
-
-    $scope.CommonData  = CommonData.get()
-    if ($scope.CommonData.hasOwnProperty('index') === true){
-        $scope.StellarObject = $scope.CommonData;
-        $scope.filters = $scope.CommonData.filters;
-        $scope.results = $scope.CommonData.results;
+    //Function that initialize slider
+    SliderFunc = function(){
         $( "div #slider" ).slider({
             step: 0.1,
             range: true,
@@ -30,14 +21,21 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                 $scope.filters.MaxMag = ui.values[ 1 ];
             }
         });
+    }
 
+    $scope.Types = SearchTypes;
+    $scope.Catalogues = SearchCatalogues;
+    $scope.ddtypes = ddtypes;
+    document.getElementById('nav-active').innerHTML = "Search";
+    document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
 
-        /*
-         if ($.inArray(this.innerHTML, $scope.filters.SearchCatalogues) != -1 || $.inArray(this.innerHTML, $scope.filters.SearchTypes) != -1) {
-         this.classList.add("ok")
-         }
-         })
-         */
+    $scope.CommonData  = CommonData.get()
+    if ($scope.CommonData.index !== null) {
+        $scope.StellarObject = $scope.CommonData.data;
+        $scope.filters = $scope.CommonData.filters;
+        $scope.results = $scope.CommonData.results;
+        $scope.page = $scope.CommonData.page;
+        SliderFunc()
         $('#results').fadeIn(300);
     }
     else {
@@ -50,21 +48,10 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.lat = '';
         $scope.filters.MinMag = min_mag;
         $scope.filters.MaxMag = max_mag;
-        $scope.filters.page = 1;
+        $scope.page = 1;
         $scope.filters.ordering = 'magnitudo'
-        $( "div #slider" ).slider({
-            step: 0.1,
-            range: true,
-            max: max_mag,
-            min: min_mag,
-            values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
-            slide: function( event, ui ) {
-                $( "#min_mag" ).val( ui.values[ 0 ]);
-                $( "#max_mag" ).val( ui.values[ 1 ]);
-                $scope.filters.MinMag = ui.values[ 0 ];
-                $scope.filters.MaxMag = ui.values[ 1 ];
-            }
-        });
+        SliderFunc()
+
         $scope.results = [];
 
 
@@ -97,17 +84,14 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                     latitude = position.coords.latitude
                     $scope.filters.lat = position.coords.latitude
                     $scope.filters.visible = true;
-                    console.log('>>')
 
                 })
             } else {
-                console.log('><')
                 return alert("Geolocation is not supported by this browser.");
             }
             $scope.filters.visible = true;
         }
         else {
-            console.log('<')
             $scope.filters.visible = false;
             $scope.filters.lat ='';
         }
@@ -190,12 +174,13 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
     // Submit przycisk
     $scope.SearchFor = function(page){
+        document.getElementById('annotation-loader').style.display = '';
+        document.getElementById('params-annot').style.display = '';
         butt = $('#search-btn > input');
         butt.attr('value', 'Search');
         butt.removeAttr('id', 'SearchAgain');
         $('div.box').fadeIn(300);
-        $('#results').fadeOut(300);
-        $scope.filters.page = page;
+        $scope.page = page;
         $scope.results= []
 
         SearchFactory.get(
@@ -214,8 +199,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
                 $scope.results = ob.results;
+                CommonData.set($scope.StellarObject,1, $scope.filters, $scope.results, $scope.page);
 
-                $('#results').fadeIn(300);
                 $('div.box').fadeOut(300);
             });
 
@@ -228,27 +213,39 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         /*
          window.open('#/'.concat(url), '_blank');
          */
-        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results);
-        window.location = '#/'.concat(id);
+        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results,$scope.page);
+        document.removeEventListener('scroll', LoadOnScroll, false);
+        window.location = hashtag.concat('object/',id);
     }
 
+
+    // IE compability
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}
+
     //Function downloads new data on scrolling bottom
-    $window.onscroll = function(){
-        if ($scope.StellarObject && $scope.StellarObject.next == null ){
-            console.log('Sorry search parameters changed, press enter to procceed')
-        }
+    function LoadOnScroll(){
+
         // Checks if firs part of Data has been downloaded and next data exists
-        if (document.body.scrollTop >  document.body.scrollHeight - 2200){
+        if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
             if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
 
                 if (!$scope.pending) {
                     $scope.pending = true;
-                    console.log(document.body.scrollTop)
-                    $scope.filters.page ++
+                    document.getElementById('annotation-loader').style.display = 'inherit';
                     SearchFactory.get(
 
                         {
-                            page: $scope.filters.page,
+                            page: +$scope.page + 1,
                             max_mag: $scope.filters.MaxMag,
                             min_mag: $scope.filters.MinMag,
                             adv: $scope.filters.advanced,
@@ -258,29 +255,29 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             lat: $scope.filters.lat,
                             name: $scope.filters.Name,
                             orderby: $scope.filters.ordering
-                        },console.log('data loading')
+                        }
                     ).$promise.then(function(ob){
+                            $scope.page++
                             $scope.pending = false;
                             $scope.StellarObject = ob;
+                            // appends results to list
                             for (var i = 0; i < ob.results.length; i++){
                                 $scope.results.push(ob.results[i]);
                             }
+                            CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page);
+                            document.getElementById('annotation-loader').style.display = '';
+
 
                         })
                 }
 
             }
         }
-    }
+    };
+
+    document.addEventListener('scroll', LoadOnScroll, false);
     $scope.orderBy =function(data){
         // If order by is changed no next page will be loaded
-        if ($scope.StellarObject && $scope.StellarObject.next !== null){
-            butt = $('#search-btn > input');
-            butt.attr('value', 'search Again');
-            butt.attr('id', 'SearchAgain');
-            $scope.StellarObject.next = null;
-        }
-
         if ($scope.filters.ordering == data) {
             $scope.filters.ordering = ''.concat('-',data)
         }
@@ -292,6 +289,19 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
             $scope.filters.ordering = data;
         }
         else { $scope.filters.ordering = data}
-        console.log($scope.filters.ordering)
     }
+    // NIE działa tak jak powinno
+    $scope.$watch('filters', function(newdata,olddata) {
+        if (!$scope.StellarObject || olddata == newdata ||$scope.results.length == 0){
+            return;
+        }
+        else {
+            $scope.StellarObject.next = null;
+            $scope.CommonData.next = null;
+            butt = $('#search-btn > input');
+            butt.attr('value', 'search Again');
+            butt.attr('id', 'SearchAgain');
+            document.getElementById('params-annot').style.display = 'block';
+
+        }}, true);
 }]);

@@ -1,4 +1,4 @@
-<main class="main" xmlns="http://www.w3.org/1999/html" id="names" >
+<main class="main" id="names">
     <section class="half-cell" style="align-self: flex-start;">
 <h1><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h1>
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
@@ -12,8 +12,8 @@
     <table>
         <h3>Catalogues:</h3>
         <tr ng-repeat="cat in MainObject.catalogues">
-            <td>{{ cat.object_catalogue }}</td>
-            <td>{{ cat.object_number }}</td>
+            <td style="display: table-cell">{{ cat.object_catalogue }}</td>
+            <td style="display: table-cell">{{ cat.object_number }}</td>
             <hr>
         </tr>
 
@@ -64,18 +64,17 @@
     <h2 style="flex-basis: 100%">Sky Charts:</h2>
     <!--mapy -->
     <section  id="search-charts" ng-if="MainObject.magnitudo <= 12.6">
-        <div ng-click="getCharts()">
+        <div>
         <img src="/static/stargazer/css/img/search.svg">
-        <p>Search for charts</p>
+        <p>Found charts</p>
     </div><a ng-repeat="c in  charts.results" href="{{ c.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ c.max_mag }}</div></a></section>
 
 
     <!-- Brak map -->
-    <section ng-if="MainObject.magnitudo > 12.6"><h1>
+    <section ng-if="MainObject.magnitudo > 12.6"><h2>
         <img src="/static/stargazer/css/img/search.svg">
         <p>We are sorry but page includes maps only up to 12.6 <!--a href="/glossary#magnitudo">magnitudo</a --></p>
-    </h1>
-        <h2 ng-click="getCharts()" style="color: #0279d7;text-decoration: underline; display: inline-flex;">Search despite all</h2>
+    </h2>
     </section>
 
 
@@ -86,10 +85,7 @@
     <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
 </section></main>
 <script>
-    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!";
-        $( document ).ajaxStart(function() {
-            $(".log").text("Triggered ajaxStart handler.");
-        });
+    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!"
 </script>
 <style>
     #navbar {
@@ -105,9 +101,9 @@
         <a ng-click="scrollTo('astromap')"><span>Astro Maps</span></a>
         <a ng-if="MainObject.photos[0].orginal" ng-click="scrollTo('main-photos')"><span>Photos</span></a>
         <a ng-click="scrollTo('astrocharts')"><span>Sky Charts</span></a>
+
     </section>
 </aside>
-
 
 <div ng-if="lastObject" ng-click="leastIndex(MainObject.id)" class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">{{ lastObject }}</div>
 <div ng-if="nextObject" ng-click="nextIndex(MainObject.id)" class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">{{ nextObject }}</div>

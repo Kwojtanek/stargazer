@@ -37,7 +37,7 @@ class ConstellationsViewDetailAPI(generics.ListAPIView):
     def get_queryset(self):
         constellation_name = self.kwargs['abbreviation']
         c = Constellations.objects.get(abbreviation=constellation_name)
-        quryset = c.ngcs.all()
+        quryset = c.relatedconstellation.all()
         return quryset
 
 

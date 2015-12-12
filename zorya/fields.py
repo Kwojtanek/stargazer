@@ -18,6 +18,12 @@ class DeclinationField(models.Field):
         d = value/3600
         m = (value - d*3600)/ 60
         s = value - d*3600 - m * 60
+
+        if m <10:
+            m *=6
+
+        if s < 10:
+            s *=6
         deg_sign = u'\u00b0'
         #return u'%s%s%s\'%s"' % (d, deg_sign, m, s)
         return u'%s %s %s' % (d,  m, s)

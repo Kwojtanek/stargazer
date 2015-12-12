@@ -80,3 +80,34 @@ def mapapi(request):
         k, v = RESPONSES.items()[2]
         return Response({'code': k, 'message': v })
 
+
+
+
+def mapapistatic(asc=None,dec=None,mag=None):
+    """Funkcja dla statycznego widoku """
+    if not asc and  not dec:
+        return False
+    astroquery = AstroCharts.objects.filter(maxDeclination__gte=dec).filter(minDeclination__lt=dec)
+    result = []
+    New_magnitudo_list = list(MAGNITUDO)
+    if mag:
+        New_magnitudo_list = list(MAGNITUDO)
+        for x in MAGNITUDO:
+            if float(x) < float(mag):
+                New_magnitudo_list.remove(x)
+    if len(New_magnitudo_list) > 0:
+        for mag in New_magnitudo_list:
+            chartquery = astroquery.filter(magnitudo__range=((float(mag) - 0.1), (float(mag) + 0.1)))
+            if chartquery.filter(minAscension__gte=asc).count() != 0:
+                chart = chartquery.filter(minAscension__gte=asc).order_by('minAscension').first()
+                result.append({'mag': "MAG %s" %(mag),
+                                             'url':CHARTS_URL + chart.file_name
+                                             })
+            else:
+                chart = chartquery.filter(maxAscension__lte=asc).order_by('-maxAscension').first()
+                result.append({'mag': "MAG %s" %(mag),
+                                             'url':CHARTS_URL + chart.file_name
+                                             })
+        return result
+    else:
+        return False

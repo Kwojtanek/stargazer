@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import datetime
 import zorya.fields
 import zorya.thumbs
 
@@ -22,6 +23,18 @@ class Migration(migrations.Migration):
                 ('maxDeclination', zorya.fields.DeclinationField(null=True, blank=True)),
                 ('minDeclination', zorya.fields.DeclinationField(null=True, blank=True)),
                 ('magnitudo', models.DecimalField(max_digits=3, decimal_places=1)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='BugTracker',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('info', models.TextField()),
+                ('dateandtime', models.DateTimeField(default=datetime.datetime.now)),
+                ('userAgent', models.CharField(max_length=256)),
+                ('author', models.EmailField(max_length=254, null=True, blank=True)),
+                ('bugUrl', models.CharField(max_length=64)),
+                ('addicionalinfo', models.CharField(max_length=32)),
             ],
         ),
         migrations.CreateModel(
@@ -47,6 +60,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='ContactApplet',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('author', models.EmailField(max_length=254)),
+                ('message', models.TextField()),
+            ],
+        ),
+        migrations.CreateModel(
             name='ObjectPhotos',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -64,10 +85,22 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='ReletedType',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nametype', models.CharField(max_length=80)),
+                ('shortcutnametype', models.CharField(max_length=32)),
+                ('phototype', zorya.thumbs.ImageWithThumbsField(null=True, upload_to=b'images', blank=True)),
+                ('descriptiontype', models.TextField()),
+                ('maintype', models.ForeignKey(to='zorya.ReletedType')),
+            ],
+        ),
+        migrations.CreateModel(
             name='StellarObject',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('unique_name', models.CharField(unique=True, max_length=32)),
+                ('otype', models.CharField(max_length=24, null=True, blank=True)),
                 ('type', models.CharField(max_length=100, null=True, blank=True)),
                 ('type_shortcut', models.CharField(max_length=12, null=True, blank=True)),
                 ('classe', models.CharField(max_length=12, null=True, blank=True)),
@@ -84,13 +117,6 @@ class Migration(migrations.Migration):
                 ('notes', models.CharField(max_length=64, null=True, blank=True)),
                 ('overview', models.TextField(null=True, blank=True)),
                 ('constelation', models.ForeignKey(related_name='ngcs', to='zorya.Constellations')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='testur',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('m', models.URLField()),
             ],
         ),
         migrations.AddField(

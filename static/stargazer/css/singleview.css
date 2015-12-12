@@ -174,8 +174,21 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     .half-cell{
         flex-basis: 100%;
     }
-    .main {
-        padding: 5%;
+    #details-columns {
+    column-count: 2;
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    margin: 20px;
+    background-color: #EBEBEB;
+    padding: 0;
+
+}
+    #details {
+        padding-left: 0;
+        padding-right: 0;
     }
-    nav
+    #main-photos {
+        padding: 1px 9% 5%;
+    }
+
 }

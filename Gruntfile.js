@@ -1,17 +1,35 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        jshint: {
-            dev: {
-                src: ['/static/zorya/**/*.js']
+        concat: {
+            options: {
+                // define a string to put between each file in the concatenated output
+                separator: ';'
+            },
+            dist: {
+                // the files to concatenate
+                src: ['static/stargazer/angular/**/*.js','static/stargazer/angular/*.js'],
+                // the location of the resulting JS file
+                dest: 'static/stargazer/onefileangular.js'
             }
         },
-        autoprefixer: {
-            options: {
-                // Task-specific options go here.
+        cssmin: {
+            dist: {
+                files: {
+                    'static/stargazer/style.min.css': ['static/stargazer/css/*.css']
+                }
             },
-            your_target: {
-                src: 'static/zorya/css/mainflex.css'
+            files: ['static/stargazer/css/*.css'],
+            tasks: ['cssmin']
+        },
+        watch: {
+            css: {
+                files: ['static/stargazer/css/*.css'],
+                tasks: ['cssmin']
+            },
+            js: {
+                files: ['static/stargazer/angular/*.js', 'static/stargazer/angular/**/*.js'],
+                tasks: ['concat']
             }
         },
         shell: {
@@ -30,10 +48,12 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shell');
     grunt.registerTask('default', ['shell:pythonServer']);
+    grunt.registerTask('w', ['watch']);
     grunt.registerTask('pycharm', ['shell:pyCharm']);
 
 

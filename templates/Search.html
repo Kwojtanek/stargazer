@@ -1,16 +1,15 @@
 <!doctype html>
 <html>
+
 <head lang="en">
+    <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sky objects browser</title>
+    <title>Stellar objects browser</title>
+    <meta name="fragment" content="!">
+    <meta name="google-site-verification" content="4dVBhsu0btHKs-iGGCzK_r8k7BPVSKcmKXZDP2gkqK0" />
 
-    <!-- CSS linki -->
-    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/mainflex.css">
-    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/dropdown.css">
-    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/singleview.css">
-    <link rel="stylesheet" type="text/css" href="/static/stargazer/css/animations.css">
-    <link rel="stylesheet" href="/static/stargazer/css/aladin.css" />
+    <link rel="stylesheet" type="text/css" href="/static/stargazer/style.min.css"/>
     <!-- JS linki -->
 
     <!-- Keywords -->
@@ -45,42 +44,101 @@
     <script src="/static/angular-route/angular-route.min.js"></script>
 
     <!-- Angular linki -->
-    <script src="/static/stargazer/angular/app.js" ></script>
     <script src="/static/stargazer/search.js" ></script>
     <script src="/static/stargazer/simbad.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/stargazer/onefileangular.js" ></script>
 
 
-
-    <!-- Kontrollery -->
-    <script src="/static/stargazer/angular/controllers/SingleViewController.js"></script>
-    <script src="/static/stargazer/angular/controllers/SearchController.js"></script>
-    <!-- Dyrektywy -->
-    <script src="/static/stargazer/angular/directives/EnterDirective.js"></script>
-    <!-- Services -->
-    <script src="/static/stargazer/angular/services/SearchFactories.js"></script>
 </head>
 <body ng-app="SearchApp">
-{% include 'Header.html' %}
-{% block header %}
-{% endblock %}
+
 {% verbatim %}
+<header id="navbar">
+    <h1 style="font-size: 1.65em;
+    margin-bottom: 10px;;"><a href="/" target="_self">Zorya.co</a></h1>
+    <p style="margin-top: 0;">Stellar Objects search engine</p>
+    <nav style="display: inline-block">
+        <span><a href="/" class="nav-i" target="_self">Search</a></span>
+        <!-- span><a href="/browse" class="nav-i" target="_self">Browse</a></span -->
+        <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
+    </nav>
+</header>
 <ng-view class="mainview-animation"></ng-view>
-{% endverbatim %}
-{% block footer %}
-{% endblock %}
-<script type="text/javascript" >
-    $(document).ready(function() {
-        $('body').hide().fadeIn(1000);
-        search_butt =document.getElementsByClassName('nav-i')[0];
-        search_butt.id = 'nav-active';
-        search_butt.href = '/#/';
 
 
+<footer ng-controller="FooterCtrl" style="    justify-content: center;
+    flex-flow: row wrap; display: flex">
+    <section class="half-cell" style="align-self: baseline;">
+        <h2>Contacts:</h2>
+        <button ng-click="bugtracker = !bugtracker" class="btn-1a button" style="width: 280px">Report Bug</button>
+        <button ng-click="contactapplet = !contactapplet" class="btn-1a button" style="margin-top: 5px;padding: 0 30px;width: 280px">Leave message</button>
+    </section>
+        <section class="half-cell" style="align-self: baseline;">
+            <h2>Info:</h2>
+            <p><a href="http://www.zorya.co/static/sitemap.xml">Sitemap</a></p>
+            </section>
+    <p style="text-align: center">Copyright 2016 ©</p>
+<div id="form-main" ng-show="bugtracker">
+    <div id="form-div">
+        <form class="form" id="form1">
+            <p id="form-title" ng-click="bugtracker = !bugtracker">Report Bug:</p>
+            <p class="email">
+                <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" placeholder="Email" ng-model="bugform.author"/>
+            </p>
 
-    });
-</script>
+            <p class="text">
+                <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*Information" ng-model="bugform.info" required></textarea>
+            </p>
+            <p style="color: white">*required</p>
+
+            <div class="submit">
+                <input type="submit" value="SEND" ng-click="sendbug()"  id="button-blue"/>
+                <div class="ease"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="form-main" ng-show="contactapplet">
+    <div id="form-div">
+        <form class="form" id="form1">
+            <p id="form-title" ng-click="contactapplet = !contactapplet">Contact us:</p>
+            <p class="email">
+                <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" ng-model="contactapp.author" placeholder="*Email" required/>
+            </p>
+
+            <p class="text">
+                <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*message" ng-model="contactapp.message" required></textarea>
+            </p>
+            <p style="color: white">*required</p>
+
+            <div class="submit">
+                <input type="submit" value="SEND" ng-click="sendcontact()" id="button-blue"/>
+                <div class="ease"></div>
+            </div>
+        </form>
+    </div>
+</div>
+</footer>
+
 <div class="box">
     <div class="loader1"><div class="loader-planet"></div> </div>
 </div>
+
+<!-- Small loader -->
+<div id="annotation-loader">
+    <div id="small-loader"><div id="small-loader-planet"></div> </div>
+    <div id="annotation">Loading additional data...</div>
+
+</div>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        window.document.body.style.display = 'None';
+        $('body').fadeIn(1000);
+        document.getElementsByClassName('nav-i');
+        search_butt = document.getElementsByClassName('nav-i')[0];
+        search_butt.id = 'nav-active';
+    });
+</script>
 </body>
+{% endverbatim %}
 </html>

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from .models import  Constellations as Constelation
-from .models import StellarObject, Catalogues, Objects_list, ObjectPhotos
+from .models import StellarObject, Catalogues, Objects_list, ObjectPhotos, BugTracker, ContactApplet
 from django.conf import settings
 from django.contrib import admin
 
@@ -65,6 +65,8 @@ class ObjectsInline(admin.TabularInline):
 #Catalogues_filtered = Catalogues.objects.exclude(pk=1)
 
 #And then include it in a admin declaration
+admin.site.register(BugTracker)
+admin.site.register(ContactApplet)
 admin.site.register(StellarObject, AdminNGC)
 admin.site.register(Constelation, AdminConst)
 admin.site.register(Catalogues, admin.ModelAdmin)

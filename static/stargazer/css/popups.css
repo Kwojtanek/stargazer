@@ -1,0 +1,124 @@
+/* Loadder */
+.box{
+    display: none;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    padding-right: 30px;
+    animation: pulsate 10s infinite;
+    right: 0;
+    top: 0;
+}
+.loader1{
+    position: relative;
+    height: 140px;
+    width: 140px;
+    border-radius: 80px;
+    border: 5px solid rgba(53, 57, 62, 1);
+
+    top: 28%;
+    top: -webkit-calc(50% - 43px);
+    top: calc(50% - 43px);
+    left: 35%;
+    left: -webkit-calc(50% - 43px);
+    left: calc(50% - 43px);
+
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader1 6s linear infinite;
+    animation: loader1 6s linear infinite;
+}
+
+.loader1:after{
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #0078d7;
+}
+.loader-planet {
+    top: 35px;
+    left: 35px;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-radius: 50px;
+    background-color: #0078d7;
+}
+
+@-webkit-keyframes loader1{
+    0%{-webkit-transform:rotate(0deg);}
+    100%{-webkit-transform:rotate(360deg);}
+}
+
+@keyframes loader1{
+    0%{transform:rotate(0deg);}
+    100%{transform:rotate(360deg);}
+}
+
+/* Small Loader */
+#annotation-loader{
+    display: none;
+    position: fixed;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    animation: pulsate 10s infinite;
+    right: calc(50% - 135px);
+    bottom: 0;
+    padding: 5px;
+}
+#small-loader{
+    position: relative;
+    height: 35px;
+    width: 35px;
+    border-radius: 20px;
+    border: 1px solid rgba(53, 57, 62, 1);
+    left: 35%;
+    left: -webkit-calc(50% - 125px);
+    left: calc(50% - 125px);
+
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader1 6s linear infinite;
+    animation: loader1 6s linear infinite;
+}
+
+#small-loader:after{
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #0078d7;
+}
+#small-loader-planet {
+    top: 8px;
+    left: 8px;
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #0078d7;
+}
+#annotation {
+    padding: 8px 8px 8px 14px;
+}
+#params-annot {
+    background-color: whitesmoke; display: none;
+    position: fixed;
+    z-index: 100;
+    width: auto;
+    height: auto;
+    animation: pulsate 10s infinite;
+    transition: 400ms;
+    left: 0;
+    bottom: 0;
+    padding: 5px;
+}
