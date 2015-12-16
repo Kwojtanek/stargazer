@@ -25,8 +25,12 @@ body {
     height: 39px;
     line-height: 39px;
 }
+.mainview-animation {
+    min-height: 1000px;
+}
 ng-view {
     flex-basis: 100%;
+
 
 }
 ng-view >form {
@@ -232,7 +236,6 @@ body > section.container {
 /* Buttony */
 .button  {
     height: 74px;
-
     width: auto;
     font-family: inherit;
     font-size: inherit;
@@ -307,6 +310,7 @@ input {
     margin-bottom: -3px;
 
 }
+
 #reset {
     border-left: none;
     order: 1;
@@ -333,19 +337,15 @@ input {
     background: url("/static/stargazer/css/img/check.svg") no-repeat right center;
     background-size: 65%;
 }
-/*
-#results {
-    display: none;
-}
-*/
 .prevNext {
     border-top: none;
     border-bottom: none;
     border-left: none;
 }
 #results {
+    min-height: 400px;
     margin-bottom: 85px;
-        min-height: 300px;
+    width: 100vw;
 }
 #results > * {
     width: 100%;
@@ -371,27 +371,7 @@ input {
 [ng-click] {
     cursor: pointer;
 }
-#buttons {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    height: 78px;
-    background-color: rgba(53, 57, 62, 0.95);
-}
-#buttons > button {
-    display: inline;
-    height: 100%;
-    background-color: rgba(53, 57, 62, 0.95);
-    border: 0;
-    width: 50%;
-}
-#buttons > button:last-child{
-    position: absolute;
-    right: 0;
-
-}
-#buttons > button:hover {
-    background-color: rgba(238, 238, 238, 1);
+button {
 }
 
 .orderby {
@@ -416,9 +396,9 @@ input {
     color: #35393E;
 
 }
-    tr > td:nth-child(1) {
-        display: none;
-    }
+tr > td:nth-child(1) {
+    display: none;
+}
 /* -------------------------------------Large---------------------------------------------------------- */
 @media only screen
 and (min-width : 1824px) {
@@ -450,6 +430,9 @@ and (min-width : 1824px) {
 /* -------------------------------------Normal---------------------------------------------------------- */
 
 @media only screen and (min-width : 1025px) and (max-width: 1280px){
+    #results  td:nth-child(12) {
+        display: none;
+    }
 
     table {
         width:100%
@@ -589,7 +572,9 @@ and (max-width : 400px) {
 /* -------------------------------------Tablet and small pc---------------------------------------------------------- */
 
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
-
+    #results  td:nth-child(12) {
+        display: none;
+    }
     #reset {
         flex: 1 1 50%;
         text-align: center;
@@ -712,9 +697,9 @@ input::-moz-placeholder {
 
 @-webkit-keyframes pulsate
 {
-      0%   {background-color: rgba(53, 57, 62, 0.1);}
-      50%  {background: rgba(53, 57, 62, 0.32);}
-      100% {background: rgba(53, 57, 62, 0.11);}
+    0%   {background-color: rgba(53, 57, 62, 0.1);}
+    50%  {background: rgba(53, 57, 62, 0.32);}
+    100% {background: rgba(53, 57, 62, 0.11);}
 }
 a {
     color: #ebebeb;

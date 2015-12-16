@@ -8,7 +8,11 @@ module.exports = function(grunt) {
             },
             dist: {
                 // the files to concatenate
-                src: ['static/stargazer/angular/**/*.js','static/stargazer/angular/*.js'],
+                src: [
+                    'static/stargazer/simbad.min.js',
+                    'static/stargazer/search.js',
+                    'static/stargazer/angular/**/*.js',
+                    'static/stargazer/angular/*.js'],
                 // the location of the resulting JS file
                 dest: 'static/stargazer/onefileangular.js'
             }
@@ -22,32 +26,41 @@ module.exports = function(grunt) {
             files: ['static/stargazer/css/*.css'],
             tasks: ['cssmin']
         },
-        watch: {
-            css: {
-                files: ['static/stargazer/css/*.css'],
-                tasks: ['cssmin']
-            },
-            js: {
-                files: ['static/stargazer/angular/*.js', 'static/stargazer/angular/**/*.js'],
-                tasks: ['concat']
+        uglify: {
+            dist: {
+                files: {
+                    'static/stargazer/angul.min.js': ['static/stargazer/onefileangular.js']
+                }
             }
         },
-        shell: {
-            pythonServer: {
-                options: {
-                    stdout: true
+            watch: {
+                css: {
+                    files: ['static/stargazer/css/*.css'],
+                    tasks: ['cssmin']
                 },
-                command: 'python manage.py runmodwsgi --reload-on-changes'
+                js: {
+                    files: ['static/stargazer/angular/*.js', 'static/stargazer/angular/**/*.js'],
+                    tasks: ['concat']
+                }
             },
-            pyCharm: {
-                options: {
-                    stdout: true
+            shell: {
+                pythonServer: {
+                    options: {
+                        stdout: true
+                    },
+                    command: 'python manage.py runmodwsgi --reload-on-changes'
                 },
-                command: ['cd /usr/local/pycharm-4.5.3/bin',
-                    'sudo sh pycharm.sh'].join('&&')
+                pyCharm: {
+                    options: {
+                        stdout: true
+                    },
+                    command: ['cd /usr/local/pycharm-4.5.3/bin',
+                        'sudo sh pycharm.sh'].join('&&')
+                }
             }
-        }
-    });
+        });
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');

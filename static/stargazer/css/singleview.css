@@ -1,5 +1,6 @@
 
 .main {
+    flex-basis: 100%;
     display: flex;
     align-content: center;
     align-items: center;

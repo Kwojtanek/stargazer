@@ -4,15 +4,12 @@ import string
 
 from django.shortcuts import render_to_response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework import generics
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 
-from .models import StellarObject, BugTracker, ContactApplet
+
+from .models import StellarObject, BugTracker, ContactApplet, ObjectPhotos
 from .serializer import StellarObjectSerializer, BugTrackerSerializer, ContactAppletSerializer
 from .appviews.mapviews import mapapistatic
-
+from django.views.generic import ListView
 
 #TODO napisz stronę 404 Not Found
 #TODO Mixins
@@ -26,6 +23,7 @@ BotsUserAgents = [
     'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)',
     'Mozilla/5.0 (compatible; bingbot/2.0 +http://www.bing.com/bingbot.htm)',
     'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)',
+    'Mediapartners-Google',
     'Baiduspider',
     'Baiduspider+(+http://www.baidu.com/search/spider_jp.html)',
     'Baiduspider+(+http://www.baidu.com/search/spider.htm)',
@@ -56,25 +54,8 @@ def MainView(request):
 
     return render_to_response(
         'Search.html')
-
-@api_view(['POST','GET'])
-def UpdateAPI(request, pk):
-    if 'sk' in request.GET and request.GET['sk'] == 'tajnykod0123':
-        serializer = StellarObjectSerializer(StellarObject.objects.get(pk=pk), data=request.data, partial=True, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(status.HTTP_401_UNAUTHORIZED)
-
-
-class BugTrackerViewAPI(generics.CreateAPIView):
-    queryset = BugTracker
-    serializer_class = BugTrackerSerializer
-
-class ContactAppletViewAPI(generics.CreateAPIView):
-    queryset = ContactApplet
-    serializer_class = ContactAppletSerializer
-
+class ImgList(ListView):
+    model = ObjectPhotos
+    queryset = ObjectPhotos.objects.all()
+    context_object_name = 'photo'
+    paginate_by = 50

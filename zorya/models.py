@@ -132,17 +132,21 @@ class ObjectPhotos(models.Model):
     name = models.CharField(max_length=128, blank=True, null=True)
     photo = ImageWithThumbsField(upload_to='images', sizes=((410, 230), (1280, 718)), blank=True, null=True)
     photo_url = models.URLField(blank=True, null=True)
+    photo_thumbnail = models.URLField(blank=True,null=True)
     ngc_object = models.ForeignKey(StellarObject, related_name='photos')
 
     def __unicode__(self):
-        return self.photo.url_410x230
+        if self.photo:
+            return self.photo.url_410x230
+        else:
+            return self.photo_thumbnail
 
     # Na potrzeby serializera
     def thumb(self):
         if self.photo:
             return self.photo.url_410x230
         else:
-            return self.photo_url
+            return self.photo_thumbnail
 
     def normal(self):
         if self.photo:

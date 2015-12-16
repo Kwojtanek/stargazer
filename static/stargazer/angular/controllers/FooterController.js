@@ -1,4 +1,6 @@
 SearchApp.controller('FooterCtrl',['$scope','BugTrackerFactory','ContactAppletFactory', function($scope,BugTrackerFactory,ContactAppletFactory){
+    $scope.bugtracker= false;
+    $scope.contactapplet = false;
     $scope.sendbug = function(){
         BugTrackerFactory.save({},
             {

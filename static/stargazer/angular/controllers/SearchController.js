@@ -215,7 +215,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
          */
         CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results,$scope.page);
         document.removeEventListener('scroll', LoadOnScroll, false);
-        window.location = hashtag.concat('object/',id);
+        window.location = '/'.concat('object/',id);
     }
 
 
@@ -234,10 +234,10 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
     //Function downloads new data on scrolling bottom
     function LoadOnScroll(){
-
+        if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
         // Checks if firs part of Data has been downloaded and next data exists
         if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
-            if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
+
 
                 if (!$scope.pending) {
                     $scope.pending = true;
@@ -266,6 +266,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             }
                             CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page);
                             document.getElementById('annotation-loader').style.display = '';
+
 
 
                         })

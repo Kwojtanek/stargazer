@@ -85,7 +85,7 @@ def mapapi(request):
 
 def mapapistatic(asc=None,dec=None,mag=None):
     """Funkcja dla statycznego widoku """
-    if not asc and  not dec:
+    if not asc or  not dec:
         return False
     astroquery = AstroCharts.objects.filter(maxDeclination__gte=dec).filter(minDeclination__lt=dec)
     result = []

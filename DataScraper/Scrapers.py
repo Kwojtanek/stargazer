@@ -10,7 +10,7 @@ from retrying import retry
 from astroquery.simbad import Simbad
 
 
-with open('/pro/stargazer/DataScraper/sk.txt','r') as f:
+with open('/pro/stargazer/zorya/appviews/supersecret.code','r') as f:
     sk = f.read()
     f.close()
 
@@ -117,13 +117,89 @@ class WikiMediaScraper(Scraper):
             return a[dict(a).keys()[0]]['extract']
         except:
             return False
+class WikiImageScraper(Scraper):
+    """
+    This scraper finds images in wikipedia article according to data provided
+    """
+    def __init__(self, name, imgcount=10):
+        Scraper.__init__(self,name)
+        self.title = name
+        self.name = ''
+        # MAX Count of images returned in list
+        self.imgcount =imgcount
 
+    URL = "https://en.wikipedia.org/w/api.php"
+    @property
+    def PARAMS(self):
+        """
+        overrides Params variable
+        """
+        return {'format': 'json',
+                'action': 'query',
+                'prop': 'images',
+                'redirects': '',
+                'titles': self.title}
 
+    def getimageslist(self):
+        """
+        :return list of images belonging to article on wikipedia
+        """
+        if self.get_data():
+            imgList = []
+            #Pattern matches every photo
+            pattern = re.compile("\.(jpg|jpeg|tiff|png)$")
 
+            #Extracts imamges list from data
+            try:
+                allData = self.get_data()['query']['pages']
+                imageListData =  allData[dict(allData).keys()[0]]['images']
+                for singleImage in imageListData:
+                    if pattern.search(singleImage['title']):
+                        imgList.append(singleImage['title'])
+                return json.dumps(imgList)
+            except:
+                return False
+        else:
+            return False
+
+class WikiSingleImageScraper(Scraper):
+    """
+    This scraper will download information about one media in wikipedia
+    """
+    def __init__(self,name,thumbWidth=300,thumbHeight=300):
+        Scraper.__init__(self,name)
+        self.title = name
+        self.name = ''
+        # Defines width and height of thumnail
+        self.width, self.height = thumbWidth, thumbHeight
+    '&'
+    URL = 'https://en.wikipedia.org/w/api.php'
+    @property
+    def PARAMS(self):
+        """
+        overrides Params variable
+        """
+        return {'format': 'json',
+                'action': 'query',
+                'prop': 'imageinfo',
+                'redirects': '',
+                'titles': self.title,
+                'iiurlheight': self.height,
+                'iilimit': '50',
+                'iiend':'2007-12-31T23:59:59Z',
+                'iiprop': 'timestamp|user|url|dimensions'}
+    def getimagesdetails(self):
+        if self.get_data():
+            try:
+                allData = self.get_data()['query']['pages']
+                singleImage = allData[dict(allData).keys()[0]]['imageinfo']
+                return singleImage[0]
+            except:
+                return False
 class SimbadScraper:
     """
     Scraper connects with simbad db and gets data.
-     Votable fields defines which data to optain.
+     Votable fields defines which data to obtain.
     """
 
     def __init__(self, name,*args):
@@ -158,10 +234,44 @@ class Sender(Scraper):
         if count < 5:
             try:
                 print 'Trying send data to%s' % self.object_endpoint()
-                f = urllib2.urlopen(req,timeout=2)
+                f = urllib2.urlopen(req,timeout=5)
                 return  json.load(f)
             except:
                 count+=1
                 return self.send_data_noresp(count)
+        else:
+            return False
+
+class PhotoSender(Scraper):
+    def __init__(self, name, data, pk):
+        Scraper.__init__(self,name)
+        self.name = name
+        self.data = data
+        #Pk is unique identifier of object that will be updated
+        self.pk = pk
+
+    PARAMS = {'format':'json'}
+    URL = 'http://www.zorya.co/endpoint/createphotoAPI'
+
+    def conv_data(self):
+        converted_data = {}
+        converted_data['sk'] = sk
+        converted_data['name'] = self.name
+        converted_data['photo_url'] = self.data['url']
+        converted_data['photo_thumbnail'] = self.data['thumburl']
+        converted_data['ngc_object'] = self.pk
+        return json.dumps(converted_data)
+
+    def send_data(self,count=1):
+        data = self.conv_data()
+        req = urllib2.Request(self.object_endpoint(), data, headers={'Content-Type':'application/json'})
+        if count < 5:
+            try:
+                print 'Trying send data to%s' % self.object_endpoint()
+                f = urllib2.urlopen(req,timeout=5)
+                return  json.load(f)
+            except:
+                count+=1
+                return self.send_data(count)
         else:
             return False

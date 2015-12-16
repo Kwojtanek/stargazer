@@ -88,10 +88,6 @@
         </div>
     </section>
 </form>
-
-
-
-
 <section id="results">
     <h3>Results: {{ StellarObject.count }}</h3>
     <table style="border: 0">
@@ -141,7 +137,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="obj in results track by $index" ng-click="trUrl(obj.id, $index)" href="/{{ hashtag }}{{ obj.id }}" data-href="/{{ hashtag }}{{ obj.id }}" style="min-height: 105px">
+        <tr ng-repeat="obj in results track by $index" ng-click="trUrl(obj.id, $index)" href="/{{ obj.id }}" data-href="/{{ obj.id }}" style="min-height: 105px">
             <td>{{ obj.unique_name}}</td>
             <td><span ng-repeat="cat in obj.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></td>
             <td>{{ obj.type }}</td>

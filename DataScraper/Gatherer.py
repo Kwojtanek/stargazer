@@ -6,6 +6,8 @@ from Loger import LogData
 from Data_procesors import pk_generator,pk_reader,pk_writer
 from Data_procesors import get_description, get_ra, get_otype, name_func
 
+
+#To to jest obrzydliwe
 def Gatherer(pk):
     print 'Proccessing %s' % pk
     name = name_func(pk)

@@ -1,7 +1,7 @@
 var format = {format: 'json'}
-SearchApp.factory('BugTrackerFactory', function($resource) {
+SearchApp.factory('BugTrackerFactory',['$resource', function($resource) {
     return $resource('/endpoint/bugtrackerAPI', format);
-})
-SearchApp.factory('ContactAppletFactory', function($resource) {
+}])
+SearchApp.factory('ContactAppletFactory',['$resource', function($resource) {
     return $resource('/endpoint/contactappletAPI', format);
-})
+}])

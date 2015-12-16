@@ -15,6 +15,9 @@ class NGCNestedSerializer(serializers.ModelSerializer):
         model = Objects_list
         fields = ('object_catalogue', 'object_number',)
 
+class PhotoPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObjectPhotos
 
 class PhotoSerializer(serializers.ModelSerializer):
     thumb = serializers.ReadOnlyField(

@@ -67,7 +67,7 @@ SearchApp.controller('SingleViewCtrl',
                 }
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
             if ($routeParams.id > maxid || $routeParams.id <= 0 || isNaN($routeParams.id) )
-            {window.location = hashtag.concat('page404');}
+            {window.location = '/'.concat('page404');}
             else {
 
                 $scope.CommonData = CommonData.get();
@@ -134,14 +134,10 @@ SearchApp.controller('SingleViewCtrl',
                         $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts;
                         $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
                         window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
+                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
 
                         //Aladin does not work when id  href is changed???
-                        //window.location.href = hashtag.concat('object/',$scope.MainObject.id);
-
-                        aladin();
-                        getCharts();
-
-
+                        window.location = '/'.concat('object/',$scope.MainObject.id);
                     }
                 }
 
@@ -155,10 +151,8 @@ SearchApp.controller('SingleViewCtrl',
                         $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts
                         $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
                         window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-
-                        aladin();
-                        getCharts();
-
+                        window.location = '/'.concat('object/',$scope.MainObject.id);
+                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
                     }
                 }
                 $scope.getConstelationName = function () {

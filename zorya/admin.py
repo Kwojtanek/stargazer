@@ -49,7 +49,9 @@ class ObjectsInline(admin.TabularInline):
     verbose_name = ''
     raw_id_fields = ("single_object",)
     extra = 1
-
+class AdminPhoto(admin.ModelAdmin):
+    list_display = ['normal']
+    search_fields = ['name', 'photo', 'photo_thumbnail', 'photo_url']
 
 
 #class AdminCatalogue(admin.ModelAdmin):
@@ -65,6 +67,7 @@ class ObjectsInline(admin.TabularInline):
 #Catalogues_filtered = Catalogues.objects.exclude(pk=1)
 
 #And then include it in a admin declaration
+admin.site.register(ObjectPhotos, AdminPhoto)
 admin.site.register(BugTracker)
 admin.site.register(ContactApplet)
 admin.site.register(StellarObject, AdminNGC)

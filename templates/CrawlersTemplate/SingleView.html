@@ -29,8 +29,8 @@
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
-<main class="main" id="names">
-    <section class="half-cell" style="align-self: flex-start;">
+<main class="main" id="names" style="flex-basis: 100%;">
+    <section class="half-cell" style="align-self: flex-start">
         <h1><span>{% for cat in MainObjects.catalogues %}
             <span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}
             </span><br>{% endfor %}</span></h1>
@@ -42,7 +42,7 @@
 </main>
 <main class="main" id="details">
     <h1>Details:</h1>
-    <section style="flex-basis: 100%">
+    <section style="flex-basis: 100%; padding-left: 10%; padding-right: 10%">
         <h3>Catalogues:</h3>
         <table>
             {% for cat in MainObject.catalogues.all %}
@@ -78,6 +78,7 @@
     </section></main>
 <main>
 </main>
+{% if MainObject.photos.all.0.photo.orginal %}
 <main class="main" id="main-photos">
     <h2 style="flex-basis: 100%">Photos:</h2>
     {% for photo in MainObject.photos.all %}
@@ -86,8 +87,9 @@
             <img src="{{ photo.orginal }}" height="100%" width="100%">
         </section>
     {% endfor %}
-
 </main>
+{% endif %}
+{% if charts %}
 <main id="astrocharts" class="main">
     <h2 style="flex-basis: 100%">Sky Charts:</h2>
     <p>Click on one bellow to download map</p>
@@ -112,7 +114,7 @@
         </section>
     {% endif %}
 
-
+{% endif %}
 </main>
 {% if MainObject.otype %}
     <main id="sources" class="main" style="width: 100%"><section class="half-cell">
@@ -148,5 +150,13 @@
     </section>
     <p style="text-align: center">Copyright 2016 ©</p>
 </footer>
+{% if MainObject.id >= 1 %}
+<a href="/object/{{ MainObject.id|add:-1 }}">
+    <div class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">Previous</div></a>
+{% endif %}
+{% if MainObject.id < 13401 %}
+    <a href="/object/{{ MainObject.id|add:1 }}">
+<div class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">Next</div></a>
+{% endif %}
 </body>
 </html>

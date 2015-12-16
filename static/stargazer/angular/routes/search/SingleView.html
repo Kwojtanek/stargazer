@@ -3,14 +3,23 @@
 <h1><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h1>
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
     <h4><span>{{ ngc.notes }}{{ MainObject.unique_name }}</span></h4>
+<!-- banner3 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-2422075747758177"
+     data-ad-slot="7241854389"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
         </section>
     <section class="half-cell" ng-if="MainObject.overview" ><h1>Overview:</h1>
     <span id="overwiev">{{ MainObject.overview }}</span></section>
 </main>
 <main class="main" id="details" ng-if="MainObject"><h1 style="flex-basis: 100%">Details:</h1>
 <section style="flex-basis: 100%">
+            <h3>Catalogues:</h3>
+
     <table>
-        <h3>Catalogues:</h3>
         <tr ng-repeat="cat in MainObject.catalogues">
             <td style="display: table-cell">{{ cat.object_catalogue }}</td>
             <td style="display: table-cell">{{ cat.object_number }}</td>

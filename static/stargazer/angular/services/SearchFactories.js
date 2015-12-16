@@ -2,31 +2,32 @@
  * Created by root on 02.07.15.
  */
 var format = {format: 'json'}
-SearchApp.factory('SearchFactory', function($resource){
+SearchApp.factory('SearchFactory',['$resource', function($resource){
     return $resource('/endpoint/searchAPI',format);
 
-})
-SearchApp.factory('SingleViewFactory', function($resource){
+}])
+SearchApp.factory('SingleViewFactory',['$resource', function($resource){
     return $resource('/endpoint/singleAPI/1', format);
 
-})
-SearchApp.factory('ChartsFactory'), function($resource,asc,dec,mag){
+}])
+SearchApp.factory('ChartsFactory',['$resource', function($resource,asc,dec,mag){
     return $resource('/endpoint/mapAPI',
         {
             'asc': asc,
             'dec': dec,
             'mag': mag
-        })}
+        })
+    }])
 SearchApp.factory('CommonData', function() {
     savedData = {}
     function set(data, index, filters, results,page) {
         if(typeof(Storage) !== "undefined") {
-            localStorage.setItem('data',JSON.stringify(data));
-            localStorage.setItem('results', JSON.stringify(results));
-            localStorage.setItem('page',(page));
+            if (data !== 'same'){localStorage.setItem('data',JSON.stringify(data))};
+            if (results !== 'same'){localStorage.setItem('results', JSON.stringify(results))};
+            if (page !== 'same'){localStorage.setItem('page',(page))};
             if (isNaN(parseInt(index))){localStorage.setItem('index', JSON.stringify(0));}
             else { localStorage.setItem('index',(index));}
-            localStorage.setItem('filters',JSON.stringify(filters))
+            if (filters !== 'same'){localStorage.setItem('filters',JSON.stringify(filters))}
             // Code for localStorage/sessionStorage.
         }       else {
             // Sorry! No Web Storage support..

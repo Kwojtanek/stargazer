@@ -2,6 +2,12 @@
 <html>
 
 <head lang="en">
+    <script>
+    $(document).ready(function() {
+        window.document.body.style.display = 'None';
+        $('body').fadeIn(1000);
+    })
+</script>
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,11 +50,8 @@
     <script src="/static/angular-route/angular-route.min.js"></script>
 
     <!-- Angular linki -->
-    <script src="/static/stargazer/search.js" ></script>
-    <script src="/static/stargazer/simbad.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/stargazer/onefileangular.js" ></script>
-
-
+    <script src="/static/stargazer/onefileangular.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body ng-app="SearchApp">
 
@@ -63,9 +66,10 @@
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
+<section class="ng-view-section" style="min-height: 1300px; width: 100%">
 <ng-view class="mainview-animation"></ng-view>
-
-
+    </section>
+<!-- banner2 -->
 <footer ng-controller="FooterCtrl" style="    justify-content: center;
     flex-flow: row wrap; display: flex">
     <section class="half-cell" style="align-self: baseline;">
@@ -78,7 +82,7 @@
             <p><a href="http://www.zorya.co/static/sitemap.xml">Sitemap</a></p>
             </section>
     <p style="text-align: center">Copyright 2016 ©</p>
-<div id="form-main" ng-show="bugtracker">
+<div id="form-main" ng-show="bugtracker" style="display: none">
     <div id="form-div">
         <form class="form" id="form1">
             <p id="form-title" ng-click="bugtracker = !bugtracker">Report Bug:</p>
@@ -98,7 +102,7 @@
         </form>
     </div>
 </div>
-<div id="form-main" ng-show="contactapplet">
+<div id="form-main" ng-show="contactapplet"  style="display: none">
     <div id="form-div">
         <form class="form" id="form1">
             <p id="form-title" ng-click="contactapplet = !contactapplet">Contact us:</p>
@@ -131,13 +135,9 @@
 
 </div>
 <script type="text/javascript" >
-    $(document).ready(function() {
-        window.document.body.style.display = 'None';
-        $('body').fadeIn(1000);
         document.getElementsByClassName('nav-i');
         search_butt = document.getElementsByClassName('nav-i')[0];
         search_butt.id = 'nav-active';
-    });
 </script>
 </body>
 {% endverbatim %}
