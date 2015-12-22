@@ -345,7 +345,6 @@ input {
 #results {
     min-height: 400px;
     margin-bottom: 85px;
-    width: 100vw;
 }
 #results > * {
     width: 100%;

@@ -1,16 +1,20 @@
-
+h2 {
+    width: 100%;
+}
+h3 {
+    width: 100%;
+}
 .main {
     flex-basis: 100%;
     display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
     font-size: x-large;
     flex-flow: row wrap;
     padding: 1px 10% 5%  10%;
     color: #35393e;
-        background-color: #f1f1f1;
+    background-color: #f1f1f1;
     border-bottom: 1px solid #666;
+    align-self: center;
+    justify-content: center;
 
 }
 .half-cell {
@@ -18,8 +22,8 @@
 }
 #details {
     -webkit-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
--moz-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
 }
 #astromap {
     height: 100vh;
@@ -28,7 +32,7 @@ box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
     justify-content: center;
 
     color: #35393e;
-    background-color: #22313F;
+    background-color: #22313f;
     border-bottom: 1px solid #666;
 }
 #overview {
@@ -37,7 +41,9 @@ box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
     letter-spacing: 1px;
 }
 .single-photo {
-    min-width: 80vw;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
 }
 #main-photos {
     padding: 1px 10% 5% 10%
@@ -134,7 +140,7 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     background-color: #0279D7;
     height: 240px;
     margin: 0;
-    width: 128px;
+    width: 144px;
     transition: 400ms;
 }
 #search-charts > div:first-child:hover {
@@ -176,20 +182,136 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
         flex-basis: 100%;
     }
     #details-columns {
-    column-count: 2;
-    -webkit-column-count: 2;
-    -moz-column-count: 2;
-    margin: 20px;
-    background-color: #EBEBEB;
-    padding: 0;
+        column-count: 2;
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        margin: 20px;
+        background-color: #EBEBEB;
+        padding: 0;
 
-}
-    #details {
-        padding-left: 0;
-        padding-right: 0;
     }
     #main-photos {
         padding: 1px 9% 5%;
     }
 
+}
+.more-main {
+    background-color: rgba(215, 215, 215, 1);
+    margin-bottom: 12px;
+}
+.more-main > h4 {
+    margin: 12px;
+    padding: 2px;
+
+
+}
+.more-single {
+    flex-wrap: wrap;
+    background-color: #007AD7;
+    margin: 12px;
+    display: inline-flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 300px;
+    height: 300px;
+    transition: 0.4s;
+    color: #ebebeb;
+    font-weight: 700;
+}
+.more-single:hover {
+    box-shadow: 0 0 0 12px rgba(2, 121, 215, 0.75);
+}
+
+.more-single-out {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    display: inherit;
+    align-items: center;
+    justify-content: center;
+}
+.more-main-in {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    margin: 12px;
+    height: 100px;
+    background-color: rgba(255, 191, 0, 1);
+    transition: 0.4s;
+    color: #ebebeb;
+    font-weight: 700;
+
+}
+.more-main-in:hover {
+    box-shadow: 0 0 0 12px rgba(255, 191, 0, 0.75);
+
+}
+
+.more-single-out > img {
+    z-index: 1;
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 0;
+    left: 0;
+
+}
+.more-single-out > p{
+    z-index: 2;
+}
+@media only screen  and (max-width: 648px) {
+    .more-main-in {
+        width: 300px;
+    }
+    .more-main {
+        width: 324px;
+    }
+    #details-columns {
+        column-count: 1;
+        -webkit-column-count: 1;
+        -moz-column-count: 1;
+    }
+    #search-charts{
+        justify-content: center;
+        display: inline-flex;
+        flex-wrap: wrap;
+    }
+}
+
+@media only screen and (min-width: 649px) and (max-width: 972px) {
+    .more-main {
+        width: 648px;}
+
+    .more-main-in {
+        width: 624px;
+        margin: 12px;
+    }
+    #search-charts{
+        justify-content: center;
+        display: inline-flex;
+        flex-wrap: wrap;
+    }
+}
+@media only screen  and (min-width: 972px) {
+    .more-main {
+        width: 972px;}
+
+    .more-main-in {
+        width: 948px;
+        margin: 12px;
+    }
+}
+
+@media only screen  and (min-width: 1296px) {
+    .more-main {
+        width: 1296px;
+
+    }
+    .more-main-in {
+        width: 1272px;
+    }
 }

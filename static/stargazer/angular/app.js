@@ -2,17 +2,12 @@ var app = angular.module('appList', ['ngResource','ngRoute'])
 
 app.config(function($routeProvider){
     $routeProvider
-        .when('/',
-        {
-            controller: 'ListController',
-            templateUrl: '/static/stargazer/angular/routes/browse/StellarList.html',
-        })
         .when('/constellation', {
-            controller: 'constellationsController',
+            controller: 'constellationsCtrl',
             templateUrl: '/static/stargazer/angular/routes/browse/Constellations.html'
         })
         .when('/constellation/:abbreviation', {
-            controller: 'constallationsDetailController',
+            controller: 'constallationsDetailCtrl',
             templateUrl: '/static/stargazer/angular/routes/browse/ConstellationsDetail.html'
         })
         .when('/catalogue', {
@@ -46,6 +41,14 @@ SearchApp.config(function($routeProvider,$locationProvider){
         {
             controller : 'SingleViewCtrl',
             templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
+        })
+        .when('/browse/type', {
+            controller: 'TypesCtrl',
+            templateUrl: '/static/stargazer/angular/routes/browse/TypesView.html'
+        })
+        .when('/browse/type/:typesc', {
+            controller: 'SingleTypeCtrl',
+            templateUrl: '/static/stargazer/angular/routes/browse/SingleTypeView.html'
         })
         .when('/page404',
         {

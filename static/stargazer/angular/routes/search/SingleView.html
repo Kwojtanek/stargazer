@@ -1,6 +1,6 @@
 <main class="main" id="names">
     <section class="half-cell" style="align-self: flex-start;">
-<h1><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h1>
+<h3><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h3>
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
     <h4><span>{{ ngc.notes }}{{ MainObject.unique_name }}</span></h4>
 <!-- banner3 -->
@@ -12,12 +12,12 @@
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
         </section>
-    <section class="half-cell" ng-if="MainObject.overview" ><h1>Overview:</h1>
+    <section class="half-cell" ng-if="MainObject.overview" ><h3>Overview:</h3>
     <span id="overwiev">{{ MainObject.overview }}</span></section>
 </main>
-<main class="main" id="details" ng-if="MainObject"><h1 style="flex-basis: 100%">Details:</h1>
+<main class="main" id="details" ng-if="MainObject"><h4 style="flex-basis: 100%">Details:</h4>
 <section style="flex-basis: 100%">
-            <h3>Catalogues:</h3>
+            <h4>Catalogues:</h4>
 
     <table>
         <tr ng-repeat="cat in MainObject.catalogues">
@@ -60,22 +60,26 @@
 <main id="astromap">
     <section id="aladin-lite-div" style="width:80%;height:100%; border: none"></section>
 </main>
-<main ng-if="MainObject.photos[0]"class="main" id="main-photos" ng-if="MainObject">
-    <h2 style="flex-basis: 100%">Photos:</h2>
-    <section class="single-photo" ng-repeat="photo in MainObject.photos">
-        <img ng-src="{{ photo.orginal }}" height="100%" width="100%">
+<main ng-if="MainObject.photos[0]"class="main" id="main-photos">
+    <h3 style="flex-basis: 100%">Photos:</h3>
+    <section class="single-photo" >
+       <a href="{{ photo.orginal }}" target="_blank" ng-repeat="photo in MainObject.photos" ><img class="more-single" ng-src="{{ photo.thumb }}" height="100%" width="100%"></a>
     </section>
 </main>
 
 
 
 <main id="astrocharts" class="main" ng-if="MainObject" >
-    <h2 style="flex-basis: 100%">Sky Charts:</h2>
+    <h3 style="flex-basis: 100%">Sky Charts:</h3>
+    <p>Click on one bellow to download sky map</p>
     <!--mapy -->
     <section  id="search-charts" ng-if="MainObject.magnitudo <= 12.6">
         <div>
         <img src="/static/stargazer/css/img/search.svg">
-        <p>Found charts</p>
+            <p ng-if="!charts">Loading...</p>
+
+        <p ng-if="charts">Found charts</p>
+
     </div><a ng-repeat="c in  charts.results" href="{{ c.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ c.max_mag }}</div></a></section>
 
 
@@ -88,8 +92,44 @@
 
 
 </main>
+<section class="main" id="more-section">
+    <h3>More:</h3>
+    <p ng-if="!similar">Loading....</p>
+    <main class="more-main" ng-if="similar.type"><h4>More of this type:</h4>
+    <a href="/object/{{ type.id }}" class="more-single" ng-repeat="type in similar.type"><div class="more-single-out">
+        <img ng-if="type.photos[0].thumb" src=" {{ type.photos[0].thumb }}">
+        <p>{{ type.catalogues[0].object_catalogue }} {{ type.catalogues[0].object_number }}</p>
+
+    </div>
+        </a>
+        <a href="/browse/type/{{ MainObject.type_shortcut }}">
+            <div class="more-main-in" >
+                <img src="/static/stargazer/css/img/chain.svg")>
+                See more in {{ MainObject.type }}</div></a></main>
+
+    <main class="more-main" ng-if="similar.constellation"><h4>More in this constellation</h4>
+    <a href="/object/{{ constellation.id }}" class="more-single" ng-repeat="constellation in similar.constellation"><div class="more-single-out">
+        <img ng-if="constellation.photos[0].thumb" src="{{ constellation.photos[0].thumb }}">
+        <p>{{ constellation.catalogues[0].object_catalogue }}{{ constellation.catalogues[0].object_number }}</p>
+
+    </div></a>
+    <div class="more-main-in">
+        <img src="/static/stargazer/css/img/chain.svg")>
+        See more in {{ getConstelationName()}}  </div></main>
+
+    <main class="more-main" ng-if="similar.catalogue"><h4>More in this catalogue</h4>
+    <a href="/object/{{ catalogue.id }}" ng-if="catalogue.photos[0].thumb" class="more-single" ng-repeat="catalogue in similar.catalogue"><div class="more-single-out">
+        <img src="{{ catalogue.photos[0].thumb }}">
+        <p>{{ catalogue.catalogues[0].object_catalogue }} {{ catalogue.catalogues[0].object_number }}</p>
+
+    </div></a>
+        <div class="more-main-in" >
+            <img src="/static/stargazer/css/img/chain.svg")>
+            See more in {{ MainObject.catalogues[0].object_catalogue }}</div></main>
+
+</section>
 <main id="sources" class="main"><section class="half-cell">
-    <h2>Sources:</h2>
+    <h3>Sources:</h3>
     <p ng-if="MainObject.overview"><a href="https://en.wikipedia.org/wiki/{{ MainObject.catalogues[0].object_catalogue }} {{ MainObject.catalogues[0].object_number }}">Wikipedia</a></p>
     <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
 </section></main>

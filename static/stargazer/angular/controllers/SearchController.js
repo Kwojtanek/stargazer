@@ -71,6 +71,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.visible = false;
         $scope.filters.lat ='';
 
+        document.querySelector('#search-field>input').value = '';
         $( "#min_mag" ).val(min_mag);
         $( "#max_mag" ).val(max_mag);
         $( "#slider" ).slider( "values", [ min_mag, max_mag ] );
@@ -235,8 +236,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     //Function downloads new data on scrolling bottom
     function LoadOnScroll(){
         if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
-        // Checks if firs part of Data has been downloaded and next data exists
-        if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
+            // Checks if firs part of Data has been downloaded and next data exists
+            if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
 
 
                 if (!$scope.pending) {
@@ -266,10 +267,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             }
                             CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page);
                             document.getElementById('annotation-loader').style.display = '';
-
-
-
-                        })
+                        }
+                    )
                 }
 
             }

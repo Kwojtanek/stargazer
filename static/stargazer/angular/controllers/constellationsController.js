@@ -1,7 +1,3 @@
-/**
- * Created by root on 10.05.15.
-  */
-
 app.controller('constellationsController',['$scope','Const', function($scope, Const){
     var constellation = Const.query()
     $scope.constellation = constellation

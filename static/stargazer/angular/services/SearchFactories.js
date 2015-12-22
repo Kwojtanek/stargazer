@@ -15,9 +15,18 @@ SearchApp.factory('ChartsFactory',['$resource', function($resource,asc,dec,mag){
         {
             'asc': asc,
             'dec': dec,
-            'mag': mag
+            'mag': mag,
+            format: 'json'
         })
     }])
+SearchApp.factory('SimilarFactory', ['$resource', function($resource,constellation,type,catalogue){
+    return $resource('/endpoint/similarAPI',
+        {
+            type: type,
+            catalogue: catalogue,
+            constellation: constellation
+        })
+}])
 SearchApp.factory('CommonData', function() {
     savedData = {}
     function set(data, index, filters, results,page) {

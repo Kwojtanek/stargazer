@@ -21,7 +21,6 @@ SearchApp.controller('SingleViewCtrl',
                         ChartMapFactory.get().$promise.then(function (ob) {
                             $scope.charts = ob;
                             $scope.CommonData.results[$scope.CommonData.index].charts = $scope.charts;
-                            document.getElementById('annotation-loader').style.display = '';
                         })
                     }
                     else {
@@ -33,7 +32,6 @@ SearchApp.controller('SingleViewCtrl',
                         document.getElementById('annotation-loader').style.display = 'inherit'
                         ChartMapFactory.get().$promise.then(function (ob) {
                             $scope.charts = ob;
-                            document.getElementById('annotation-loader').style.display = ''
                         })
                     }
                 }
@@ -62,9 +60,39 @@ SearchApp.controller('SingleViewCtrl',
                         });
                         return false;
                     }
-
-
                 }
+            //Function downloads similar objects to main and append
+            getSimilar = function(){
+                SimilarFactory = $resource('/endpoint/similarAPI',{
+                    type: $scope.MainObject.type_shortcut,
+                    catalogue: $scope.MainObject.catalogues.slice(-1)[0].object_catalogue,
+                    constellation: $scope.MainObject.constelation,
+                    pk : $scope.MainObject.id
+                });
+                if ($scope.CommonData.index !== null) {
+                    if ($scope.CommonData.results[$scope.CommonData.index].hasOwnProperty('similar') === false) {
+                        document.getElementById('annotation-loader').style.display = 'inherit'
+                        SimilarFactory.get().$promise.then(function (ob) {
+                            $scope.similar = ob;
+                            $scope.CommonData.results[$scope.CommonData.index].similar = $scope.similar;
+                            document.getElementById('annotation-loader').style.display = '';
+                        })
+                    }
+                    else {
+                        $scope.similar = $scope.CommonData.results[$scope.CommonData.index].similar;
+                    }
+                }
+                else {
+                    if (!$scope.similar) {
+                        document.getElementById('annotation-loader').style.display = 'inherit'
+                        SimilarFactory.get().$promise.then(function (ob) {
+                            $scope.similar = ob; console.log('bla');
+                            document.getElementById('annotation-loader').style.display = ''
+                        })
+                    }
+                }
+
+            }
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
             if ($routeParams.id > maxid || $routeParams.id <= 0 || isNaN($routeParams.id) )
             {window.location = '/'.concat('page404');}
@@ -93,8 +121,9 @@ SearchApp.controller('SingleViewCtrl',
                     $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
                     title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
                     window.document.title = title;
-                    aladin()
-                    getCharts()
+                    aladin();
+                    getCharts();
+                    getSimilar();
                 }
                 else {
                     $scope.nextObject = false
@@ -109,7 +138,7 @@ SearchApp.controller('SingleViewCtrl',
                         window.document.title = title;
                         aladin();
                         getCharts();
-
+                        getSimilar();
 
                     })
                 }
