@@ -70,6 +70,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.SearchCatalogues.length = 0;
         $scope.filters.visible = false;
         $scope.filters.lat ='';
+        $scope.filters.Name ='';
 
         document.querySelector('#search-field>input').value = '';
         $( "#min_mag" ).val(min_mag);

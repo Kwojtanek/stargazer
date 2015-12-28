@@ -109,10 +109,8 @@ SearchApp.controller('SingleViewCtrl',
                     }
                 }
 
-
                 // If you were redirected from search page you will get infos about the objects passed throu CommonData service
                 // Otherwise data will be downloaded from server according to id param in url.
-                console.log($scope.CommonData.results[$scope.CommonData.index].id, parseInt($routeParams.id))
                 if ($scope.CommonData.index !== null && $scope.CommonData.results[$scope.CommonData.index].id == parseInt($routeParams.id)) {
                     $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index]
                     //Name of next object

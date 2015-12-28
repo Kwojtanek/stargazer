@@ -1,8 +1,10 @@
-<main class="main" id="names">
-    <section class="half-cell" style="align-self: flex-start;">
+<main id="names">
+    <section id="various-titles">
+        <div>
+            <h3>Names:</h3>
 <h3><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h3>
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
-    <h4><span>{{ ngc.notes }}{{ MainObject.unique_name }}</span></h4>
+    <h4><span>{{ ngc.notes }}</span></h4>
 <!-- banner3 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:336px;height:280px"
@@ -11,9 +13,10 @@
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-        </section>
-    <section class="half-cell" ng-if="MainObject.overview" ><h3>Overview:</h3>
-    <span id="overwiev">{{ MainObject.overview }}</span></section>
+</div>
+</section>
+    <section id="overwiev" ng-if="MainObject.overview"><h3>Overview:</h3>
+    <span>{{ MainObject.overview }}</span></section>
 </main>
 <main class="main" id="details" ng-if="MainObject"><h4 style="flex-basis: 100%">Details:</h4>
 <section style="flex-basis: 100%">
@@ -28,7 +31,6 @@
 
     </table>
                 <hr>
-
 </section>
 <section id="details-columns">
     <p class="single-detail" ng-if="MainObject.constelation"><b>Constellation:</b>{{ getConstelationName()}}</p>
@@ -71,8 +73,9 @@
 
 <main id="astrocharts" class="main" ng-if="MainObject" >
     <h3 style="flex-basis: 100%">Sky Charts:</h3>
-    <p>Click on one bellow to download sky map</p>
     <!--mapy -->
+    <p ng-if="MainObject.magnitudo <= 12.6">Click on one bellow to download sky map</p>
+
     <section  id="search-charts" ng-if="MainObject.magnitudo <= 12.6">
         <div>
         <img src="/static/stargazer/css/img/search.svg">
@@ -102,10 +105,10 @@
 
     </div>
         </a>
-        <a href="/browse/type/{{ MainObject.type_shortcut }}">
+        <!--a href="/browse/type/{{ MainObject.type_shortcut }}"-->
             <div class="more-main-in" >
                 <img src="/static/stargazer/css/img/chain.svg")>
-                See more in {{ MainObject.type }}</div></a></main>
+                See more in {{ MainObject.type }}</div><!--/a--></main>
 
     <main class="more-main" ng-if="similar.constellation"><h4>More in this constellation</h4>
     <a href="/object/{{ constellation.id }}" class="more-single" ng-repeat="constellation in similar.constellation"><div class="more-single-out">

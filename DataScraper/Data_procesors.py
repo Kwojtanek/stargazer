@@ -91,7 +91,7 @@ def get_ra(ra):
 
 def name_func(pk,count=1):
     #Retries connection if has to
-    #TODO Should be explicit
+    #TODO Should be more explicit
     print 'Trying'
     name = Reciver(pk).get_name()
     if count < 5:

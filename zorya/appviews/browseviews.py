@@ -1,3 +1,5 @@
+# coding=utf-8
+from django.db.models import Count
 from rest_framework import generics
 from zorya.models import StellarObject, Constellations, Catalogues, Objects_list
 from zorya.serializer import StellarObjectSerializer, ConstellationsSerializer, CatalogueSerializer, \
@@ -5,7 +7,7 @@ from zorya.serializer import StellarObjectSerializer, ConstellationsSerializer, 
 from zorya.views import StandardResultsSetPagination
 
 __author__ = 'root'
-
+#TODO Endpointy i  Widoki dla konstelacji, typów i katalogów
 
 class SingleView(generics.RetrieveAPIView):
     serializer_class = StellarObjectSerializer
@@ -13,7 +15,8 @@ class SingleView(generics.RetrieveAPIView):
 
 
 class StellarViewAPI(generics.ListAPIView):
-    queryset = StellarObject.objects.all()
+    q = StellarObject.objects.all()
+    queryset = q.order_by('-photos')
     pagination_class = StandardResultsSetPagination
     serializer_class = StellarObjectSerializer
 
@@ -59,4 +62,14 @@ class CataloguesDetailViewAPI(generics.ListAPIView):
     def get_queryset(self):
         catalogue_name = self.kwargs['name']
         queryset = Objects_list.objects.filter(object_catalogue__name=catalogue_name)
+        return queryset
+#Typy
+class SingleTypeViewAPI(generics.RetrieveAPIView):
+    pass
+#TODO implement
+class TypeViewAPI(generics.ListAPIView):
+    serializer_class = StellarObjectSerializer
+    def get_queryset(self):
+        typesc = self.kwargs['typesc']
+        queryset = StellarObject.objects.annotate(num_p=Count('photos')).filter(type_shortcut=typesc).order_by('-num_p')
         return queryset

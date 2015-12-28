@@ -106,3 +106,7 @@ class BugTrackerSerializer(serializers.ModelSerializer):
 class ContactAppletSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactApplet
+
+class StellarObjectSerializer2(serializers.ModelSerializer):
+    class Meta:
+        model = StellarObject

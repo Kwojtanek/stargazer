@@ -79,18 +79,18 @@
 <main>
 </main>
 {% if MainObject.photos.all.0.photo.orginal %}
-<main class="main" id="main-photos">
-    <h2 style="flex-basis: 100%">Photos:</h2>
-    {% for photo in MainObject.photos.all %}
+    <main class="main" id="main-photos">
+        <h2 style="flex-basis: 100%">Photos:</h2>
+        {% for photo in MainObject.photos.all %}
 
-        <section class="single-photo">
-            <img src="{{ photo.orginal }}" height="100%" width="100%">
-        </section>
-    {% endfor %}
-</main>
+            <section class="single-photo">
+                <img src="{{ photo.orginal }}" height="100%" width="100%">
+            </section>
+        {% endfor %}
+    </main>
 {% endif %}
 {% if charts %}
-<main id="astrocharts" class="main">
+    <main id="astrocharts" class="main">
     <h2 style="flex-basis: 100%">Sky Charts:</h2>
     <p>Click on one bellow to download map</p>
     <!--mapy -->
@@ -104,7 +104,7 @@
                 <a href="{{ chart.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ chart.mag }}</div></a>
             {% endfor %}
         </section>
-{% endif %}
+    {% endif %}
     {% if MainObject.magnitudo > 12.6%}
         <!-- Brak map -->
         <section><h2>
@@ -116,6 +116,50 @@
 
 {% endif %}
 </main>
+<section class="main" id="more-section">
+    <h3>More:</h3>
+
+    <main class="more-main">
+        <h4>More of this type:</h4>
+        {% for type in similar.type %}
+            <a href="/object/{{ type.id }}" class="more-single">
+                <div class="more-single-out">
+                    <img src=" {{ type.photos.all.0.thumb }}">
+                    <p>{{ type.catalogues.all.0.object_catalogue }} {{ type.catalogues.all.0.object_number }}</p>
+                </div>
+            </a>
+        {% endfor %}
+        <div class="more-main-in" >
+            <img src="/static/stargazer/css/img/chain.svg")>
+            See more in constellation:</div>
+    </main>
+
+    {% for constellation in similar.constellation %}
+        <main class="more-main">
+        <h4>More in this constellation</h4>
+        <a href="/object/{{ constellation.id }}" class="more-single">
+            <div class="more-single-out">
+                <img src="{{ constellation.photos.all.0.thumb }}">
+                <p>{{ constellation.catalogues.all.0.object_catalogue }}{{ constellation.catalogues.all.0.object_number }}</p>
+
+            </div>
+        </a>
+    {% endfor %}
+    <div class="more-main-in">
+        <img src="/static/stargazer/css/img/chain.svg")>
+        See more in {{ MainObject.constelation}}  </div></main>
+
+    <main class="more-main"><h4>More in this catalogue</h4>
+        <a href="/object/{{ catalogue.id }}" ng-if="catalogue.photos[0].thumb" class="more-single" ng-repeat="catalogue in MainObject.similar.catalogue"><div class="more-single-out">
+            <img src="{{ catalogue.photos.0.thumb }}">
+            <p>{{ catalogue.catalogues.all.0.object_catalogue }} {{ catalogue.catalogues.all.0.object_number }}</p>
+
+        </div></a>
+        <div class="more-main-in" >
+            <img src="/static/stargazer/css/img/chain.svg")>
+            See more in {{ MainObject.catalogues.all.0.object_catalogue }}</div></main>
+
+</section>
 {% if MainObject.otype %}
     <main id="sources" class="main" style="width: 100%"><section class="half-cell">
         <h2>Sources:</h2>
@@ -151,12 +195,12 @@
     <p style="text-align: center">Copyright 2016 ©</p>
 </footer>
 {% if MainObject.id >= 1 %}
-<a href="/object/{{ MainObject.id|add:-1 }}">
-    <div class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">Previous</div></a>
+    <a href="/object/{{ MainObject.id|add:-1 }}">
+        <div class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">Previous</div></a>
 {% endif %}
 {% if MainObject.id < 13401 %}
     <a href="/object/{{ MainObject.id|add:1 }}">
-<div class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">Next</div></a>
+        <div class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">Next</div></a>
 {% endif %}
 </body>
 </html>

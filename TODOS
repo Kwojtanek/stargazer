@@ -1,37 +1,58 @@
 Kluczowe:
-Dopisać słownik pojęć X
 Indeksowanie wyszukiwania X
+Dokumentacja API X
+
+Możliwość ręcznego przeszukiwania bazy.Explore. X
+|-Wszystkie endpointy X
+|-mapowanie url X
+|-Resource Angular X
+|-Results jako wspólna dyrektywa X
+|-Typy X
+|-Katalogi X
+|-Konstelacje X
 
 Cachowanie statycznych Stron X
-Podpiąć google adwords X
-
-Skraper wiki pobierający zdjęcia z wiki  X
+Możliwość wyłączenia ładowania strony X
 
 
 Pomńiejsze:
+Różne serwisy powinny być w 1 zapytaniu na serwer X
 poprawić wyświetlanie Navigacji X
 Po najechaniu na klasę powinno pokazywać szczegóły na jej temat X
-Fields dla deklinacji nie działa tak jak powinno X
 MapAPI sprawdza przez to tylko ASC               X
 
 Single View dla różnych rozdzielczośći poprwaić wyświetlanie X
 Menu jako panel na górze po przesunięciu strony X
-Skończyć dokumentację API X
-Możliwość ręcznego przeszukiwania bazy.Browse. X
-??Pojedyńczy widok powinien zmieniać też URL podczas klikania na następny/poprzedni X Nie
-
+Endpoint sprawdzający czy istnieje taki obiekt z inną nazwąX
+Scraper do pobierania innych katalogów X
+ANGULAR MATERIALS Przerobić autocomplete z jqueryUI X
 Bugi:
-Nie precyzyjna deklinacja dla simbada X
+Fields dla deklinacji nie działa tak jak powinno X
+Źle wyświetla się pasek magnitudo poniżej 480px X
+
+
 
 
 Zrobione:
+Bugi:
+Nie precyzyjna deklinacja dla simbada V
+Pojedyńczy widok powinien zmieniać też URL podczas klikania na następny/poprzedni V
+Po przejśćiu między widokami nie wyświetla właściwie Magnitudo V
+w podobnych widoku są zduplikowane wpisy V
 
+
+
+Widok znajdujący podobne elementy V
+V Strona 404 V
+Podpiąć google adsense V
+Skraper wiki pobierający zdjęcia z wiki  V
+Wgrać Fixtury do zdjęć V
+Statyczne strony dla botów V
 Słowa klucze V
 Funkcja będzie pobierać dane po zmianie filtra i dodawać do starej listy V
 Stworzenie pliku dla botów V
 Footer i Source do napisania V
 Formularz kontaktowy V
-Bug: Po przejśćiu między widokami nie wyświetla właściwie Magnitudo V
 Order-by dla listy. V
 Automatyczne doładowywanie następnych części listy. V
 Factory dla map V

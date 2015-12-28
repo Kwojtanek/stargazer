@@ -52,3 +52,4 @@ def mainfunc():
 print available_photo_reader()
 while  read_row(available_photo_reader()):
     mainfunc()
+

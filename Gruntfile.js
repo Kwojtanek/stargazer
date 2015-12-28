@@ -33,32 +33,32 @@ module.exports = function(grunt) {
                 }
             }
         },
-            watch: {
-                css: {
-                    files: ['static/stargazer/css/*.css'],
-                    tasks: ['cssmin']
-                },
-                js: {
-                    files: ['static/stargazer/angular/*.js', 'static/stargazer/angular/**/*.js'],
-                    tasks: ['concat']
-                }
+        watch: {
+            css: {
+                files: ['static/stargazer/css/*.css'],
+                tasks: ['cssmin']
             },
-            shell: {
-                pythonServer: {
-                    options: {
-                        stdout: true
-                    },
-                    command: 'python manage.py runmodwsgi --reload-on-changes'
-                },
-                pyCharm: {
-                    options: {
-                        stdout: true
-                    },
-                    command: ['cd /usr/local/pycharm-4.5.3/bin',
-                        'sudo sh pycharm.sh'].join('&&')
-                }
+            js: {
+                files: ['static/stargazer/angular/*.js', 'static/stargazer/angular/**/*.js'],
+                tasks: ['concat']
             }
-        });
+        },
+        shell: {
+            pythonServer: {
+                options: {
+                    stdout: true
+                },
+                command: 'python manage.py runmodwsgi --reload-on-changes'
+            },
+            pyCharm: {
+                options: {
+                    stdout: true
+                },
+                command: ['cd /usr/local/pycharm-4.5.3/bin',
+                    'sudo sh pycharm.sh'].join('&&')
+            }
+        }
+    });
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.loadNpmTasks('grunt-contrib-concat');

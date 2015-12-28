@@ -5,39 +5,45 @@ from .appviews.mapviews import mapapi
 from .views import ImgList
 from .appviews.searchviews import SearchAPI
 
+from .appviews.similarviews import SimilarViewAPI
 from .appviews.browseviews import StellarViewAPI, SingleView
 from .appviews.browseviews import ConstellationsViewDetailAPI, ConstellationsViewAPI, SingleConstellationViewAPI
 from .appviews.browseviews import CataloguesViewAPI, CataloguesDetailViewAPI, SingleCatalogueViewAPI
-
+from .appviews.browseviews import TypeViewAPI, SingleTypeViewAPI
 # <----------------Endpointy api.-------------------->
 
 endpointspatterns = patterns('',
-                     url(r'^StellarlistAPI$', StellarViewAPI.as_view(), name='StellarlistUrl'),
-                     url(r'^singleAPI/(?P<pk>[0-9_-]+)$', SingleView.as_view(), name='SingleUrl'),
-                    url(r'^photoList$', ImgList.as_view(template_name='imglist.html')),
+                             url(r'^StellarlistAPI$', StellarViewAPI.as_view(), name='StellarlistUrl'),
+                             url(r'^singleAPI/(?P<pk>[0-9_-]+)$', SingleView.as_view(), name='SingleUrl'),
+                             url(r'^photoList$', ImgList.as_view(template_name='imglist.html')),
 
+                             url(r'^catalogueAPI/(?P<name>[a-zA-Z0-9_-]+)$', SingleCatalogueViewAPI.as_view(),
+                                 name='SingleCatalogueUrl'),
+                             url(r'^cataloguesAPI$', CataloguesViewAPI.as_view(), name='CataloguesUrl'),
+                             url(r'^cataloguesAPI/(?P<name>[a-zA-Z0-9_-]+)$', CataloguesDetailViewAPI.as_view(),
+                                 name='CatalougesDetailUrl'),
 
-                     url(r'^catalogueAPI/(?P<name>[a-zA-Z0-9_-]+)$', SingleCatalogueViewAPI.as_view(),
-                         name='SingleCatalogueUrl'),
-                     url(r'^cataloguesAPI$', CataloguesViewAPI.as_view(), name='CataloguesUrl'),
-                     url(r'^cataloguesAPI/(?P<name>[a-zA-Z0-9_-]+)$', CataloguesDetailViewAPI.as_view(),
-                         name='CatalougesDetailUrl'),
+                             url(r'^constellationAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
+                                 SingleConstellationViewAPI.as_view(),
+                                 name='SingleConstellationUrl'),
+                             url(r'^constellationsAPI$', ConstellationsViewAPI.as_view(), name='ConstellationsUrl'),
+                             url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
+                                 ConstellationsViewDetailAPI.as_view(),
+                                 name='ConstellationsDetailUrl'),
 
-                     url(r'^constellationAPI/(?P<abbreviation>[a-zA-Z_-]+)$', SingleConstellationViewAPI.as_view(),
-                         name='SingleConstellationUrl'),
-                     url(r'^constellationsAPI$', ConstellationsViewAPI.as_view(), name='ConstellationsUrl'),
-                     url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$', ConstellationsViewDetailAPI.as_view(),
-                         name='ConstellationsDetailUrl'),
+                             # Types endpoint
+                             url(r'^type/(?P<typesc>[a-zA-Z_-]+])$', SingleTypeViewAPI.as_view(), name='SingleTypeUrl'),
 
-                     url(r'^mapAPI$', mapapi),
-                     url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
+                             url(r'^mapAPI$', mapapi),
+                             url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
 
-                     url(r'^updateAPI/(?P<pk>[0-9_-]+)', UpdateAPI, name='UpdateUrl'),
-                    url(r'^createphotoAPI$', PhotoCreate,name='PhotoCreateUrl'),
+                             url(r'^updateAPI/(?P<pk>[0-9_-]+)$', UpdateAPI, name='UpdateUrl'),
+                             url(r'^createphotoAPI$', PhotoCreate, name='PhotoCreateUrl'),
 
-                     url(r'^bugtrackerAPI$', BugTrackerViewAPI.as_view(), name='BugTrackerUrl' ),
-                     url(r'^contactappletAPI$', ContactAppletViewAPI.as_view(), name='contactappletUrl'))
+                             url(r'^similarAPI$', SimilarViewAPI, name='SimilarUrl'),
+                             url(r'^bugtrackerAPI$', BugTrackerViewAPI.as_view(), name='BugTrackerUrl'),
+                             url(r'^contactappletAPI$', ContactAppletViewAPI.as_view(), name='contactappletUrl'))
 
 urlpatterns = patterns('',
-                        url(r'^endpoint/', include(endpointspatterns)),
+                       url(r'^endpoint/', include(endpointspatterns)),
                        )

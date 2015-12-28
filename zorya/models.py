@@ -161,7 +161,7 @@ class ObjectPhotos(models.Model):
             return self.photo_url
 
 
-# TODO Wgrać Fixtury do zdjęć
+
 
 class AstroCharts(models.Model):
     """

@@ -20,7 +20,19 @@ h3 {
 .half-cell {
     flex: 1 1 50%;
 }
+#names {
+    min-height: 500px;
+    flex-basis: 100%;
+    padding: 1px 10% 5%;
+    color: #35393e;
+    background-color: #f1f1f1;
+    align-self: center;
+    justify-content: center;
+    border-bottom: 1px solid #666;
+
+}
 #details {
+    width: 80vw;
     -webkit-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
     -moz-box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
     box-shadow: -1px 1px 1px -1px rgba(0,0,0,0.75);
@@ -39,6 +51,12 @@ h3 {
     display:inline-block;
     text-indent: 40px;
     letter-spacing: 1px;
+
+}
+#various-titles {
+    float: left;
+    text-align: left;
+    padding: 12px;
 }
 .single-photo {
     justify-content: center;
@@ -142,9 +160,6 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     margin: 0;
     width: 144px;
     transition: 400ms;
-}
-#search-charts > div:first-child:hover {
-    box-shadow: 0 0 0 6px rgba(4, 122, 215, 0.75)
 }
 #search-charts > a > div {
     margin: 12px;
@@ -280,6 +295,11 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
         display: inline-flex;
         flex-wrap: wrap;
     }
+    #various-titles {
+        width: 100%;
+    text-align: center;
+    padding: 12px;
+}
 }
 
 @media only screen and (min-width: 649px) and (max-width: 972px) {
@@ -304,6 +324,7 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
         width: 948px;
         margin: 12px;
     }
+
 }
 
 @media only screen  and (min-width: 1296px) {
