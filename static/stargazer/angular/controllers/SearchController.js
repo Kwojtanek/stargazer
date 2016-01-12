@@ -26,7 +26,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues;
     $scope.ddtypes = ddtypes;
-    document.getElementById('nav-active').innerHTML = "Search";
     document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
 
     $scope.CommonData  = CommonData.get()
@@ -219,20 +218,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         document.removeEventListener('scroll', LoadOnScroll, false);
         window.location = '/'.concat('object/',id);
     }
-
-
-    // IE compability
-    var doctop = function(){
-        if(document.documentElement && document.documentElement.scrollTop)
-        {return document.documentElement.scrollTop}
-        if(document.body.scrollTop)
-        {return document.body.scrollTop}}
-    var dochaight =function(){
-        if(document.documentElement && document.documentElement.scrollHeight)
-        {return document.documentElement.scrollHeight}
-        if(document.body.scrollHeight)
-        {return document.body.scrollHeight}
-        else return 0;}
 
     //Function downloads new data on scrolling bottom
     function LoadOnScroll(){

@@ -29,8 +29,8 @@ class DeclinationField(models.Field):
         suma = 0
         for ob in s:
             ob = int(ob)
-            if ob > 60 :
-                raise ValidationError('Wrong Format for declination')
+            if ob > 90 :
+                raise ValidationError('Wrong Format for declination %s' % value)
             suma = suma + int(ob)*multip
             multip /= 60
         value = suma
@@ -46,8 +46,8 @@ class DeclinationField(models.Field):
         for ob in s:
             ob = int(ob)
 
-            if ob > 60 :
-                raise ValidationError('Wrong Format for declination')
+            if ob > 90 :
+                raise ValidationError('Wrong Format for declination %s' % value)
             suma = suma + int(ob)*multip
             multip /= 60
         value = suma

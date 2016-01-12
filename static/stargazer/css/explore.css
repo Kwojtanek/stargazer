@@ -1,0 +1,65 @@
+.ChooseFields {
+
+}
+.type-title  {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    margin: 12px;
+    height: 100px;
+    color: #ebebeb;
+    font-weight: 700;
+    color: rgba(55, 59, 64, 1);
+    transition: height 0.3s ease-in-out;
+
+
+}
+
+.title-button {
+    height: 124px;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+
+
+}
+.title-button:hover {
+    box-shadow: 0 0 0 12px rgba(235, 235, 235, 0.75);
+    height: auto;
+}
+.type-podtitle {
+    margin: 6px;
+    display: inline-flex;
+    background-color: rgba(255,191,0,1);
+    padding: 4px;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 2px;
+    transition: 0.3s ease-in-out;
+}
+.type-podtitle:hover {
+    box-shadow: 0 0 0 12px rgba(255, 191, 0, 0.50);
+}
+@media only screen  and (max-width: 648px) {
+    .type-title  {
+        width: 300px;
+    }
+}
+
+@media only screen and (min-width: 649px) and (max-width: 972px) {
+    .type-title  {
+        width: 624px;
+        margin: 12px;
+    }
+}
+@media only screen  and (min-width: 972px) {
+    .type-title  {
+        width: 948px;
+        margin: 12px;
+    }
+}
+@media only screen  and (min-width: 1296px) {
+    .type-title  {
+        width: 1272px;
+    }
+}

@@ -15,11 +15,9 @@ footer {
 #form-main{
     width:100%;
     float:left;
-    padding-top:0px;
 }
-
 #form-div {
-    top: 35%;
+    top: 5%;
     z-index: 100;
     background-color:rgba(72,72,72,0.4);
     padding-left:35px;
@@ -169,4 +167,7 @@ input:focus, textarea:focus {
         padding-left: 3%;
         padding-right: 3%;
     }
+}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
 }

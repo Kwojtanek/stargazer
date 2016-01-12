@@ -478,3 +478,15 @@ ddtypes = [
     {"uniname": "Infra-Red source", "data": [
         {"value": "IR", "label": "Infra-Red source"}]},
     ]
+    // IE compability
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}

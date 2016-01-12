@@ -639,6 +639,7 @@ and (max-width : 400px) {
     padding: 10px 10px 10px 10px;
     -webkit-transition:  400ms; /* Safari */
     transition: 400ms;
+    background-color: white;
 }
 .nav-i:hover {
     color: #a9a9a9;

@@ -105,10 +105,10 @@
 
     </div>
         </a>
-        <!--a href="/browse/type/{{ MainObject.type_shortcut }}"-->
+        <a href="/explore/type/{{ MainObject.type_shortcut }}">
             <div class="more-main-in" >
                 <img src="/static/stargazer/css/img/chain.svg")>
-                See more in {{ MainObject.type }}</div><!--/a--></main>
+                See more in {{ MainObject.type }}</div></a></main>
 
     <main class="more-main" ng-if="similar.constellation"><h4>More in this constellation</h4>
     <a href="/object/{{ constellation.id }}" class="more-single" ng-repeat="constellation in similar.constellation"><div class="more-single-out">
@@ -137,7 +137,6 @@
     <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
 </section></main>
 <script>
-    document.getElementById('nav-active').innerHTML = "&#8617 Back to Search!"
 </script>
 <style>
     #navbar {

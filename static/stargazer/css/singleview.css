@@ -222,7 +222,8 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
 }
 .more-single {
     flex-wrap: wrap;
-    background-color: #007AD7;
+    background: url("/static/stargazer/css/img/spiral.svg") no-repeat center center #DDDDDD;
+    background-size: 85%;
     margin: 12px;
     display: inline-flex;
     align-items: flex-start;
@@ -232,6 +233,7 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     transition: 0.4s;
     color: #ebebeb;
     font-weight: 700;
+    box-shadow: 1px 1px 100px 1px rgba(53, 57, 62, 0.04);
 }
 .more-single:hover {
     box-shadow: 0 0 0 12px rgba(2, 121, 215, 0.75);

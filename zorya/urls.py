@@ -8,8 +8,8 @@ from .appviews.searchviews import SearchAPI
 from .appviews.similarviews import SimilarViewAPI
 from .appviews.browseviews import StellarViewAPI, SingleView
 from .appviews.browseviews import ConstellationsViewDetailAPI, ConstellationsViewAPI, SingleConstellationViewAPI
-from .appviews.browseviews import CataloguesViewAPI, CataloguesDetailViewAPI, SingleCatalogueViewAPI
-from .appviews.browseviews import TypeViewAPI, SingleTypeViewAPI
+from .appviews.browseviews import CataloguesListViewAPI, SingleCatalogueViewAPI
+from .appviews.browseviews import TypeViewAPI, CataloguesViewAPI
 # <----------------Endpointy api.-------------------->
 
 endpointspatterns = patterns('',
@@ -20,8 +20,6 @@ endpointspatterns = patterns('',
                              url(r'^catalogueAPI/(?P<name>[a-zA-Z0-9_-]+)$', SingleCatalogueViewAPI.as_view(),
                                  name='SingleCatalogueUrl'),
                              url(r'^cataloguesAPI$', CataloguesViewAPI.as_view(), name='CataloguesUrl'),
-                             url(r'^cataloguesAPI/(?P<name>[a-zA-Z0-9_-]+)$', CataloguesDetailViewAPI.as_view(),
-                                 name='CatalougesDetailUrl'),
 
                              url(r'^constellationAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
                                  SingleConstellationViewAPI.as_view(),
@@ -30,9 +28,6 @@ endpointspatterns = patterns('',
                              url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
                                  ConstellationsViewDetailAPI.as_view(),
                                  name='ConstellationsDetailUrl'),
-
-                             # Types endpoint
-                             url(r'^type/(?P<typesc>[a-zA-Z_-]+])$', SingleTypeViewAPI.as_view(), name='SingleTypeUrl'),
 
                              url(r'^mapAPI$', mapapi),
                              url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
@@ -43,7 +38,13 @@ endpointspatterns = patterns('',
                              url(r'^similarAPI$', SimilarViewAPI, name='SimilarUrl'),
                              url(r'^bugtrackerAPI$', BugTrackerViewAPI.as_view(), name='BugTrackerUrl'),
                              url(r'^contactappletAPI$', ContactAppletViewAPI.as_view(), name='contactappletUrl'))
-
+explorepatterns = patterns('',
+                             # All 3 explore endpoints
+                             url(r'^type/(?P<typesc>[a-zA-Z0-9_-]+)$', TypeViewAPI.as_view(), name='TypeListUrl'),
+                             url(r'^catalogue/(?P<cat>[a-zA-Z0-9_-]+)$', CataloguesViewAPI.as_view(), name='CatalogueListUrl'),
+                            url(r'^constellation/(?P<abbreviation>[a-zA-Z0-9_-]+)$', ConstellationsViewAPI.as_view(), name='ConstellationListUrl')
+)
 urlpatterns = patterns('',
+                       url(r'^exploreAPI/',include(explorepatterns)),
                        url(r'^endpoint/', include(endpointspatterns)),
                        )

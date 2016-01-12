@@ -26,10 +26,11 @@ Menu jako panel na górze po przesunięciu strony X
 Endpoint sprawdzający czy istnieje taki obiekt z inną nazwąX
 Scraper do pobierania innych katalogów X
 ANGULAR MATERIALS Przerobić autocomplete z jqueryUI X
+Przycisk do góry na dole:) X
 Bugi:
 Fields dla deklinacji nie działa tak jak powinno X
 Źle wyświetla się pasek magnitudo poniżej 480px X
-
+Fields nie tworzy kolumny bazy danych
 
 
 

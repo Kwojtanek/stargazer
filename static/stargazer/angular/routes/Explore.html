@@ -1,0 +1,27 @@
+<section class="main">
+    <main class="more-main title-button" ng-if="ChooseFieldsTypes"ng-repeat="Choose in ChooseFieldsTypes">
+        <div class="type-title" >{{ Choose.uniname }}</div>
+        <ul>
+        <a ng-repeat="t in Choose.data" href="/explore/type/{{ t.value }}"> <li class="type-podtitle" >{{ t.label }}</li>
+            </a></ul>
+            </div>
+    </main>
+</section>
+<section class="main"  id="more-section">
+    <main class="more-main">
+        <div class="type-title"><h3>{{ data.results[0].type }}</h3></div>
+
+        <a href="/object/{{ obj.id }}" class="more-single" ng-repeat="obj in results">
+            <div class="more-single-out">
+                <img src="{{ obj.photos[0].thumb }}">
+                <p>{{ obj.catalogues[0].object_catalogue }} {{ obj.catalogues[0].object_number }}</p>
+
+            </div></a>
+    </main>
+</section>
+<script type="text/javascript" >
+    search_butt = document.getElementsByClassName('nav-i')[0];
+    search_butt.id = '';
+    explore_butt = document.getElementsByClassName('nav-i')[1];
+    explore_butt.id = 'nav-active';
+</script>

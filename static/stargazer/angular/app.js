@@ -1,33 +1,20 @@
-var app = angular.module('appList', ['ngResource','ngRoute'])
-
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/constellation', {
-            controller: 'constellationsCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/Constellations.html'
-        })
-        .when('/constellation/:abbreviation', {
-            controller: 'constallationsDetailCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/ConstellationsDetail.html'
-        })
-        .when('/catalogue', {
-            controller: 'CatalogueController',
-            templateUrl: '/static/stargazer/Catalogue.html'
-        })
-        .when('/catalogue/:name', {
-            controller: 'CatalogueListController',
-            templateUrl: '/static/stargazer/CatalogueLists.html'
-        })
-});
 var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute','ngAnimate'])
-
-
-SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory) {
+SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeParams) {
     $rootScope.hashtag = hashtag;
+    // IE compability
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}
 
 });
-
-
 SearchApp.config(function($routeProvider,$locationProvider){
     $locationProvider.html5Mode(true);
 
@@ -42,14 +29,9 @@ SearchApp.config(function($routeProvider,$locationProvider){
             controller : 'SingleViewCtrl',
             templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
         })
-        .when('/browse/type', {
-            controller: 'TypesCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/TypesView.html'
-        })
-        .when('/browse/type/:typesc', {
-            controller: 'SingleTypeCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/SingleTypeView.html'
-        })
+        .when('/explore/:type/:typesc', {
+            controller: 'ExploreCtrl',
+            templateUrl: '/static/stargazer/angular/routes/Explore.html'        })
         .when('/page404',
         {
             templateUrl: '/static/stargazer/angular/routes/404.html'})

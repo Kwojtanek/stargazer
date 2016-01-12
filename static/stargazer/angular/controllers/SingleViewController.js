@@ -37,30 +37,30 @@ SearchApp.controller('SingleViewCtrl',
                 }
             }
 
-                            // function that initialize interactive night sky map
-                aladin = function () {
-                    if ($scope.MainObject.rightAsc && $scope.MainObject.declination) {
-                        if (!$scope.MainObject.fov) {
-                            $scope.MainObject.fov == 45
-                        }
-                        var aladin = A.aladin('#aladin-lite-div', {
-                            survey: "P/DSS2/color",
-                            fov: $scope.MainObject.fov,
-                            target: ($scope.MainObject.rightAsc).concat(' ', $scope.MainObject.declination),
-                            showReticle:true
-                        });
-                        return true;
+            // function that initialize interactive night sky map
+            aladin = function () {
+                if ($scope.MainObject.rightAsc && $scope.MainObject.declination) {
+                    if (!$scope.MainObject.fov) {
+                        $scope.MainObject.fov == 45
                     }
-                    else {
-                        var aladin = A.aladin('#aladin-lite-div', {
-                            survey: "P/DSS2/color",
-                            fov: 180,
-                            target: ('0'),
-                            showReticle: true
-                        });
-                        return false;
-                    }
+                    var aladin = A.aladin('#aladin-lite-div', {
+                        survey: "P/DSS2/color",
+                        fov: $scope.MainObject.fov,
+                        target: ($scope.MainObject.rightAsc).concat(' ', $scope.MainObject.declination),
+                        showReticle:true
+                    });
+                    return true;
                 }
+                else {
+                    var aladin = A.aladin('#aladin-lite-div', {
+                        survey: "P/DSS2/color",
+                        fov: 180,
+                        target: ('0'),
+                        showReticle: true
+                    });
+                    return false;
+                }
+            }
             //Function downloads similar objects to main and append
             getSimilar = function(){
                 SimilarFactory = $resource('/endpoint/similarAPI',{
@@ -93,6 +93,16 @@ SearchApp.controller('SingleViewCtrl',
                 }
 
             }
+            /*
+             setMenu = function(){
+             var m = document.querySelector('#navbar > nav');
+             var naviid = document.createElement('span');
+             naviid.className = 'nav-i active-object';
+             naviid.id = 'nav-active';
+             var textnode = document.createTextNode($scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number))
+             naviid.appendChild(textnode)
+             m.appendChild(naviid);
+             }*/
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
             if ($routeParams.id > maxid || $routeParams.id <= 0 || isNaN($routeParams.id) )
             {window.location = '/'.concat('page404');}

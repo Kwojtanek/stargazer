@@ -36,9 +36,9 @@
     <meta name="msapplication-TileImage" content="/static/favicon/mstile-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/static/jquery/dist/jquery.min.js"></script>
     <script src="/static/jquicust/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="/static/angular/angular.min.js"></script>
     <script src="/static/angular-resource/angular-resource.min.js"></script>
     <script src="/static/angular-animate/angular-animate.min.js"></script>
     <script src="/static/angular-route/angular-route.min.js"></script>
@@ -56,13 +56,13 @@
     <p style="margin-top: 0;">Stellar Objects search engine</p>
     <nav style="display: inline-block">
         <span><a href="/" class="nav-i" target="_self">Search</a></span>
-        <!-- span><a href="/browse" class="nav-i" target="_self">Browse</a></span -->
+        <span><a href="/explore/" class="nav-i" target="_self">Explore</a></span>
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
 <section class="ng-view-section" style="min-height: 1300px; width: 100%">
-<ng-view class="mainview-animation"></ng-view>
-    </section>
+    <ng-view class="mainview-animation"></ng-view>
+</section>
 <!-- banner2 -->
 <footer ng-controller="FooterCtrl" style="    justify-content: center;
     flex-flow: row wrap; display: flex">
@@ -71,51 +71,51 @@
         <button ng-click="bugtracker = !bugtracker" class="btn-1a button" style="width: 280px">Report Bug</button>
         <button ng-click="contactapplet = !contactapplet" class="btn-1a button" style="margin-top: 5px;padding: 0 30px;width: 280px">Leave message</button>
     </section>
-        <section class="half-cell" style="align-self: baseline;">
-            <h2>Info:</h2>
-            <p><a href="http://www.zorya.co/static/sitemap.xml">Sitemap</a></p>
-            </section>
+    <section class="half-cell" style="align-self: baseline;">
+        <h2>Info:</h2>
+        <p><a href="http://www.zorya.co/static/sitemap.xml">Sitemap</a></p>
+    </section>
     <p style="text-align: center">Copyright 2016 ©</p>
-<div id="form-main" ng-show="bugtracker" style="display: none">
-    <div id="form-div">
-        <form class="form" id="form1">
-            <p id="form-title" ng-click="bugtracker = !bugtracker">Report Bug:</p>
-            <p class="email">
-                <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" placeholder="Email" ng-model="bugform.author"/>
-            </p>
+    <div id="form-main" ng-hide="!bugtracker" ng-cloak>
+        <div id="form-div">
+            <form class="form" id="form1">
+                <p id="form-title" ng-click="bugtracker = !bugtracker">Report Bug:</p>
+                <p class="email">
+                    <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" placeholder="Email" ng-model="bugform.author"/>
+                </p>
 
-            <p class="text">
-                <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*Information" ng-model="bugform.info" required></textarea>
-            </p>
-            <p style="color: white">*required</p>
+                <p class="text">
+                    <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*Information" ng-model="bugform.info" required></textarea>
+                </p>
+                <p style="color: white">*required</p>
 
-            <div class="submit">
-                <input type="submit" value="SEND" ng-click="sendbug()"  id="button-blue"/>
-                <div class="ease"></div>
-            </div>
-        </form>
+                <div class="submit">
+                    <input type="submit" value="SEND" ng-click="sendbug()"  id="button-blue"/>
+                    <div class="ease"></div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<div id="form-main" ng-show="contactapplet"  style="display: none">
-    <div id="form-div">
-        <form class="form" id="form1">
-            <p id="form-title" ng-click="contactapplet = !contactapplet">Contact us:</p>
-            <p class="email">
-                <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" ng-model="contactapp.author" placeholder="*Email" required/>
-            </p>
+    <div id="form-main" ng-hide="!contactapplet" ng-cloak>
+        <div id="form-div">
+            <form class="form" id="form1">
+                <p id="form-title" ng-click="contactapplet = !contactapplet">Contact us:</p>
+                <p class="email">
+                    <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" ng-model="contactapp.author" placeholder="*Email" required/>
+                </p>
 
-            <p class="text">
-                <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*message" ng-model="contactapp.message" required></textarea>
-            </p>
-            <p style="color: white">*required</p>
+                <p class="text">
+                    <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*message" ng-model="contactapp.message" required></textarea>
+                </p>
+                <p style="color: white">*required</p>
 
-            <div class="submit">
-                <input type="submit" value="SEND" ng-click="sendcontact()" id="button-blue"/>
-                <div class="ease"></div>
-            </div>
-        </form>
+                <div class="submit">
+                    <input type="submit" value="SEND" ng-click="sendcontact()" id="button-blue"/>
+                    <div class="ease"></div>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 </footer>
 
 <div class="box">
@@ -128,10 +128,52 @@
     <div id="annotation">Loading additional data...</div>
 
 </div>
-<script type="text/javascript" >
-        document.getElementsByClassName('nav-i');
-        search_butt = document.getElementsByClassName('nav-i')[0];
-        search_butt.id = 'nav-active';
+<div id="go-top"></div>
+<script>
+    $(document).ready(function(){
+        $gotop = $('#go-top');
+        $navbar = document.querySelector('#navbar');
+        function showtop(){
+            if (doctop() >  dochaight() - 2200){
+                $gotop.css({'display':'block'})
+
+            }
+            else $gotop.css({'display':'None'});
+            if (doctop() > 200){
+                document.querySelector('#navbar > h1').setAttribute('style',
+                        'display: inline-block;' +
+                        'margin: 0;' +
+                        'position: relative;' +
+                        'bottom: -5px;');
+                document.querySelector('#navbar > p').style.display = 'none';
+
+                $navbar.setAttribute('style',
+                        'background: white;' +
+                        'width: 100%;' +
+                        'position: fixed;' +
+                        'top: -6px;' +
+                        'z-index: 102;' +
+                        'box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.75);' +
+                        'padding: 0px 0px 7px 10%;')
+
+            }
+            else {
+                $navbar.setAttribute('style', 'position: ""; top:""')
+                document.querySelector('#navbar > h1').setAttribute('style',
+                        'display:inherit;' +
+                        'font-size: 1.65em;' +
+                        'margin-bottom: 10px;');
+                document.querySelector('#navbar > p').style.display = 'inherit';
+            }
+
+        }
+        document.addEventListener('scroll', showtop, false);
+
+        $gotop.click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+        });
+    })
 </script>
 </body>
 {% endverbatim %}

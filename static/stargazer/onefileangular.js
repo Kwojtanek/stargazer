@@ -482,36 +482,35 @@ ddtypes = [
     {"uniname": "Infra-Red source", "data": [
         {"value": "IR", "label": "Infra-Red source"}]},
     ]
-;var app = angular.module('appList', ['ngResource','ngRoute'])
-
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/constellation', {
-            controller: 'constellationsCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/Constellations.html'
-        })
-        .when('/constellation/:abbreviation', {
-            controller: 'constallationsDetailCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/ConstellationsDetail.html'
-        })
-        .when('/catalogue', {
-            controller: 'CatalogueController',
-            templateUrl: '/static/stargazer/Catalogue.html'
-        })
-        .when('/catalogue/:name', {
-            controller: 'CatalogueListController',
-            templateUrl: '/static/stargazer/CatalogueLists.html'
-        })
-});
-var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute','ngAnimate'])
-
-
-SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory) {
+    // IE compability
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}
+;var SearchApp = angular.module('SearchApp', ['ngResource','ngRoute','ngAnimate'])
+SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeParams) {
     $rootScope.hashtag = hashtag;
+    // IE compability
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}
 
 });
-
-
 SearchApp.config(function($routeProvider,$locationProvider){
     $locationProvider.html5Mode(true);
 
@@ -526,14 +525,9 @@ SearchApp.config(function($routeProvider,$locationProvider){
             controller : 'SingleViewCtrl',
             templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
         })
-        .when('/browse/type', {
-            controller: 'TypesCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/TypesView.html'
-        })
-        .when('/browse/type/:typesc', {
-            controller: 'SingleTypeCtrl',
-            templateUrl: '/static/stargazer/angular/routes/browse/SingleTypeView.html'
-        })
+        .when('/explore/:type/:typesc', {
+            controller: 'ExploreCtrl',
+            templateUrl: '/static/stargazer/angular/routes/Explore.html'        })
         .when('/page404',
         {
             templateUrl: '/static/stargazer/angular/routes/404.html'})
@@ -544,6 +538,58 @@ SearchApp.config(function($routeProvider,$locationProvider){
             redirectTo: '/page404',
         });
 });
+;/**
+ * Created by root on 29.12.15.
+ */
+SearchApp.controller('ExploreCtrl',[ '$routeParams', '$scope', '$resource', function( $routeParams, $scope, $resource){
+
+    if ($routeParams['type'] == 'type'){$scope.ChooseFieldsTypes = ddtypes}
+    if ($routeParams['type'] == 'catalogue'){$scope.ChooseFieldsTypes = SearchCatalogues}
+    if ($routeParams['type'] == 'constellation'){$scope.ChooseFieldsTypes = ConstList}
+    $scope.pending = true;
+    page = 1
+    ListFactory = $resource('/'.concat('exploreAPI/',$routeParams['type'],'/',$routeParams['typesc']),{'page':page,'format':'json'})
+    getList = function(){
+        $('div.box').fadeIn(300);
+        ListFactory.get().$promise.then(function(ob){
+            console.log(ob)
+            $scope.data = ob;
+            $scope.results = ob.results
+            $('div.box').fadeOut(300);
+            $scope.pending = false;
+        })
+    }
+    getList()
+    function LoadOnScroll(){
+        if ($scope.data && $scope.data.next !== null ) {
+            // Checks if firs part of Data has been downloaded and next data exists
+            if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.data.count){
+                if (!$scope.pending) {
+                    $scope.pending = true;
+                    document.getElementById('annotation-loader').style.display = 'inherit';
+                    ListFactory.get(
+                        {
+                            page: +page + 1,
+                        }
+                    ).$promise.then(function(ob){
+                            page++
+                            $scope.pending = false;
+                            $scope.data = ob;
+                            // appends results to list
+                            for (var i = 0; i < ob.results.length; i++){
+                                $scope.results.push(ob.results[i]);
+                            }
+                            document.getElementById('annotation-loader').style.display = '';
+                        }
+                    )
+                }
+
+            }
+        }
+    };
+
+    document.addEventListener('scroll', LoadOnScroll, false);
+}])
 ;SearchApp.controller('FooterCtrl',['$scope','BugTrackerFactory','ContactAppletFactory', function($scope,BugTrackerFactory,ContactAppletFactory){
     $scope.bugtracker= false;
     $scope.contactapplet = false;
@@ -596,7 +642,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues;
     $scope.ddtypes = ddtypes;
-    document.getElementById('nav-active').innerHTML = "Search";
     document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
 
     $scope.CommonData  = CommonData.get()
@@ -790,20 +835,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         window.location = '/'.concat('object/',id);
     }
 
-
-    // IE compability
-    var doctop = function(){
-        if(document.documentElement && document.documentElement.scrollTop)
-        {return document.documentElement.scrollTop}
-        if(document.body.scrollTop)
-        {return document.body.scrollTop}}
-    var dochaight =function(){
-        if(document.documentElement && document.documentElement.scrollHeight)
-        {return document.documentElement.scrollHeight}
-        if(document.body.scrollHeight)
-        {return document.body.scrollHeight}
-        else return 0;}
-
     //Function downloads new data on scrolling bottom
     function LoadOnScroll(){
         if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
@@ -876,17 +907,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
         }}, true);
 }]);
-;SearchApp.controller('SingleTypeCtrl',['TypeFactory', '$scope', '$resource', '$routeParams', function(TypeFactory,SingleTypeFactory,$resource, $scope, $routeParams){
-        document.getElementById('annotation-loader').style.display = 'inherit'
-    SearchApp.factory('SingleTypeFactory',['$resource', function($resource){
-        return $resource('/endpoint/typeAPI/:typesc',format);
-    }]);
-
-        $scope.type = SingleTypeFactory.get({typesc:$routeParams.typesc, page:1})
-
-            document.getElementById('annotation-loader').style.display = ''
-
-}])
 ;/**
  * Created by root on 05.11.15.
  */
@@ -926,30 +946,30 @@ SearchApp.controller('SingleViewCtrl',
                 }
             }
 
-                            // function that initialize interactive night sky map
-                aladin = function () {
-                    if ($scope.MainObject.rightAsc && $scope.MainObject.declination) {
-                        if (!$scope.MainObject.fov) {
-                            $scope.MainObject.fov == 45
-                        }
-                        var aladin = A.aladin('#aladin-lite-div', {
-                            survey: "P/DSS2/color",
-                            fov: $scope.MainObject.fov,
-                            target: ($scope.MainObject.rightAsc).concat(' ', $scope.MainObject.declination),
-                            showReticle:true
-                        });
-                        return true;
+            // function that initialize interactive night sky map
+            aladin = function () {
+                if ($scope.MainObject.rightAsc && $scope.MainObject.declination) {
+                    if (!$scope.MainObject.fov) {
+                        $scope.MainObject.fov == 45
                     }
-                    else {
-                        var aladin = A.aladin('#aladin-lite-div', {
-                            survey: "P/DSS2/color",
-                            fov: 180,
-                            target: ('0'),
-                            showReticle: true
-                        });
-                        return false;
-                    }
+                    var aladin = A.aladin('#aladin-lite-div', {
+                        survey: "P/DSS2/color",
+                        fov: $scope.MainObject.fov,
+                        target: ($scope.MainObject.rightAsc).concat(' ', $scope.MainObject.declination),
+                        showReticle:true
+                    });
+                    return true;
                 }
+                else {
+                    var aladin = A.aladin('#aladin-lite-div', {
+                        survey: "P/DSS2/color",
+                        fov: 180,
+                        target: ('0'),
+                        showReticle: true
+                    });
+                    return false;
+                }
+            }
             //Function downloads similar objects to main and append
             getSimilar = function(){
                 SimilarFactory = $resource('/endpoint/similarAPI',{
@@ -982,6 +1002,16 @@ SearchApp.controller('SingleViewCtrl',
                 }
 
             }
+            /*
+             setMenu = function(){
+             var m = document.querySelector('#navbar > nav');
+             var naviid = document.createElement('span');
+             naviid.className = 'nav-i active-object';
+             naviid.id = 'nav-active';
+             var textnode = document.createTextNode($scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number))
+             naviid.appendChild(textnode)
+             m.appendChild(naviid);
+             }*/
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
             if ($routeParams.id > maxid || $routeParams.id <= 0 || isNaN($routeParams.id) )
             {window.location = '/'.concat('page404');}
@@ -1080,7 +1110,8 @@ SearchApp.controller('SingleViewCtrl',
                 }
                 // Pobiera z za API dane na temat mapy
             }
-        }]);app.controller('constellationsController',['$scope','Const', function($scope, Const){
+        }]);/*
+app.controller('constellationsController',['$scope','Const', function($scope, Const){
     var constellation = Const.query()
     $scope.constellation = constellation
 }])
@@ -1105,8 +1136,7 @@ $scope.clickPrevious = function(){
 };
 
 }])
-
-;var format = {format: 'json'}
+var format = {format: 'json'}
 app.factory('Const',['$resource', function($resource){
     return $resource('/constellationsAPI',format);
 }]);
@@ -1119,7 +1149,8 @@ app.factory('StellarFactory',['$resource', function($resource){
 SearchApp.factory('TypeFactory',['$resource', function($resource){
     return $resource('/endpoint',format);
 }]);
-;var format = {format: 'json'}
+
+*/;var format = {format: 'json'}
 SearchApp.factory('BugTrackerFactory',['$resource', function($resource) {
     return $resource('/endpoint/bugtrackerAPI', format);
 }])

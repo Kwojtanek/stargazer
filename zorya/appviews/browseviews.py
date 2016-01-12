@@ -22,7 +22,7 @@ class StellarViewAPI(generics.ListAPIView):
 
 
 # Konstelacje
-class ConstellationsViewAPI(generics.ListAPIView):
+class ConstellationsListViewAPI(generics.ListAPIView):
     serializer_class = ConstellationsSerializer
     queryset = Constellations.objects.all()
 
@@ -51,25 +51,37 @@ class SingleCatalogueViewAPI(generics.RetrieveAPIView):
     serializer_class = CatalogueSerializer
 
 
-class CataloguesViewAPI(generics.ListAPIView):
+class CataloguesListViewAPI(generics.ListAPIView):
     queryset = Catalogues
     serializer_class = CatalogueSerializer
 
-
-class CataloguesDetailViewAPI(generics.ListAPIView):
-    serializer_class = ObjectsSerializer
+#Lista obiektów w katalogue
+class CataloguesViewAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = StellarObjectSerializer
 
     def get_queryset(self):
-        catalogue_name = self.kwargs['name']
-        queryset = Objects_list.objects.filter(object_catalogue__name=catalogue_name)
+        catalogue_name = self.kwargs['cat']
+        queryset = StellarObject.objects.annotate(num_p=Count('photos'))\
+            .filter(catalogues__object_catalogue__name=catalogue_name).order_by('-num_p')
         return queryset
-#Typy
-class SingleTypeViewAPI(generics.RetrieveAPIView):
-    pass
-#TODO implement
+#Lista obiektów w danym typie.
 class TypeViewAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
     serializer_class = StellarObjectSerializer
     def get_queryset(self):
         typesc = self.kwargs['typesc']
-        queryset = StellarObject.objects.annotate(num_p=Count('photos')).filter(type_shortcut=typesc).order_by('-num_p')
+        queryset = StellarObject.objects.annotate(num_p=Count('photos'))\
+            .filter(type_shortcut=typesc).order_by('-num_p')
         return queryset
+#Lista obiektów w danej konstelacji
+class ConstellationsViewAPI(generics.ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = StellarObjectSerializer
+
+    def get_queryset(self):
+        constellation_name = self.kwargs['abbreviation']
+        c = Constellations.objects.get(abbreviation=constellation_name)
+        quryset = c.relatedconstellation.all()
+        return quryset
+

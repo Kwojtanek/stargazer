@@ -75,22 +75,22 @@ class StellarObject(models.Model):
             pattern = re.compile('\d+.\d+')
             numb = re.findall(pattern, self.dimAxb)
             if len(numb) == 0:
-                return 10
+                return 20
             for n in numb:
                 if n >= x:
                     x = n
             x = float(x) / 100
             if x > 1:
-                return x * 5
-            if x <= 1:
                 return x * 10
+            if x <= 1:
+                return x * 20
             if x <= 0.1:
-                return x * 25
+                return x * 50
             else:
-                return 10
+                return 20
 
         else:
-            return 10
+            return 20
 
 
 class Catalogues(models.Model):
@@ -167,7 +167,7 @@ class AstroCharts(models.Model):
     """
     Class of map. Path is kept in file_name
     """
-    file_name = models.CharField(max_length=16)
+    file_name = models.CharField(max_length=64)
     maxAscension = models.TimeField()
     minAscension = models.TimeField()
     maxDeclination = DeclinationField(blank=True, null=True)
