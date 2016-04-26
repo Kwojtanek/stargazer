@@ -27,6 +27,8 @@ class DeclinationField(models.Field):
         multip = 3600
         s = re.findall(pattern,value)
         suma = 0
+        if len(s) > 3:
+            s = s[0:3]
         for ob in s:
             ob = int(ob)
             if ob > 90 :
@@ -43,6 +45,8 @@ class DeclinationField(models.Field):
         multip = 3600
         s = re.findall(pattern,value)
         suma = 0
+        if len(s) > 3:
+            s = s[0:3]
         for ob in s:
             ob = int(ob)
 

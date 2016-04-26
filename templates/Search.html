@@ -56,7 +56,7 @@
     <p style="margin-top: 0;">Stellar Objects search engine</p>
     <nav style="display: inline-block">
         <span><a href="/" class="nav-i" target="_self">Search</a></span>
-        <span><a href="/explore/" class="nav-i" target="_self">Explore</a></span>
+        <span style="display: none;"><a href="/explore/" class="nav-i" target="_self">Explore</a></span>
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
@@ -134,7 +134,7 @@
         $gotop = $('#go-top');
         $navbar = document.querySelector('#navbar');
         function showtop(){
-            if (doctop() >  dochaight() - 2200){
+            if (doctop() > 2200 && dochaight() > 1500){
                 $gotop.css({'display':'block'})
 
             }
@@ -155,20 +155,18 @@
                         'z-index: 102;' +
                         'box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.75);' +
                         'padding: 0px 0px 7px 10%;')
-
             }
             else {
-                $navbar.setAttribute('style', 'position: ""; top:""')
+                $navbar.setAttribute('style', 'position: ""; top:""');
                 document.querySelector('#navbar > h1').setAttribute('style',
                         'display:inherit;' +
                         'font-size: 1.65em;' +
                         'margin-bottom: 10px;');
                 document.querySelector('#navbar > p').style.display = 'inherit';
             }
-
         }
         document.addEventListener('scroll', showtop, false);
-
+        showtop()
         $gotop.click(function(){
             $("html, body").animate({ scrollTop: 0 }, 600);
             return false;

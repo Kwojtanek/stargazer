@@ -1,0 +1,12 @@
+<section class="main">
+    <h2>Welcome</h2>
+    <p> Our database currently contains {{ maxid }} objects.</p><br>
+    <p>There are {{ Constellations.length }} constellations in {{ familycount }} families</p>
+    <p>Objects are grouped in {{ Types.length }} main classes and {{ ddtypes.length }} sub-classes</p>
+    <p>At present database contains {{ Catalogues.length }} AstroCatalogues</p></section>
+<div></div>
+<script>
+    document.getElementsByClassName('ng-view-section')[0].style.minHeight = '600px';
+</script>
+>>> A = Constellations.objects.values('family').annotate(the_count=Count('family'))
+

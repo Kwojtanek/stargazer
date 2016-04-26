@@ -1,6 +1,6 @@
 __author__ = 'kuba'
 from django.conf.urls import url, patterns, include
-from .appviews.createaupdateviews import UpdateAPI, BugTrackerViewAPI, ContactAppletViewAPI, PhotoCreate
+from .appviews.createaupdateviews import UpdateAPI, BugTrackerViewAPI, ContactAppletViewAPI, PhotoCreate, TypeCreate
 from .appviews.mapviews import mapapi
 from .views import ImgList
 from .appviews.searchviews import SearchAPI
@@ -34,6 +34,7 @@ endpointspatterns = patterns('',
 
                              url(r'^updateAPI/(?P<pk>[0-9_-]+)$', UpdateAPI, name='UpdateUrl'),
                              url(r'^createphotoAPI$', PhotoCreate, name='PhotoCreateUrl'),
+                             url(r'^createtypeAPI$', TypeCreate, name='TypeCreateUrl' ),
 
                              url(r'^similarAPI$', SimilarViewAPI, name='SimilarUrl'),
                              url(r'^bugtrackerAPI$', BugTrackerViewAPI.as_view(), name='BugTrackerUrl'),

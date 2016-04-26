@@ -31,7 +31,10 @@ SearchApp.config(function($routeProvider,$locationProvider){
         })
         .when('/explore/:type/:typesc', {
             controller: 'ExploreCtrl',
-            templateUrl: '/static/stargazer/angular/routes/Explore.html'        })
+            templateUrl: '/static/stargazer/angular/routes/explore/Explore.html'        })
+        .when('/explore', {
+            controller: 'MainExploreCtrl',
+            templateUrl: '/static/stargazer/angular/routes/explore/MainExplore.html'        })
         .when('/page404',
         {
             templateUrl: '/static/stargazer/angular/routes/404.html'})

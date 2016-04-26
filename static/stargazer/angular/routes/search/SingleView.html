@@ -105,7 +105,7 @@
 
     </div>
         </a>
-        <a href="/explore/type/{{ MainObject.type_shortcut }}">
+        <a style="display: none" href="/explore/type/{{ MainObject.type_shortcut }}">
             <div class="more-main-in" >
                 <img src="/static/stargazer/css/img/chain.svg")>
                 See more in {{ MainObject.type }}</div></a></main>
@@ -116,7 +116,7 @@
         <p>{{ constellation.catalogues[0].object_catalogue }}{{ constellation.catalogues[0].object_number }}</p>
 
     </div></a>
-    <div class="more-main-in">
+    <div class="more-main-in" style="display: none;">
         <img src="/static/stargazer/css/img/chain.svg")>
         See more in {{ getConstelationName()}}  </div></main>
 
@@ -126,7 +126,7 @@
         <p>{{ catalogue.catalogues[0].object_catalogue }} {{ catalogue.catalogues[0].object_number }}</p>
 
     </div></a>
-        <div class="more-main-in" >
+        <div class="more-main-in" style="display: none">
             <img src="/static/stargazer/css/img/chain.svg")>
             See more in {{ MainObject.catalogues[0].object_catalogue }}</div></main>
 
@@ -136,25 +136,24 @@
     <p ng-if="MainObject.overview"><a href="https://en.wikipedia.org/wiki/{{ MainObject.catalogues[0].object_catalogue }} {{ MainObject.catalogues[0].object_number }}">Wikipedia</a></p>
     <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
 </section></main>
-<script>
-</script>
-<style>
-    #navbar {
-        padding: 0 10% 8px 10%;
-    }
-</style>
+
 <aside id="navigation-bar">
     <section>
-        <h3><img src="/static/stargazer/css/img/list.svg"></h3>
-    </section>
-    <section><a ng-click="scrollTo('names')"><span>Top</span></a>
-        <a ng-click="scrollTo('details')"><span>Details</span></a>
+        <a ng-click="scrollTo('names')"><span>{{ MainObject.catalogues[0].object_catalogue }} {{ MainObject.catalogues[0].object_number }}</span></a>
         <a ng-click="scrollTo('astromap')"><span>Astro Maps</span></a>
         <a ng-if="MainObject.photos[0].orginal" ng-click="scrollTo('main-photos')"><span>Photos</span></a>
         <a ng-click="scrollTo('astrocharts')"><span>Sky Charts</span></a>
+                <a ng-click="scrollTo('more-section')"><span>More</span></a>
+
 
     </section>
 </aside>
 
 <div ng-if="lastObject" ng-click="leastIndex(MainObject.id)" class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">{{ lastObject }}</div>
 <div ng-if="nextObject" ng-click="nextIndex(MainObject.id)" class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">{{ nextObject }}</div>
+<script type="text/javascript" >
+    search_butt = document.getElementsByClassName('nav-i')[0];
+    search_butt.id = '';
+    explore_butt = document.getElementsByClassName('nav-i')[1];
+    explore_butt.id = '';
+</script>

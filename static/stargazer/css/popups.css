@@ -132,6 +132,7 @@
     background: url(/static/stargazer/css/img/arrow-up.svg) center center no-repeat rgba(0, 120, 215, 0.75);
     padding: 6px;
     transition: 0.3s;
+    z-index: 103;
 
 }
 #go-top:hover {

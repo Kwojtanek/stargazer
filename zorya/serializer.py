@@ -2,7 +2,9 @@
 __author__ = 'kuba'
 
 from rest_framework import serializers
-from .models import Objects_list, StellarObject, Constellations, Catalogues, ObjectPhotos, AstroCharts, BugTracker, ContactApplet
+from .models import Objects_list, StellarObject, Constellations,\
+    Catalogues, ObjectPhotos, AstroCharts, BugTracker,\
+    ContactApplet, ReletedType
 
 
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -18,6 +20,10 @@ class NGCNestedSerializer(serializers.ModelSerializer):
 class PhotoPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectPhotos
+
+class ReletedTypePutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReletedType
 
 class PhotoSerializer(serializers.ModelSerializer):
     thumb = serializers.ReadOnlyField(

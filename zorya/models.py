@@ -198,10 +198,12 @@ class ReletedType(models.Model):
     """
 
     # Type is releted to itself becouse in example blazar is also a galaxy
-    maintype = models.ForeignKey('self')
+    maintype = models.ForeignKey('self',blank=True,null=True)
     nametype = models.CharField(max_length=80)
     shortcutnametype = models.CharField(max_length=32)
     phototype = ImageWithThumbsField(upload_to='images', sizes=((410, 230), (1280, 718)), blank=True, null=True)
     descriptiontype = models.TextField()
 
+    def __unicode__(self):
+        return self.nametype
     # TODO POłączyć StellarObjects z typem

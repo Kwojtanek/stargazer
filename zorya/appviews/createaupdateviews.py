@@ -1,5 +1,6 @@
-from zorya.models import StellarObject, BugTracker, ContactApplet, ObjectPhotos
-from zorya.serializer import StellarObjectSerializer, BugTrackerSerializer, ContactAppletSerializer, PhotoPutSerializer
+from zorya.models import StellarObject, BugTracker, ContactApplet, ObjectPhotos, ReletedType
+from zorya.serializer import StellarObjectSerializer, BugTrackerSerializer, ContactAppletSerializer,\
+    PhotoPutSerializer, ReletedTypePutSerializer
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -17,7 +18,9 @@ with open(BASE_DIR + '/zorya/appviews/supersecret.code','r') as s:
 @api_view(['POST','GET'])
 def UpdateAPI(request, pk):
     if 'sk' in request.GET and request.GET['sk'] == str(sk):
+        print 'SK OK!'
         serializer = StellarObjectSerializer(StellarObject.objects.get(pk=pk), data=request.data, partial=True, context={'request': request})
+        print pk
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -40,6 +43,17 @@ def PhotoCreate(request):
     if "sk" in request.data and request.data["sk"] == str(sk):
         del request.data["sk"]
         serializer = PhotoPutSerializer(ObjectPhotos(),data=request.data,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(request.data, status=status.HTTP_200_OK)
+    else:
+        return Response(status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST','GET'])
+def TypeCreate(request):
+    if "sk" in request.data and request.data["sk"] == str(sk):
+        del request.data["sk"]
+        serializer = ReletedTypePutSerializer(ReletedType(),data=request.data,partial=True)
         if serializer.is_valid():
             serializer.save()
         return Response(request.data, status=status.HTTP_200_OK)

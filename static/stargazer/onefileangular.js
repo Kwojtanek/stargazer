@@ -6,6 +6,7 @@ function AstroMath(){}function Projection(t,e){this.PROJECTION=Projection.PROJ_T
 var max_mag = 20.6;
 var maxid = 13401;
 var hashtag = '';
+var familycount = 9
 
 ConstList = [
     {
@@ -402,7 +403,6 @@ SearchCatalogues = [
 
 ]
 Nodata = [
-    ,
     {
         'value': 'Radio-source',
         'label': 'Radio-source'},
@@ -527,7 +527,10 @@ SearchApp.config(function($routeProvider,$locationProvider){
         })
         .when('/explore/:type/:typesc', {
             controller: 'ExploreCtrl',
-            templateUrl: '/static/stargazer/angular/routes/Explore.html'        })
+            templateUrl: '/static/stargazer/angular/routes/explore/Explore.html'        })
+        .when('/explore', {
+            controller: 'MainExploreCtrl',
+            templateUrl: '/static/stargazer/angular/routes/explore/MainExplore.html'        })
         .when('/page404',
         {
             templateUrl: '/static/stargazer/angular/routes/404.html'})
@@ -542,24 +545,27 @@ SearchApp.config(function($routeProvider,$locationProvider){
  * Created by root on 29.12.15.
  */
 SearchApp.controller('ExploreCtrl',[ '$routeParams', '$scope', '$resource', function( $routeParams, $scope, $resource){
-
+            $("html, body").animate({ scrollTop: 0 }, 600);
     if ($routeParams['type'] == 'type'){$scope.ChooseFieldsTypes = ddtypes}
     if ($routeParams['type'] == 'catalogue'){$scope.ChooseFieldsTypes = SearchCatalogues}
     if ($routeParams['type'] == 'constellation'){$scope.ChooseFieldsTypes = ConstList}
+
     $scope.pending = true;
     page = 1
     ListFactory = $resource('/'.concat('exploreAPI/',$routeParams['type'],'/',$routeParams['typesc']),{'page':page,'format':'json'})
     getList = function(){
         $('div.box').fadeIn(300);
         ListFactory.get().$promise.then(function(ob){
-            console.log(ob)
             $scope.data = ob;
             $scope.results = ob.results
             $('div.box').fadeOut(300);
             $scope.pending = false;
+            window.document.title = $scope.data.results[0].type
+
         })
     }
     getList()
+
     function LoadOnScroll(){
         if ($scope.data && $scope.data.next !== null ) {
             // Checks if firs part of Data has been downloaded and next data exists
@@ -615,6 +621,17 @@ SearchApp.controller('ExploreCtrl',[ '$routeParams', '$scope', '$resource', func
         alert('Thank you');
     }
 }]);/**
+ * Created by root on 12.01.16.
+ */
+SearchApp.controller('MainExploreCtrl', ['$scope',function($scope) {
+    $scope.Types = SearchTypes;
+    $scope.Catalogues = SearchCatalogues;
+    $scope.ddtypes = ddtypes;
+    $scope.Constellations = ConstList;
+    $scope.maxid = maxid;
+    $scope.familycount = familycount
+}])
+;/**
  * Created by root on 08.06.15.
  */
 SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'CommonData', function($scope, $window, SearchFactory,CommonData) {
@@ -642,6 +659,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues;
     $scope.ddtypes = ddtypes;
+    // On enter searches
     document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
 
     $scope.CommonData  = CommonData.get()
@@ -911,12 +929,32 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
  * Created by root on 05.11.15.
  */
 SearchApp.controller('SingleViewCtrl',
-    ['$scope', '$routeParams','CommonData','$resource', '$location','$anchorScroll',
-        function($scope, $routeParams,CommonData, $resource,$location,$anchorScroll){
+    ['$scope', '$routeParams','CommonData','$resource',
+        function($scope, $routeParams,CommonData, $resource){
             /* $scope.Common data -> Data passed throu CommonData factory from search page
              $scope.MainObject -< Data from CommonData matching index or if CommonData not passed from server
              */
+            function asideshow(){
+                if (doctop() > 200){
+                    document.querySelector('aside').setAttribute('style',
+                        'width: 100%; ' +
+                        'position: fixed;' +
+                        'top: 28px;' +
+                        'z-index: 101;'
+                    )
+                }
+                else {
+                    document.querySelector('aside').setAttribute('style',
 
+                        'width: 100%;' +
+                        'position: absolute;' +
+                        'top: 125px;' +
+                        'left: 10%;' +
+                        'z-index: 101;')
+                }
+            }
+            asideshow()
+            document.addEventListener('scroll', asideshow, false);
             //Downloads charts info
             getCharts = function () {
                 ChartMapFactory = $resource('/endpoint/mapAPI', {
@@ -995,7 +1033,7 @@ SearchApp.controller('SingleViewCtrl',
                     if (!$scope.similar) {
                         document.getElementById('annotation-loader').style.display = 'inherit'
                         SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob; console.log('bla');
+                            $scope.similar = ob
                             document.getElementById('annotation-loader').style.display = ''
                         })
                     }
@@ -1061,12 +1099,8 @@ SearchApp.controller('SingleViewCtrl',
                 }
 
                 $scope.scrollTo = function (id) {
-                    var old = $location.hash();
-                    $location.hash(id);
-                    $anchorScroll();
-                    //reset to old to keep any additional routing logic from kicking in
-                    $location.hash(old);
-                };
+                    $('html, body').animate({scrollTop:$('#' + id).position().top - 60}, 'slow');
+                }
 
                 // Sets Next or last Main object
                 $scope.nextIndex = function (index) {

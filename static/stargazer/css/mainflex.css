@@ -505,7 +505,7 @@ and (max-width : 480px) {
         flex: 1 1 100%;
         display: inherit;
         flex-wrap: wrap;
-        height: 74px;
+        height: 222px;
 
     }
     #brightness > div:nth-child(2) {

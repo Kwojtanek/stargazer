@@ -23,7 +23,7 @@ h3 {
 #names {
     min-height: 500px;
     flex-basis: 100%;
-    padding: 1px 10% 5%;
+    padding: 70px 10% 5%;
     color: #35393e;
     background-color: #f1f1f1;
     align-self: center;
@@ -74,15 +74,15 @@ h3 {
     border: none;
 }
 aside#navigation-bar {
-    position: fixed;
-    right: -46px;
-    top: 30%;
-    z-index: 200;
-    width: 130px;
+    width: 100%;
+    position: absolute;
+    top: 125px;
+    left: 10%;
+    z-index: 101;
 }
 aside#navigation-bar > section{
     text-align: left;
-    padding: 10px;
+    padding: 10px 0 0 0;
     color: #ffffff;
     text-decoration: none;
     font-weight: 900;
@@ -91,33 +91,22 @@ aside#navigation-bar > section{
     transition: 400ms;
 }
 aside#navigation-bar > section > * {
-    width: 130px;
     padding: 10px;
     margin: 2px;
     display: inline-block;
     background-color: #35393E;
     transition: 400ms;
-    -webkit-box-shadow: -3px 3px 1px -1px rgba(0,0,0,0.75);
-    -moz-box-shadow: -3px 3px 1px -1px rgba(0,0,0,0.75);
-    box-shadow: -3px 3px 1px -1px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.75);
 
 }
 aside#navigation-bar > section > *:hover {
-    margin-left: -60px;
     background-color: #0078D7;
 
 }
 aside#navigation-bar > section:first-child > *:first-child {
-    width: 130px;
-    padding: 10px;
-    margin-left: 0px;
-    display: inline-block;
-    background-color: #ffbf00;
-    transition: 400ms;
-
+    background-color: #0279d7;
 }
 aside#navigation-bar > section:first-child > *:first-child:hover {
-
 }
 #astrocharts {
     background-repeat: no-repeat;
@@ -299,9 +288,9 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     }
     #various-titles {
         width: 100%;
-    text-align: center;
-    padding: 12px;
-}
+        text-align: center;
+        padding: 12px;
+    }
 }
 
 @media only screen and (min-width: 649px) and (max-width: 972px) {

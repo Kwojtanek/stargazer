@@ -2,12 +2,32 @@
  * Created by root on 05.11.15.
  */
 SearchApp.controller('SingleViewCtrl',
-    ['$scope', '$routeParams','CommonData','$resource', '$location','$anchorScroll',
-        function($scope, $routeParams,CommonData, $resource,$location,$anchorScroll){
+    ['$scope', '$routeParams','CommonData','$resource',
+        function($scope, $routeParams,CommonData, $resource){
             /* $scope.Common data -> Data passed throu CommonData factory from search page
              $scope.MainObject -< Data from CommonData matching index or if CommonData not passed from server
              */
+            function asideshow(){
+                if (doctop() > 200){
+                    document.querySelector('aside').setAttribute('style',
+                        'width: 100%; ' +
+                        'position: fixed;' +
+                        'top: 28px;' +
+                        'z-index: 101;'
+                    )
+                }
+                else {
+                    document.querySelector('aside').setAttribute('style',
 
+                        'width: 100%;' +
+                        'position: absolute;' +
+                        'top: 125px;' +
+                        'left: 10%;' +
+                        'z-index: 101;')
+                }
+            }
+            asideshow()
+            document.addEventListener('scroll', asideshow, false);
             //Downloads charts info
             getCharts = function () {
                 ChartMapFactory = $resource('/endpoint/mapAPI', {
@@ -86,7 +106,7 @@ SearchApp.controller('SingleViewCtrl',
                     if (!$scope.similar) {
                         document.getElementById('annotation-loader').style.display = 'inherit'
                         SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob; console.log('bla');
+                            $scope.similar = ob
                             document.getElementById('annotation-loader').style.display = ''
                         })
                     }
@@ -152,12 +172,8 @@ SearchApp.controller('SingleViewCtrl',
                 }
 
                 $scope.scrollTo = function (id) {
-                    var old = $location.hash();
-                    $location.hash(id);
-                    $anchorScroll();
-                    //reset to old to keep any additional routing logic from kicking in
-                    $location.hash(old);
-                };
+                    $('html, body').animate({scrollTop:$('#' + id).position().top - 60}, 'slow');
+                }
 
                 // Sets Next or last Main object
                 $scope.nextIndex = function (index) {

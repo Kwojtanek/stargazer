@@ -2,6 +2,7 @@ var min_mag = 1.6;
 var max_mag = 20.6;
 var maxid = 13401;
 var hashtag = '';
+var familycount = 9
 
 ConstList = [
     {
@@ -398,7 +399,6 @@ SearchCatalogues = [
 
 ]
 Nodata = [
-    ,
     {
         'value': 'Radio-source',
         'label': 'Radio-source'},
