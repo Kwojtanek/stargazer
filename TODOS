@@ -1,4 +1,5 @@
 Kluczowe:
+Stworzyć model powiązany listę BIBCODES dla każdego elementu
 Indeksowanie wyszukiwania X
 Dokumentacja API X
 
@@ -22,27 +23,26 @@ Po najechaniu na klasę powinno pokazywać szczegóły na jej temat X
 MapAPI sprawdza przez to tylko ASC               X
 
 Single View dla różnych rozdzielczośći poprwaić wyświetlanie X
-Menu jako panel na górze po przesunięciu strony X
 Endpoint sprawdzający czy istnieje taki obiekt z inną nazwąX
 Scraper do pobierania innych katalogów X
 ANGULAR MATERIALS Przerobić autocomplete z jqueryUI X
-Przycisk do góry na dole:) X
 Bugi:
-Fields dla deklinacji nie działa tak jak powinno X
-Źle wyświetla się pasek magnitudo poniżej 480px X
+Fields dla deklinacji nie działa tak jak powinno X Bardzo nie działa
 Fields nie tworzy kolumny bazy danych
 
 
 
 Zrobione:
 Bugi:
+Źle wyświetla się pasek magnitudo poniżej 480px V
 Nie precyzyjna deklinacja dla simbada V
 Pojedyńczy widok powinien zmieniać też URL podczas klikania na następny/poprzedni V
 Po przejśćiu między widokami nie wyświetla właściwie Magnitudo V
 w podobnych widoku są zduplikowane wpisy V
 
 
-
+Przycisk do góry na dole:) V
+Menu jako panel na górze po przesunięciu strony V
 Widok znajdujący podobne elementy V
 V Strona 404 V
 Podpiąć google adsense V

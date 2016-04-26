@@ -1,9 +1,10 @@
 # coding=utf-8
 __author__ = 'root'
 import unittest
-import re, json
-from DataScraper.Scrapers import WikiMediaScraper, WikiImageScraper, WikiSingleImageScraper
-from DataScraper.Data_procesors import ban_reader, createsave_json, duplicate_writer, read_row
+
+from DataScraper.Scrapers import WikiImageScraper, WikiSingleImageScraper
+from DataScraper.Data_procesors import ban_reader, duplicate_writer, read_row
+
 filelist = ["File:A Swift Tour of M31.OGG",
             "File:Andromeda Galaxy (with h-alpha).jpg",
             "File:Andromeda active core.jpg",

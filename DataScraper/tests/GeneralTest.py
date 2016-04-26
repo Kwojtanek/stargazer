@@ -1,6 +1,9 @@
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 import unittest
-from DataScraper.Gatherer import pk_reader, pk_writer,pk_generator, get_otype
+
+from DataScraper.Data_procesors import pk_reader, pk_generator, get_otype
+
+
 class TestGeneral(unittest.TestCase):
     def testPk(self):
         self.assertEqual(pk_reader(),1)

@@ -1,18 +1,19 @@
 # coding=utf-8
-from duplicity.backend import retry
-
 __author__ = 'Jakub Wojtanek Kwojtanek@gmail.com'
 import urllib
 import urllib2
 import json
 import re
-from retrying import retry
+from astroquery.ned import Ned
 from astroquery.simbad import Simbad
 
-
-with open('/pro/stargazer/zorya/appviews/supersecret.code','r') as f:
+'''
+File includes all classes that are connecting to external services and scraps data.
+'''
+with open('/pro/stargazer/zorya/appviews/supersecret.code', 'r') as f:
     sk = f.read()
     f.close()
+
 
 class Scraper:
     """
@@ -34,7 +35,7 @@ class Scraper:
 
         :return object page :
         """
-        data = urllib2.urlopen(self.object_endpoint(),timeout=2)
+        data = urllib2.urlopen(self.object_endpoint(), timeout=2)
         return data
 
     def get_data(self):
@@ -73,7 +74,7 @@ class Reciver(Scraper):
             if re.findall(pattern, number):
                 dig = re.compile('\d+')
                 catalog = 'IC'
-                number = re.search(dig,number)
+                number = re.search(dig, number)
                 number = number.group(0)
                 return '%s %s' % (catalog, number)
             else:
@@ -86,6 +87,7 @@ class WikiMediaScraper(Scraper):
     """
 
     """
+
     def __init__(self, name):
         Scraper.__init__(self, name)
         self.title = name
@@ -117,18 +119,22 @@ class WikiMediaScraper(Scraper):
             return a[dict(a).keys()[0]]['extract']
         except:
             return False
+
+
 class WikiImageScraper(Scraper):
     """
     This scraper finds images in wikipedia article according to data provided
     """
+
     def __init__(self, name, imgcount=10):
-        Scraper.__init__(self,name)
+        Scraper.__init__(self, name)
         self.title = name
         self.name = ''
         # MAX Count of images returned in list
-        self.imgcount =imgcount
+        self.imgcount = imgcount
 
     URL = "https://en.wikipedia.org/w/api.php"
+
     @property
     def PARAMS(self):
         """
@@ -145,35 +151,38 @@ class WikiImageScraper(Scraper):
         :return list of images belonging to article on wikipedia
         """
         if self.get_data():
-            imgList = []
-            #Pattern matches every photo
+            imglist = []
+            # Pattern matches every photo
             pattern = re.compile("\.(jpg|jpeg|tiff|png)$")
 
-            #Extracts imamges list from data
+            # Extracts imamges list from data
             try:
                 allData = self.get_data()['query']['pages']
-                imageListData =  allData[dict(allData).keys()[0]]['images']
+                imageListData = allData[dict(allData).keys()[0]]['images']
                 for singleImage in imageListData:
                     if pattern.search(singleImage['title']):
-                        imgList.append(singleImage['title'])
-                return json.dumps(imgList)
+                        imglist.append(singleImage['title'])
+                return json.dumps(imglist)
             except:
                 return False
         else:
             return False
 
+
 class WikiSingleImageScraper(Scraper):
     """
     This scraper will download information about one media in wikipedia
     """
-    def __init__(self,name,thumbWidth=300,thumbHeight=300):
-        Scraper.__init__(self,name)
+
+    def __init__(self, name, thumbWidth=300, thumbHeight=300):
+        Scraper.__init__(self, name)
         self.title = name
         self.name = ''
         # Defines width and height of thumnail
         self.width, self.height = thumbWidth, thumbHeight
-    '&'
+
     URL = 'https://en.wikipedia.org/w/api.php'
+
     @property
     def PARAMS(self):
         """
@@ -186,8 +195,9 @@ class WikiSingleImageScraper(Scraper):
                 'titles': self.title,
                 'iiurlheight': self.height,
                 'iilimit': '50',
-                'iiend':'2007-12-31T23:59:59Z',
+                'iiend': '2007-12-31T23:59:59Z',
                 'iiprop': 'timestamp|user|url|dimensions'}
+
     def getimagesdetails(self):
         if self.get_data():
             try:
@@ -196,82 +206,72 @@ class WikiSingleImageScraper(Scraper):
                 return singleImage[0]
             except:
                 return False
+
+
 class SimbadScraper:
     """
     Scraper connects with simbad db and gets data.
      Votable fields defines which data to obtain.
+     All key arguments are passed throu this class
+     Data that will be passed as args
+     See more on => astroquery.simbad.Simbad() class.
     """
 
-    def __init__(self, name,*args):
+    def __init__(self, name, *args, **kwargs):
         self.name = name
         self.data = None
+        self.args = args
+        self.kwargs = kwargs
 
     def get_data(self):
         result_table = Simbad()
-        result_table.add_votable_fields('flux(B)', 'mt','otype', 'ra', 'dec')
+        # Extended timeout to search for 1000 rows
+        result_table.TIMEOUT = 120
+        result_table.ROW_LIMIT = 1000
+        result_table.add_votable_fields('flux(V)', 'mt', 'otype', 'ra', 'dec', 'dim', *self.args)
         result_table.remove_votable_fields('coordinates')
-        result_table = result_table.query_object(self.name)
+        result_table = result_table.query_object(self.name, **self.kwargs)
         return result_table
 
-class Sender(Scraper):
-    def __init__(self, name, data,  **kwargs):
-        Scraper.__init__(self,name)
-        self.data = data
 
-    PARAMS = {'sk':sk}
-    URL = 'http://www.zorya.co/updateAPI/'
-
-    def send_data(self):
-        data = json.dumps(self.data)
-        req = urllib2.Request(self.object_endpoint(), data, headers={'Content-Type':'application/json'})
-        f = urllib2.urlopen(req)
-        response = json.load(f)
-        return response
-
-    def send_data_noresp(self,count=1):
-        data = json.dumps(self.data)
-        req = urllib2.Request(self.object_endpoint(), data, headers={'Content-Type':'application/json'})
-        if count < 5:
-            try:
-                print 'Trying send data to%s' % self.object_endpoint()
-                f = urllib2.urlopen(req,timeout=5)
-                return  json.load(f)
-            except:
-                count+=1
-                return self.send_data_noresp(count)
-        else:
-            return False
-
-class PhotoSender(Scraper):
-    def __init__(self, name, data, pk):
-        Scraper.__init__(self,name)
+class NEDScraper:
+    """
+    This class connetcts to NASA/IPAC EXTRAGALACTIC DATABASE
+    """
+    def __init__(self, name):
         self.name = name
-        self.data = data
-        #Pk is unique identifier of object that will be updated
-        self.pk = pk
 
-    PARAMS = {'format':'json'}
-    URL = 'http://www.zorya.co/endpoint/createphotoAPI'
+    def get_photometry(self):
+        """
 
-    def conv_data(self):
-        converted_data = {}
-        converted_data['sk'] = sk
-        converted_data['name'] = self.name
-        converted_data['photo_url'] = self.data['url']
-        converted_data['photo_thumbnail'] = self.data['thumburl']
-        converted_data['ngc_object'] = self.pk
-        return json.dumps(converted_data)
+        :return:  Returns photometry data as astropy.table.Table` object.:
+        Available dict.keys() are:
+        ['No.', 'Object Name', 'RA(deg)', 'DEC(deg)', 'Type', 'Velocity', 'Redshift',
+        'Redshift Flag', 'Magnitude and Filter', 'Distance (arcmin)', 'References', 'Notes',
+        'Photometry Points', 'Positions', 'Redshift Points', 'Diameter Points', 'Associations']
 
-    def send_data(self,count=1):
-        data = self.conv_data()
-        req = urllib2.Request(self.object_endpoint(), data, headers={'Content-Type':'application/json'})
-        if count < 5:
-            try:
-                print 'Trying send data to%s' % self.object_endpoint()
-                f = urllib2.urlopen(req,timeout=5)
-                return  json.load(f)
-            except:
-                count+=1
-                return self.send_data(count)
-        else:
-            return False
+        """
+
+        return Ned.get_table(self.name)
+
+    def get_diameters(self):
+        """
+        :return ` Returns data as astropy.table.Table` object.:
+        Available dict.keys() are:
+
+        ['No.', 'Frequency targeted', 'Refcode', 'Major Axis', 'Major Axis Flag',
+        'Major Axis Unit', 'Minor Axis', 'Minor Axis Flag', 'Minor Axis Unit', 'Axis Ratio',
+        'Axis Ratio Flag', 'Major Axis Uncertainty', 'Ellipticity', 'Eccentricity',
+        'Position Angle', 'Equinox', 'Reference Level', 'NED Frequency', 'NED Major Axis',
+        'NED Major Axis Uncertainty', 'NED Axis Ratio', 'NED Ellipticity', 'NED Eccentricity',
+        'NED cos-1_axis_ratio', 'NED Position Angle', 'NED Minor Axis', 'Minor Axis Uncertainty',
+        'NED Minor Axis Uncertainty', 'Axis Ratio Uncertainty', 'NED Axis Ratio Uncertainty',
+        'Ellipticity Uncertainty', 'NED Ellipticity Uncertainty', 'Eccentricity Uncertainty',
+        'NED Eccentricity Uncertainty', 'Position Angle Uncertainty',
+        'NED Position Angle Uncertainty', 'Significance', 'Frequency', 'Frequency Unit',
+        'Frequency Mode', 'Detector Type', 'Fitting Technique', 'Features', 'Measured Quantity',
+        'Measurement Qualifiers', 'Targeted RA', 'Targeted DEC', 'Targeted Equinox',
+        'NED Qualifiers', 'NED Comment']
+
+        """
+        return Ned.get_table(self.name, table='diameters')

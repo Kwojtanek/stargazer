@@ -1,8 +1,11 @@
 # coding=utf-8
 __author__ = 'root'
 import unittest
-from DataScraper.Scrapers import Reciver, WikiMediaScraper, SimbadScraper, Sender
+
+from DataScraper.Scrapers import Reciver, WikiMediaScraper, SimbadScraper
+from DataScraper.Senders import Sender
 from DataScraper.Loger import LogData
+
 
 class TestReciver(unittest.TestCase):
     def testLog(self):
