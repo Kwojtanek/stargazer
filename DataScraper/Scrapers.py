@@ -233,6 +233,17 @@ class SimbadScraper:
         result_table = result_table.query_object(self.name, **self.kwargs)
         return result_table
 
+class SimbadIdsScraper:
+    """
+    Returns ids of given objects
+    """
+    def __init__(self, name, *args, **kwargs):
+        self.name = name
+        self.data = None
+    def get_data(self):
+        Simbad.ROW_LIMIT = 18
+        result_table = Simbad.query_objectids(self.name)
+        return result_table
 
 class NEDScraper:
     """

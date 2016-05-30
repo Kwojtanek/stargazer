@@ -5,7 +5,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from zorya.models import AstroCharts
-
 from DjangoSettings.DevSettings import STATIC_URL
 
 __author__ = 'Jakub Wojtanek KWojtanek@gmail.com'

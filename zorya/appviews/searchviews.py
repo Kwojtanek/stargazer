@@ -25,9 +25,16 @@ class SearchAPI(generics.ListAPIView):
         n = self.request.query_params.get('name', None)
         adv = self.request.query_params.get('adv',None)
         orderby =self.request.query_params.get('orderby', None)
+        overview =self.request.query_params.get('overview', None)
+        catalogue_number = self.request.query_params.get('cat_n',None)
+
         if constellation:
             constellation = constellation.split(',')
             stellarquery = stellarquery.filter(constelation__abbreviation__in=constellation)
+        if overview:
+            stellarquery = stellarquery.exclude(overview=None)
+        if catalogue_number:
+            stellarquery = stellarquery.filter(catalogues__object_number=catalogue_number)
         if type_:
             type_ = type_.split(',')
             if adv == 'true':

@@ -13,5 +13,5 @@ class TestGeneral(unittest.TestCase):
         self.assertEqual(get_otype('Pn'), 'Pl')
         self.assertEqual(get_otype('RfNeb'), 'RfNeb')
 
-if __name__ == 'main':
+if __name__ == '__main__':
     unittest.main()

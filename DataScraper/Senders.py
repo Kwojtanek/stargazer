@@ -1,7 +1,8 @@
+# coding=utf-8
 import json
 import urllib2
 
-from DataScraper.Scrapers import Scraper
+from Scrapers import Scraper
 
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 
@@ -42,11 +43,6 @@ class Sender(Scraper):
                 return self.send_data_noresp(count)
         else:
             return False
-
-
-class LocalSender(Sender):
-    URL = 'http://127.0.0.1:8000/endpoint/updateAPI/'
-
 
 class MultipleDataSender(Sender):
     PARAMS = {'sk':sk,'multiple':True}
@@ -118,3 +114,16 @@ class TypeSender(Scraper):
                 return self.send_data(count)
         else:
             return False
+
+# Wbudowane URLLIBS są straszne
+
+# Nadchodzi nowa jakość Requests
+import requests
+
+class LocalSender:
+    def __init__(self,*args,**kwargs):
+        pass
+    URL = 'http://127.0.0.1:8000/endpoint/createupdateAPI'
+    def check_connection(self):
+        req = requests.post(self.URL)
+        return req.status_code

@@ -3,6 +3,7 @@ import re
 import datetime
 
 from django.db import models
+
 from DjangoSettings.DevSettings import MEDIA_URL
 from .fields import DeclinationField
 from .thumbs import ImageWithThumbsField
@@ -50,7 +51,7 @@ class StellarObject(models.Model):
     declination = DeclinationField(blank=True, null=True)
     distance = models.IntegerField(blank=True, null=True)
 
-    constelation = models.ForeignKey(Constellations, related_name='relatedconstellation')
+    constelation = models.ForeignKey(Constellations, related_name='relatedconstellation',blank=True, null=True)
 
     magnitudo = models.FloatField(max_length=5, blank=True, null=True)
     dimAxb = models.CharField(max_length=32, blank=True, null=True)
@@ -92,7 +93,6 @@ class StellarObject(models.Model):
         else:
             return 20
 
-
 class Catalogues(models.Model):
     """
     Class that holds name and description of catalogue
@@ -119,14 +119,13 @@ class Objects_list(models.Model):
     object_number = models.CharField(max_length=16)
 
     def __unicode__(self):
-        return u'%s number %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)),
+        return u'%s %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)),
                                   str(StellarObject.objects.get(pk=self.single_object.pk)))
-
 
 class ObjectPhotos(models.Model):
     """
     This Class contains all photos related to StellarObject,
-     both uploaded to server and links to photo from different server
+     both uploaded to server and links to photo uploaded by admin
      """
 
     name = models.CharField(max_length=128, blank=True, null=True)
@@ -207,3 +206,15 @@ class ReletedType(models.Model):
     def __unicode__(self):
         return self.nametype
     # TODO POłączyć StellarObjects z typem
+
+class BibCode(models.Model):
+    StellarObject = models.ForeignKey(StellarObject,related_name='bibcode')
+    name = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
+class Source(models.Model):
+    StellarObject = models.ForeignKey(StellarObject,related_name='source')
+    name = models.CharField(max_length=512)

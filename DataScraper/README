@@ -1,0 +1,9 @@
+This is data scraper which takes astronomical data from several servers including:
+    SIMBAD Queries - Serches for esential data like position and size
+    NED Queries (NASA Extragalactic database) - turned of by default, similar data but only extragalactic
+    Wikipedia - Takes description of objects and photography
+
+    More servers could be added in the future
+
+
+    To interact and learn more type in bash: python shell.py

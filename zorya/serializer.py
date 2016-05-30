@@ -63,6 +63,9 @@ class StellarObjectSerializer(serializers.ModelSerializer):
     fov = serializers.ReadOnlyField(
         read_only=True
     )
+    first_catalogue = serializers.ReadOnlyField(
+        read_only=True
+    )
 
     class Meta:
         model = StellarObject
@@ -116,3 +119,7 @@ class ContactAppletSerializer(serializers.ModelSerializer):
 class StellarObjectSerializer2(serializers.ModelSerializer):
     class Meta:
         model = StellarObject
+
+class CatalogueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Objects_list

@@ -3,18 +3,20 @@ __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 File includes all functions that process data and saves them to files, usually in json format
 '''
 import json
-import pickle
 import os
+import re
 from Scrapers import Reciver
-from DjangoSettings.DevSettings import BASE_DIR
+from Senders import LocalSender
 
-DOCS_DIR = '/pro/stargazer/DataScraper/docs'
+DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),'docs')
+LOGS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),'logs')
+
 def pk_writer(pk):
     """
     writes pk
     """
     with open(os.path.join(DOCS_DIR, 'pk.txt'), 'w') as f:
-        pk_file = f.write(str(pk))
+        f.write(str(pk))
         f.close()
 
 
@@ -27,6 +29,7 @@ def pk_reader():
         f.close()
         return pk
 
+
 def pk_generator():
     """
     Generates next pk
@@ -35,25 +38,27 @@ def pk_generator():
     if pk <= 13401:
         yield pk + 1
 
+
 def get_otype(otype):
     """
     reads type of object and if does not ocures in list waits for input
 
     """
-    with open(os.path.join(DOCS_DIR, 'otypes.json'),'rb') as f:
+    with open(os.path.join(DOCS_DIR, 'otypes.json'), 'rb') as f:
         ot = (json.load(f))
         f.close()
     if ot.has_key(otype):
         return ot.get(otype)
     else:
-        inputvalue = raw_input('No full name %s '  + otype)
+        inputvalue = raw_input('No full name %s ' + otype)
         ot[otype] = inputvalue
         if inputvalue == 'break':
             return False
         else:
-            with open(os.path.join(DOCS_DIR,'otypes.json'),'w') as f:
+            with open(os.path.join(DOCS_DIR,'otypes.json'), 'w') as f:
                 json.dump(ot,f)
-            return  inputvalue
+            return inputvalue
+
 
 def get_description(otype):
 
@@ -88,14 +93,14 @@ def get_description(otype):
 
 
 def get_ra(ra):
-    #Formats right Ascension to datatimelike format
+    # Formats right Ascension to datatimelike format
      a = ra
      return a[:2] + ':' + a[3:5] + ':' + a[6:8]
 
 
 def name_func(pk,count=1):
-    #Retries connection if has to
-    #TODO Should be more explicit
+    # Retries connection if has to
+    # TODO Should be more explicit
     print 'Trying'
     name = Reciver(pk).get_name()
     if count < 5:
@@ -127,6 +132,7 @@ def createsave_json(source,datas):
         json.dump(data, f)
         f.close()
 
+
 def ban_reader(photo):
     """
     Checks if photo is baned
@@ -151,7 +157,7 @@ def duplicate_reader(photo):
                 return True
         return False
 
-#Writes json and finds if it already existst if not will append
+# Writes json and finds if it already existst if not will append
 def list_writer(photo,file):
     path = os.path.join(DOCS_DIR, file)
     with open(path, 'r') as f:
@@ -167,6 +173,7 @@ def list_writer(photo,file):
             f.close()
             return False
 
+
 def duplicate_writer(photo):
     """
     If photo is duplicated it could be banned by user
@@ -174,24 +181,24 @@ def duplicate_writer(photo):
      Returns true if photo is duplicated and baned
 
     """
-    #If photo is baned return True
+    # If photo is baned return True
     if ban_reader(photo):
         print 'PHoto is banned %s ' % photo
         return True
-    #Else Look for duplicates files
+    # Else Look for duplicates files
     else:
         if duplicate_reader(photo):
             # If photo is duplicated wait for decision if it should be baned or passed
             print 'Photo is duplicated %s ' % photo
             decision = raw_input('1 to ban photo or 0 to let it be sended to server name: %s ' % photo)
-            #If decisoion is to bann append to ban it end return True
+            # If decisoion is to bann append to ban it end return True
             if int(decision) == 1:
                 list_writer(photo,'PhotoBanlist.json')
                 return True
-            #If decision is to not bann return False
+            # If decision is to not bann return False
             if int(decision) == 0:
                 return False
-            #If photo is not banned/in duplicates ->
+            # If photo is not banned/in duplicates ->
             # Photo will be pushed to duplicates
         else:
             print 'Photo is not duplicated %s ' % photo
@@ -220,6 +227,7 @@ def save_add_index(a):
         f.write(str(a+1))
         f.close()
 
+
 def read_row(index):
     with open(os.path.join(DOCS_DIR,'photo.log'), 'r') as f:
         data =(json.load(f))
@@ -230,7 +238,7 @@ def read_row(index):
             return False
 
 
-#Types reader functions
+# Types reader functions
 def otype_reader(pk):
     with open(os.path.join(DOCS_DIR,'otypes.json'),'rb') as f:
         ot = (json.load(f))
@@ -242,7 +250,7 @@ def pktype_writer(pk):
     writes pk
     """
     with open(os.path.join(DOCS_DIR,'types/pk.txt'), 'w') as f:
-        pk_file = f.write(str(pk))
+        f.write(str(pk))
         f.close()
 
 
@@ -254,3 +262,87 @@ def pktype_reader():
         pk = int(f.read())
         f.close()
         return pk
+fluxes = ('U', 'B', 'V', 'R', 'I', 'J', 'H', 'K', 'u', 'g', 'r', 'i', 'z')
+
+
+def flux_func(res, fluxcount= 0):
+    # Collects different wavelength fluxes and rounds them
+    roundedflux = 0
+    for f in fluxes:
+        if(res['FLUX_' + str(f)]) and (res['FLUX_' + str(f)]) != '':
+            roundedflux += res['FLUX_' + str(f)]
+            fluxcount += 1
+    if fluxcount != 0:
+        roundedflux /= fluxcount
+    return roundedflux
+
+
+def idsconverter(table):
+    # Takes astroquery table and coverts it to list
+    pattern = re.compile('NAME')
+    # Many names contains NAME in front)
+    return [re.sub(pattern, '', r[0]).strip() for r in table]
+
+
+def status_code():
+    code = LocalSender().check_connection()
+    if code == 200:
+        print('Connection Ok')
+    elif code == 500:
+        print('Server Down')
+    else:
+        print('Http Status code %s' % code)
+
+class CataloguesRWD:
+    def __init__(self, catalogue=None, size=None, last_obj=None,logs='catalogues.log.json'):
+        self.catalogue = catalogue
+        self.size = size
+        self.last_obj = last_obj
+        self.logs = logs
+        with open(os.path.join(LOGS_DIR,logs),'rw+') as f:
+            self.data = json.load(f)
+            f.close()
+
+    len = lambda self: len(self.data)
+
+    def add_cat(self):
+            if not {'catalogue':self.catalogue,'size':self.size,'last_obj':self.last_obj} in self.data and self.last_obj == 1:
+                if self.catalogue and self.size and self.last_obj:
+                    self.data.append({'catalogue':self.catalogue,'size':self.size,'last_obj':self.last_obj})
+            else:
+                return False
+    def save_file(self):
+        with open(os.path.join(LOGS_DIR,self.logs),'w') as f:
+            f.write(json.dumps(self.data))
+            f.close()
+    def purge(self):
+        with open(os.path.join(LOGS_DIR,self.logs),'w') as f:
+            f.write(json.dumps([]))
+            f.close()
+            self.data = []
+    def add_one(self):
+        self.last_obj +=1
+        for c in self.data:
+            if c['catalogue'] == self.catalogue:
+                c['last_obj'] += 1
+
+    def delete(self):
+        for i, c in enumerate(self.data):
+            if c['catalogue'] == self.catalogue:
+                del self.data[i]
+                break
+
+    def read(self):
+        message = ''
+        print "There is %s" %len(self.data)
+        if self.data:
+            for c in self.data:
+                print 'Catalogue name: %s' % c['catalogue']
+                print 'Count of objects %s' % c['size']
+                print 'Current object %s' % c['last_obj']
+                print 'Percentage finished %s ' % (str(format(float(c['last_obj'])/float(c['size']),'.2f')))
+        else:
+            print 'No data'
+
+    def read_raw(self):
+        return {'catalogue':self.catalogue,'size':self.size,'last':self.last_obj}
