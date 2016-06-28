@@ -228,8 +228,10 @@ class SimbadScraper:
         # Extended timeout to search for 1000 rows
         result_table.TIMEOUT = 120
         result_table.ROW_LIMIT = 1000
-        result_table.add_votable_fields('flux(V)', 'mt', 'otype', 'ra', 'dec', 'dim', *self.args)
-        result_table.remove_votable_fields('coordinates')
+        result_table.add_votable_fields('flux(V)', 'mt', 'otype', 'ra', 'dec', 'dim','flux(U)','flux(B)','flux(R)',
+                     'flux(I)','flux(J)','flux(H)','flux(K)',
+                     'flux(u)', 'flux(g)','flux(r)','flux(i)',
+                     'flux(z)', *self.args)
         result_table = result_table.query_object(self.name, **self.kwargs)
         return result_table
 

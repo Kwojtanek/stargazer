@@ -1,5 +1,6 @@
+# coding=utf-8
 """
-This file should connect to different interfaces and created on big data to send as bellow shown.
+This file connects to different interfaces and created on big data to send as bellow shown.
 
 Data format to send
 {"data":
@@ -27,16 +28,145 @@ Data format to send
     {
         "photo": "http://127.0.0.1:8000/media/images/ngc4494.jpg",
         "photo_url": "",
-        "photo_thumbnail": "",
+        "photo_thumbnail": ""
     },
     {
         "photo": "http://127.0.0.1:8000/media/images/ngc4559.jpg",
         "photo_url": "",
-        "photo_thumbnail": "",
+        "photo_thumbnail": ""
 }],
 "source":["www.bla.pca"],
 "bibcode":["NGC 225"]
 }
 """
+from astropy.coordinates import SkyCoord, get_constellation
+
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
+import json
+
+from settings import *
+from common_funcs import flux_func, get_ra, get_description,get_otype, idsconverter, get_const
+
+#TODO Implement wikipedia image interface
+
+astrotable = 'astropy.table.table.Table'
+
+class ComposerInterface:
+    """
+    Class unifies different scrapers use and return raw data
+    """
+    def __init__(self,interfaceType, catalogue, number,*args, **kwargs):
+        self.iType = interfaceType
+        self.catalogue = catalogue
+        self.number = number
+        self.args = args
+        self.kwargs = kwargs
+
+    def representation(self):
+        return '%s %s' % (self.catalogue,self.number)
+
+
+    def get_data(self):
+        if setts.has_key(self.iType):
+            if self.iType == 'NED':
+                return setts[self.iType](self.representation()).get_photometry()
+            if self.iType == 'SIMBAD' or self.iType == 'BIBCODES':
+                return setts[self.iType](self.representation()).get_data()
+            if self.iType == 'DOCS_OVERVIEW' or self.iType == 'DOCS_PHOTO':
+                return setts[self.iType](self.catalogue,self.number)
+            if self.iType == 'WIKIINFO':
+                return setts[self.iType](self.representation()).get_finall_data()
+
+
+        else:
+            return 0
+
+class Mapper:
+    def __init__(self,data, iType):
+        self.data = data
+        self.iType = iType
+
+    def map_data(self):
+        results = {}
+        if(self.data['GALDIM_MAJAXIS']):
+            try:
+                results["dimAxb"] = '%s x %s' % (self.data['GALDIM_MINAXIS'].compressed()[0], self.data['GALDIM_MINAXIS'].compressed()[0])
+            except:
+                pass
+        if(self.data['FLUX_B'].compressed()) and (self.data['FLUX_B'].compressed()) != '':
+            results["magnitudo"] = round(flux_func(self.data),2)
+        if(self.data['MORPH_TYPE']).compressed() and (self.data['MORPH_TYPE']).compressed() != '':
+            results["classe"] = self.data['MORPH_TYPE'].compressed()[0]
+        if(self.data['OTYPE'].compressed()) and (self.data['OTYPE'].compressed()) != '':
+            results["otype"] = get_description(self.data['OTYPE'].compressed()[0])
+            results["type_shortcut"] = (self.data['OTYPE'].compressed()[0])
+            results["type"] = get_otype(self.data['OTYPE'].compressed()[0])
+        if(self.data['RA'].compressed()) and (self.data['RA'].compressed()) != '':
+            results["rightAsc"] =  get_ra(self.data['RA'].compressed()[0])
+        if(self.data['DEC'].compressed()) and (self.data['DEC'].compressed()) != '':
+            results["declination"] = self.data['DEC'].compressed()[0][:-3]
+        try:
+            results['constelation'] = get_const('%s %s' % (results['rightAsc'],results['declination']))
+        except:
+            pass
+        return results
+
+
+class Composer(object):
+    """
+    Class  takes data from different interfaces, combine them and returns dictionary
+    """
+    def __init__(self, catalogue, number,
+                 BIBCODES=BIBCODES,
+                 NED=NED,
+                 SIMBAD=SIMBAD,
+                 WIKIMEDIA = WIKIMEDIA,
+                 WIKIINFO = WIKIINFO,
+                 DOCS_OVERVIEW = DOCS_OVERVIEW,
+                 DOCS_PHOTO = DOCS_PHOTO):
+
+        self.NED=NED
+        self.SIMBAD=SIMBAD
+        self.WIKIMEDIA = WIKIMEDIA
+        self.WIKIINFO = WIKIINFO
+        self.DOCS_OVERVIEW = DOCS_OVERVIEW
+        self.DOCS_PHOTO = DOCS_PHOTO
+        self.BIBCODES = BIBCODES
+        # User can explicitly change settings
+
+        self.catalogue = catalogue
+        self.number = number
+
+    def __unicode__(self):
+        return '%s %s' % (self.catalogue,self.number)
+
+    print_settings = lambda: print_settings()
+
+    def get_data(self):
+        data = {}
+        data['source'] = []
+        if SIMBAD:
+            SMCI = Mapper(ComposerInterface('SIMBAD', self.catalogue, self.number).get_data(),'SIMBAD').map_data()
+            data['data'] = SMCI
+            data['source'].append('http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident=%s_%s' %(self.catalogue,self.number))
+        if NED:
+            NMCI = Mapper(ComposerInterface('NED', self.catalogue, self.number).get_data(),'NED').map_data()
+            data['data'] = NMCI
+        if BIBCODES:
+            BCI = ComposerInterface('BIBCODES',self.catalogue, self.number).get_data()
+            data['bibcode'] = idsconverter(BCI)
+        if DOCS_OVERVIEW:
+            DCI = ComposerInterface('DOCS_OVERVIEW',self.catalogue, self.number).get_data()
+            if DCI:
+                data['data']['overview'] =  DCI
+                data['source'].append(WikiMediaScraper(self.__unicode__()).object_endpoint())
+
+        if DOCS_PHOTO:
+            #BUG send multiple times same picture
+            PCI = ComposerInterface('DOCS_PHOTO',self.catalogue, self.number).get_data()
+            if PCI:
+                data['photo'] = PCI
+
+        data['catalogue'] ={ 'catalogue':self.catalogue, 'number':self.number}
+        return data
 

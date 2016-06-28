@@ -1,3 +1,4 @@
+
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 '''
 File includes all functions that process data and saves them to files, usually in json format
@@ -5,6 +6,10 @@ File includes all functions that process data and saves them to files, usually i
 import json
 import os
 import re
+import numpy
+from astropy import units as u
+from astropy.coordinates import SkyCoord, get_constellation
+
 from Scrapers import Reciver
 from Senders import LocalSender
 
@@ -262,28 +267,28 @@ def pktype_reader():
         pk = int(f.read())
         f.close()
         return pk
-fluxes = ('U', 'B', 'V', 'R', 'I', 'J', 'H', 'K', 'u', 'g', 'r', 'i', 'z')
-
+fluxes = ('U', 'B', 'V', 'R', 'I', 'u', 'g', 'r', 'i', 'z')
 
 def flux_func(res, fluxcount= 0):
     # Collects different wavelength fluxes and rounds them
-    roundedflux = 0
+    roundedflux = []
     for f in fluxes:
         if(res['FLUX_' + str(f)]) and (res['FLUX_' + str(f)]) != '':
-            roundedflux += res['FLUX_' + str(f)]
-            fluxcount += 1
-    if fluxcount != 0:
-        roundedflux /= fluxcount
-    return roundedflux
+            try:
+                roundedflux.append(res['FLUX_' + str(f)].compressed()[0])
+
+            except:
+                pass
+    return numpy.median(roundedflux)
 
 
 def idsconverter(table):
     # Takes astroquery table and coverts it to list
     pattern = re.compile('NAME')
     # Many names contains NAME in front)
-    return [re.sub(pattern, '', r[0]).strip() for r in table]
-
-
+    l = [re.sub(pattern, '', r[0]).strip() for r in table]
+    # return [' '.join(r.split()) for r in l]
+    return l
 def status_code():
     code = LocalSender().check_connection()
     if code == 200:
@@ -293,7 +298,9 @@ def status_code():
     else:
         print('Http Status code %s' % code)
 
+
 class CataloguesRWD:
+
     def __init__(self, catalogue=None, size=None, last_obj=None,logs='catalogues.log.json'):
         self.catalogue = catalogue
         self.size = size
@@ -303,6 +310,9 @@ class CataloguesRWD:
             self.data = json.load(f)
             f.close()
 
+    __len__ = lambda self: len(self.data)
+
+    #Sorry, OPEN/CLOSED principle
     len = lambda self: len(self.data)
 
     def add_cat(self):
@@ -311,15 +321,18 @@ class CataloguesRWD:
                     self.data.append({'catalogue':self.catalogue,'size':self.size,'last_obj':self.last_obj})
             else:
                 return False
+
     def save_file(self):
         with open(os.path.join(LOGS_DIR,self.logs),'w') as f:
             f.write(json.dumps(self.data))
             f.close()
+
     def purge(self):
         with open(os.path.join(LOGS_DIR,self.logs),'w') as f:
             f.write(json.dumps([]))
             f.close()
             self.data = []
+
     def add_one(self):
         self.last_obj +=1
         for c in self.data:
@@ -345,4 +358,56 @@ class CataloguesRWD:
             print 'No data'
 
     def read_raw(self):
-        return {'catalogue':self.catalogue,'size':self.size,'last':self.last_obj}
+        try:
+            return {'catalogue':self.catalogue,'size':self.size,'last':self.last_obj}
+        except:
+            return 0
+
+def docs_reader(filename):
+    with open(os.path.join(DOCS_DIR,filename),'r') as f:
+        data = json.load(f)['results']
+        f.close()
+        return data
+
+def overview_reader(catalogue, number, data= docs_reader('overview.json')):
+    ret = [
+                row['overview']
+                for row in data
+                for cat in row['catalogues']
+                if cat['object_catalogue'] == catalogue and cat['object_number'] == str(number)
+            ]
+    if ret:
+        return ret[0]
+    else:
+        return False
+
+def photo_reader(catalogue,number,data =docs_reader('Photo.json')):
+    ret = []
+    ret = [ row['photos']
+            for row in data
+            for cat in row['catalogues']
+            if cat['object_catalogue'] == catalogue and cat['object_number'] == str(number)
+            ]
+    if ret:
+        return ret[0]
+    else:
+        return False
+
+def const_reader(abr):
+    with open(os.path.join(DOCS_DIR,'constellations.json'),'r') as f:
+        data = json.load(f)
+        f.close()
+
+    ret = [ row['id']
+            for row in data
+            if row['abbreviation'].lower() == abr.lower()
+            ]
+    if ret:
+        return ret[0]
+    else:
+        return False
+
+def get_const(const):
+    c = SkyCoord(const,unit=(u.hourangle, u.deg))
+    A = get_constellation(c, short_name=True)
+    return const_reader(A)

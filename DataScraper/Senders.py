@@ -121,9 +121,11 @@ class TypeSender(Scraper):
 import requests
 
 class LocalSender:
-    def __init__(self,*args,**kwargs):
-        pass
+    def __init__(self,data,*args,**kwargs):
+        self.json_data = data
     URL = 'http://127.0.0.1:8000/endpoint/createupdateAPI'
     def check_connection(self):
         req = requests.post(self.URL)
         return req.status_code
+    def send(self):
+        r = requests.post(self.URL, json=self.json_data)

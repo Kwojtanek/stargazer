@@ -8,6 +8,7 @@ Usage:
   shell.py -v
   shell.py cls
   shell.py -s
+  shell.py -run
   shell.py cat-info
   shell.py cat-add
   shell.py cat-rm
@@ -19,6 +20,7 @@ Options:
   -v     Show version.
   -s    server Status Code
   cls    clears shell window
+  run   allows to add catalogue and collect data
   cat-info  Prints info about Catalogues included in scraper
   cat-add   Allows to add catalogue to scrapping process
   cat-rm    Removes catalogue from scrapping process
@@ -26,16 +28,19 @@ Options:
 """
 from __future__ import print_function
 import sys, os
-from Senders import LocalSender
 from common_funcs import CataloguesRWD, status_code
 from settings import print_settings
+from common_funcs import CataloguesRWD
+from Composer import Composer
+from Senders import LocalSender
 
-__version__ = '0.2.0'
+__version__ = '0.4.0'
 __doc__ += 'VERSION: %s' % __version__
 
 args = sys.argv
 
 catinfo = lambda : CataloguesRWD().read()
+
 def catadd():
     C = CataloguesRWD(raw_input('Name of catalogue: '),raw_input('size of catalogue: '),1)
     C.add_cat()
@@ -49,6 +54,26 @@ h = lambda :print(__doc__)
 v = lambda :print(__version__)
 
 
+#Temporary solution
+def run():
+    Cat = raw_input('Name of catalogue: ')
+    length = int(raw_input('size of catalogue: '))
+    it = int(raw_input('last object: ')) - 1
+    C = CataloguesRWD(Cat,length,1)
+    C.add_cat()
+    C.save_file()
+    while it < length:
+        it +=1
+        C.add_one()
+        try:
+            Data = Composer(Cat, it)
+            print(Data.__unicode__())
+            LocalSender(Data.get_data()).send()
+        except StandardError:
+            pass
+    C.save_file()
+
+
 dictFuncs = {
     '-h': h,
     '--help': h,
@@ -58,7 +83,8 @@ dictFuncs = {
     'cat-info':catinfo,
     'cat-add':catadd,
     'cat-rm': catrm,
-    'settings': print_settings
+    'settings': print_settings,
+    'run': run
 }
 
 def main():
