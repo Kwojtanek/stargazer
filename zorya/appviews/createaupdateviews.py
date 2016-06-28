@@ -41,13 +41,15 @@ def CreateUpdateAPI(request):
     :return:
     '''
     # Sprawdzamy czy dane zostały przysłane
-    try:
+    proceed = True
+    if proceed:
         #Prosty słownik z odpowiedziami
         response = {}
         if request.data.has_key('data'):
             data = request.data['data']
             #Sprawdzamy czy sa wystarczaj aco kompletne
             try:
+
                 declination = data['declination']
                 rightAsc = data['rightAsc']
             except:
@@ -63,12 +65,14 @@ def CreateUpdateAPI(request):
                     pk =  SingleObject[0].pk
 
                     response['data'] = 'Updated'
+                SingleObject = StellarObject.objects.get(pk=pk)
             else:
                 serializer = StellarObjectSerializer2(StellarObject(),data=data,partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     pk = serializer.data['id']
                     response['data'] = 'Created'
+                SingleObject = StellarObject.objects.get(pk=pk)
 
             #Sprawdzamy czy zostały przesłane dane o katalogu
             if request.data.has_key('catalogue'):
@@ -79,7 +83,7 @@ def CreateUpdateAPI(request):
                     #Jeśli jest to sprawdzamy po przefiltrowanych obiektach czy jest w danym katalogue
                     if not cataloguequery.filter(object_catalogue__name=catalogue['catalogue']):
                         #Jeśli nie to tworzymy nowy wpis
-                        Objects_list(object_number=catalogue['number'],single_object=SingleObject[0],object_catalogue=Catalogues.objects.get(name=catalogue['catalogue'])).save()
+                        Objects_list(object_number=catalogue['number'],single_object=SingleObject,object_catalogue=Catalogues.objects.get(name=catalogue['catalogue'])).save()
                         response['catalogue'] = 'Appended'
                     else:
                         #Jeśli jest to aktualizujemy jego numer
@@ -90,7 +94,7 @@ def CreateUpdateAPI(request):
 
                 else:
                     #Jeśli nie ma to dodajemy go
-                    Objects_list(object_number=catalogue['number'],single_object=SingleObject[0],object_catalogue=Catalogues.objects.get(name=catalogue['catalogue'])).save()
+                    Objects_list(object_number=catalogue['number'],single_object=SingleObject,object_catalogue=Catalogues.objects.get(name=catalogue['catalogue'])).save()
                     response['catalogue'] = 'Created'
 
             else:
@@ -102,10 +106,10 @@ def CreateUpdateAPI(request):
                 # Nie musimy, jeśli obiekt był już stworzony to api próbowało mu dopisać wcześniej zdjęcia.
                 counter = 0
                 for p in photo:
-                    if not (ObjectPhotos.objects.filter(photo=p['photo'],ngc_object=SingleObject[0]) or  ObjectPhotos.objects.filter(photo_url=p['photo_url'],ngc_object=SingleObject[0])):
+                    if not (ObjectPhotos.objects.filter(photo=p['photo'],ngc_object=SingleObject) or  ObjectPhotos.objects.filter(photo_url=p['photo_url'],ngc_object=SingleObject)):
                         counter +=1
                         ObjectPhotos(name=p['name'],photo=p['photo'],photo_url=p['photo_url'],
-                                     photo_thumbnail=p['photo_thumbnail'],ngc_object=SingleObject[0]).save()
+                                     photo_thumbnail=p['photo_thumbnail'],ngc_object=SingleObject).save()
                 response['photo'] = 'Created %s photos' % (counter)
             else:
                 response['photo'] = False
@@ -114,8 +118,8 @@ def CreateUpdateAPI(request):
                 bibcode = request.data['bibcode']
                 counter = 0
                 for bib in bibcode:
-                    if not SingleObject[0].bibcode.filter(name=bib):
-                        BibCode(StellarObject=SingleObject[0],name=bib).save()
+                    if not SingleObject.bibcode.filter(name=bib):
+                        BibCode(StellarObject=SingleObject,name=bib).save()
                         counter +=1
                 response['bibcode'] = 'Added %s identifiers' % (counter)
             else:
@@ -125,8 +129,8 @@ def CreateUpdateAPI(request):
                 sources = request.data['source']
                 counter = 0
                 for source in sources:
-                    if not SingleObject[0].source.filter(name=source):
-                        Source(StellarObject=SingleObject[0],name=source).save()
+                    if not SingleObject.source.filter(name=source):
+                        Source(StellarObject=SingleObject,name=source).save()
                         counter +=1
                 response['source'] = 'Added %s sources' % (counter)
             else:
@@ -135,7 +139,7 @@ def CreateUpdateAPI(request):
         else:
             response['data'] = False
         return Response(data=response,status=status.HTTP_200_OK)
-    except:
+    else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

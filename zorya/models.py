@@ -42,7 +42,6 @@ class StellarObject(models.Model):
     Backward related to Photo object
 
     """
-    unique_name = models.CharField(max_length=32, unique=True)
     otype = models.CharField(max_length=24, null=True, blank=True)
     type = models.CharField(max_length=100, blank=True, null=True)
     type_shortcut = models.CharField(max_length=12, blank=True, null=True)
@@ -55,17 +54,10 @@ class StellarObject(models.Model):
 
     magnitudo = models.FloatField(max_length=5, blank=True, null=True)
     dimAxb = models.CharField(max_length=32, blank=True, null=True)
-    pa = models.SmallIntegerField(blank=True, null=True)
-    description = models.CharField(max_length=128, blank=True, null=True)
-
-    id1 = models.CharField(max_length=32, blank=True, null=True)
-    id2 = models.CharField(max_length=32, blank=True, null=True)
-    id3 = models.CharField(max_length=32, blank=True, null=True)
-    notes = models.CharField(max_length=64, blank=True, null=True)
     overview = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.unique_name
+        return str(self.pk)
 
     def fov(self):
         """
@@ -116,7 +108,7 @@ class Objects_list(models.Model):
     """
     single_object = models.ForeignKey(StellarObject, related_name='catalogues')
     object_catalogue = models.ForeignKey(Catalogues, related_name='Catalogue')
-    object_number = models.CharField(max_length=16)
+    object_number = models.IntegerField(blank=True,null=True)
 
     def __unicode__(self):
         return u'%s %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)),
@@ -218,3 +210,6 @@ class BibCode(models.Model):
 class Source(models.Model):
     StellarObject = models.ForeignKey(StellarObject,related_name='source')
     name = models.CharField(max_length=512)
+
+    def __unicode__(self):
+        return unicode(self.name)

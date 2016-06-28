@@ -8,7 +8,7 @@ from .appviews.searchviews import SearchAPI
 
 from .appviews.similarviews import SimilarViewAPI
 from .appviews.browseviews import StellarViewAPI, SingleView
-from .appviews.browseviews import ConstellationsViewDetailAPI, ConstellationsViewAPI, SingleConstellationViewAPI
+from .appviews.browseviews import ConstellationsViewDetailAPI, ConstellationsViewAPI, SingleConstellationViewAPI, ConstellationsListViewAPI
 from .appviews.browseviews import CataloguesListViewAPI, SingleCatalogueViewAPI
 from .appviews.browseviews import TypeViewAPI, CataloguesViewAPI
 # <----------------Endpointy api.-------------------->
@@ -25,7 +25,7 @@ endpointspatterns = [
                              url(r'^constellationAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
                                  SingleConstellationViewAPI.as_view(),
                                  name='SingleConstellationUrl'),
-                             url(r'^constellationsAPI$', ConstellationsViewAPI.as_view(), name='ConstellationsUrl'),
+                             url(r'^constellationsAPI$', ConstellationsListViewAPI.as_view(), name='ConstellationsUrl'),
                              url(r'^constellationsAPI/(?P<abbreviation>[a-zA-Z_-]+)$',
                                  ConstellationsViewDetailAPI.as_view(),
                                  name='ConstellationsDetailUrl'),

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from .models import  Constellations as Constelation
-from .models import StellarObject, Catalogues, Objects_list, ObjectPhotos, BugTracker, ContactApplet, ReletedType
+from .models import BibCode, StellarObject, Catalogues, Objects_list, ObjectPhotos, BugTracker, ContactApplet, ReletedType, Source
 from django.conf import settings
 from django.contrib import admin
 
@@ -33,13 +33,10 @@ class ImageInline(admin.StackedInline):
     extra = 0
 
 class AdminNGC(admin.ModelAdmin):
-    list_display = ["unique_name",
-                    "type", "type_shortcut", "classe",
+    list_display = ["type", "type_shortcut", "classe",
                     "rightAsc", "declination", "constelation",
-                    "magnitudo", "dimAxb", "description",
-                    "id1", "id2", "id3", "notes"]
-    search_fields = ["unique_name", "description",
-                     "id1", "id2", "id3"]
+                    "magnitudo", "dimAxb",]
+    search_fields = ["unique_name"]
 
     inlines = [ImageInline]
 
@@ -74,3 +71,4 @@ admin.site.register(StellarObject, AdminNGC)
 admin.site.register(Constelation, AdminConst)
 admin.site.register(Catalogues, admin.ModelAdmin)
 admin.site.register(ReletedType)
+admin.site.register(BibCode)

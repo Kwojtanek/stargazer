@@ -53,42 +53,15 @@ class SearchAPI(generics.ListAPIView):
             if latitude < 0:
                 ln += 90
                 stellarquery = stellarquery.filter(declination__lte=str(ln))
-        qn = StellarObject.objects.none()
+
         if n:
-            n = n.replace(',', ' ')
-            n = n.split()
-
-            # TODO Brzyćkie i niewydajne, do poprawienia!, a może Haystack
-            for x in n:
-                if x == 'm' or x == 'M':
-                    x = 'Messier'
-                if Catalogues.objects.filter(name=x).exists():
-                    qn = qn | stellarquery.filter(catalogues__object_catalogue__name__iexact=x)
-                if x.isdigit():
-                    qn = qn.filter(catalogues__object_number__exact=x)
-
-                else:
-                    qn = qn | (stellarquery.filter(
-                        Q(unique_name__icontains=x) | Q(id1__icontains=x) | Q(id__icontains=x) | Q(
-                            id3__icontains=x) | Q(notes__icontains=x)))
-            if orderby:
-                #Konstelacja jest related field
-                if orderby == 'constelation':
-                    return qn.order_by('constelation__abbreviation')
-                if orderby == '-constelation':
-                    return qn.order_by('-constelation__abbreviation')
-                else:
-                    return qn.order_by(orderby)
+            stellarquery = stellarquery.filter(bibcode__name__icontains=n).distinct()
+        if orderby:
+            if orderby == 'constelation':
+                return stellarquery.order_by('constelation__abbreviation')
+            if orderby == '-constelation':
+                return stellarquery.order_by('-constelation__abbreviation')
             else:
-                return qn.order_by('magnitudo').distinct()
+                return stellarquery.order_by(orderby)
         else:
-            if orderby:
-                if orderby == 'constelation':
-                    return stellarquery.order_by('constelation__abbreviation')
-                if orderby == '-constelation':
-                    return stellarquery.order_by('-constelation__abbreviation')
-                else:
-                    return stellarquery.order_by(orderby)
-
-            else:
-                return stellarquery.order_by('magnitudo')
+            return stellarquery.order_by('magnitudo')
