@@ -186,8 +186,9 @@ section > h2 {
     flex: 1;
 }
 #search-field {
-    flex: 2 1 350px;
-    order: 6;
+    flex: 2 1 100%;
+    margin: 86px 43px 0px 44px;
+    order: 10;
 }
 #search-field > input {
     width: 100%;
@@ -674,10 +675,26 @@ input:-moz-placeholder{
     font-weight: 700;
     color: #ABB1BE
 }
-input::-moz-placeholder {
+#search-field>input:-moz-placeholder {
     font-weight: 700;
-    color: #ABB1BE}
+    color: #22313f;
+    font-size: 1em;
+}
+#search-field>input::-webkit-input-placeholder{
+    font-weight: 700;
+    color: #22313f;
+    font-size: 2em;
+    margin: 0;
+    line-height: 5;
 
+}
+
+#search-field>input:-ms-input-placeholder{
+    font-weight: 700;
+    color: #22313f;
+        font-size: 1em;
+
+}
 #nav-active {
     color: #FFF;
     text-decoration: none;

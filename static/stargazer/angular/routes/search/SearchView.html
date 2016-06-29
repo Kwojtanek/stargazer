@@ -52,7 +52,7 @@
             </div>
         </div>
         <div id="search-field">
-            <input type="text" class="form-control" ng-model="filters.Name" placeholder="Add name or nr. e.g. m 31, andromeda, NGC 224" >
+            <input style="line-height: 5" type="text" class="form-control" ng-model="filters.Name" placeholder="&#8981_________________________________________________________________________________" >
         </div>
 
         <div id="types">
@@ -83,7 +83,7 @@
                 </li>
             </ul>
         </div>
-        <div id="search-btn" style="order: 9; flex-basis: 100%; display: inherit; justify-content: center">
+        <div id="search-btn" style="order: 11; flex-basis: 100%; display: inherit; justify-content: center">
             <input type="submit" value="search" class="button btn-1 btn-1a" ng-click="SearchFor(1)"/>
         </div>
     </section>
@@ -129,10 +129,8 @@
                                 <p class="animate-switch" ng-switch-when="magnitudo">&#x25B2</p>
                                 <p class="animate-switch" ng-switch-when=""></p>
 </div></td>
-            <td>DimAxb<p></p></td>
-            <td>P.A.<p></p></td>
-            <td>Other names<p></p></td>
-            <td>notes<p></p></td>
+            <td style="max-width: 120px">Angular size
+                (arcmin):</td>
             <td>img<p></p></td>
         </tr>
         </thead>
@@ -147,9 +145,6 @@
             <td>{{ obj.constelation }}</td>
             <td>{{ obj.magnitudo }}</td>
             <td>{{ obj.dimAxb }}</td>
-            <td>{{ obj.pa }}</td>
-            <td>{{ obj.id1 }},{{ obj.id2 }},{{ obj.id3 }}</td>
-            <td>{{ obj.notes }}</td>
             <td><a ng-if="obj.photos[0].orginal" href="{{ obj.photos[0].orginal }}"><img ng-src="{{ obj.photos[0].thumb }}" width="100" height="100"></a> </td>
         </tr>
         </tbody>

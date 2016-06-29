@@ -1,4 +1,4 @@
-var min_mag = 1.6;
+var min_mag = 0;
 var max_mag = 20.6;
 var maxid = 13401;
 var hashtag = '';
@@ -395,7 +395,8 @@ SearchTypes = [
 SearchCatalogues = [
     'NGC',
     'PGC',
-    'Messier'
+    'Messier',
+    'IC'
 
 ]
 Nodata = [
