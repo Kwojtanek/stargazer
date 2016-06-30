@@ -42,7 +42,7 @@ class StellarObject(models.Model):
     Backward related to Photo object
 
     """
-    otype = models.CharField(max_length=24, null=True, blank=True)
+    otype = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, blank=True, null=True)
     type_shortcut = models.CharField(max_length=12, blank=True, null=True)
     classe = models.CharField(max_length=12, blank=True, null=True)
@@ -92,6 +92,7 @@ class Catalogues(models.Model):
     """
     name = models.CharField(max_length=64, unique=True, blank=False)
     description = models.CharField(max_length=1024, blank=True)
+    size = models.IntegerField(blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -189,9 +190,9 @@ class ReletedType(models.Model):
     """
 
     # Type is releted to itself becouse in example blazar is also a galaxy
-    maintype = models.ForeignKey('self',blank=True,null=True)
-    nametype = models.CharField(max_length=80)
-    shortcutnametype = models.CharField(max_length=32)
+    maintype = models.ForeignKey('self',blank=True, null=True,on_delete=models.CASCADE)
+    nametype = models.CharField(max_length=80, unique=True)
+    shortcutnametype = models.CharField(max_length=32,unique=True)
     phototype = ImageWithThumbsField(upload_to='images', sizes=((410, 230), (1280, 718)), blank=True, null=True)
     descriptiontype = models.TextField()
 

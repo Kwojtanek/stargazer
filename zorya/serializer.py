@@ -21,9 +21,10 @@ class PhotoPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = ObjectPhotos
 
-class ReletedTypePutSerializer(serializers.ModelSerializer):
+class ReletedTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReletedType
+
 
 class PhotoSerializer(serializers.ModelSerializer):
     thumb = serializers.ReadOnlyField(
@@ -120,6 +121,3 @@ class StellarObjectSerializer2(serializers.ModelSerializer):
     class Meta:
         model = StellarObject
 
-class CatalogueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Objects_list

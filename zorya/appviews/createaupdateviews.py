@@ -1,7 +1,7 @@
 # coding=utf-8
 from zorya.models import StellarObject, BugTracker, ContactApplet, ObjectPhotos, ReletedType, Objects_list, Catalogues, BibCode, Source
 from zorya.serializer import StellarObjectSerializer, BugTrackerSerializer, ContactAppletSerializer,\
-    PhotoPutSerializer, ReletedTypePutSerializer, StellarObjectSerializer2, CatalogueSerializer
+    PhotoPutSerializer, ReletedTypeSerializer, StellarObjectSerializer2, CatalogueSerializer
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -47,6 +47,7 @@ def CreateUpdateAPI(request):
         response = {}
         if request.data.has_key('data'):
             data = request.data['data']
+            print data
             #Sprawdzamy czy sa wystarczaj aco kompletne
             try:
 
@@ -59,20 +60,19 @@ def CreateUpdateAPI(request):
             SingleObject= query.filter(declination=declination,rightAsc=rightAsc)
             if SingleObject:
                 # Jeśli obiekt o takich koordynatach już istnieje to powinniśmy uaktualnić dane na jego temat jeśli nie stworzyć nowy
-                serializer = StellarObjectSerializer2(StellarObject.objects.get(pk=SingleObject[0].pk), data=data, partial=True, context={'request': request},)
+                serializer = StellarObjectSerializer2(StellarObject.objects.get(pk=SingleObject[0].pk), data=data, partial=True, context={'request': request})
                 if serializer.is_valid():
                     serializer.save()
                     pk =  SingleObject[0].pk
-
                     response['data'] = 'Updated'
-                SingleObject = StellarObject.objects.get(pk=pk)
+                    SingleObject = StellarObject.objects.get(pk=pk)
             else:
                 serializer = StellarObjectSerializer2(StellarObject(),data=data,partial=True)
                 if serializer.is_valid():
                     serializer.save()
                     pk = serializer.data['id']
                     response['data'] = 'Created'
-                SingleObject = StellarObject.objects.get(pk=pk)
+                    SingleObject = StellarObject.objects.get(pk=pk)
 
             #Sprawdzamy czy zostały przesłane dane o katalogu
             if request.data.has_key('catalogue'):
@@ -108,8 +108,7 @@ def CreateUpdateAPI(request):
                 for p in photo:
                     if not (ObjectPhotos.objects.filter(photo=p['photo'],ngc_object=SingleObject) or  ObjectPhotos.objects.filter(photo_url=p['photo_url'],ngc_object=SingleObject)):
                         counter +=1
-                        ObjectPhotos(name=p['name'],photo=p['photo'],photo_url=p['photo_url'],
-                                     photo_thumbnail=p['photo_thumbnail'],ngc_object=SingleObject).save()
+                        ObjectPhotos(ngc_object=SingleObject,**p).save()
                 response['photo'] = 'Created %s photos' % (counter)
             else:
                 response['photo'] = False
@@ -171,13 +170,3 @@ class PhotoList(generics.ListAPIView):
     serializer_class = PhotoPutSerializer
 
 
-@api_view(['POST','GET'])
-def TypeCreate(request):
-    if "sk" in request.data and request.data["sk"] == str(sk):
-        del request.data["sk"]
-        serializer = ReletedTypePutSerializer(ReletedType(),data=request.data,partial=True)
-        if serializer.is_valid():
-            serializer.save()
-        return Response(request.data, status=status.HTTP_200_OK)
-    else:
-        return Response(status.HTTP_401_UNAUTHORIZED)
