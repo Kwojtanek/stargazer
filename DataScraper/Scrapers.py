@@ -12,10 +12,6 @@ from astroquery.simbad import Simbad
 '''
 File includes all classes that are connecting to external services and scraps data.
 '''
-with open('/pro/stargazer/zorya/appviews/supersecret.code', 'r') as f:
-    sk = f.read()
-    f.close()
-
 
 class Scraper:
     """
@@ -292,6 +288,7 @@ class NEDScraper:
         return Ned.get_table(self.name, table='diameters')
 
 class TypeScraper:
+
     def __init__(self,name,*args,**kwargs):
         self.name = name.replace('?','%3F')
 

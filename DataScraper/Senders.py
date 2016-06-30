@@ -7,9 +7,6 @@ from Scrapers import Scraper
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 
 
-with open('/pro/stargazer/zorya/appviews/supersecret.code','r') as f:
-    sk = f.read()
-    f.close()
 """
 Classes that sends data to db endpoints
 """
@@ -20,7 +17,6 @@ class Sender(Scraper):
         Scraper.__init__(self,name)
         self.data = data
 
-    PARAMS = {'sk':sk}
     URL = 'http://www.zorya.co/updateAPI/'
 
     def send_data(self):
@@ -44,11 +40,6 @@ class Sender(Scraper):
         else:
             return False
 
-class MultipleDataSender(Sender):
-    PARAMS = {'sk':sk,'multiple':True}
-    pass
-
-
 class PhotoSender(Scraper):
     def __init__(self, name, data, pk):
         Scraper.__init__(self,name)
@@ -63,7 +54,6 @@ class PhotoSender(Scraper):
     def conv_data(self):
         #Creates dict
         converted_data = {}
-        converted_data['sk'] = sk
         converted_data['name'] = self.name
         converted_data['photo_url'] = self.data['url']
         converted_data['photo_thumbnail'] = self.data['thumburl']

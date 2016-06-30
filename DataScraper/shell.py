@@ -20,35 +20,23 @@ Options:
   -v     Show version.
   -s    server Status Code
   cls    clears shell window
-  run   allows to add catalogue and collect data
-  cat-info  Prints info about Catalogues included in scraper
-  cat-add   Allows to add catalogue to scrapping process
-  cat-rm    Removes catalogue from scrapping process
+  run   collects data for given catalogue if it exists on server
   settings  To see all connection settings
 """
 from __future__ import print_function
 import sys, os
-from common_funcs import CataloguesRWD, status_code, status_code_raw
+from common_funcs import status_code, status_code_raw
 from settings import print_settings
 from common_funcs import CataloguesRWD
 from Composer import Composer
 from Senders import LocalSender
-
-__version__ = '0.4.0'
+import requests
+import json
+__version__ = '0.5.0'
 __doc__ += 'VERSION: %s' % __version__
 
 args = sys.argv
 
-catinfo = lambda : CataloguesRWD().read()
-
-def catadd():
-    C = CataloguesRWD(raw_input('Name of catalogue: '),raw_input('size of catalogue: '),1)
-    C.add_cat()
-    C.save_file()
-def catrm():
-    C = CataloguesRWD(catalogue=raw_input('Name of catalogue: '))
-    C.delete()
-    C.save_file()
 cls = lambda : os.system('cls' if os.name=='nt' else 'clear')
 h = lambda :print(__doc__)
 v = lambda :print(__version__)
@@ -57,14 +45,12 @@ v = lambda :print(__version__)
 #Temporary solution
 def run():
     Cat = raw_input('Name of catalogue: ')
-    length = int(raw_input('size of catalogue: '))
-    it = int(raw_input('last object: ')) - 1
-    C = CataloguesRWD(Cat,length,1)
-    C.add_cat()
-    C.save_file()
+    r = requests.get('http://127.0.0.1:8000/endpoint/catalogueInfo',params={'catalogue':Cat,'format':'json'})
+    length = int(json.loads(r.text)['size'])
+    it = int(json.loads(r.text)['count']) - 1
+    print(str(round(float(it)/float(length),4)*100) + ' %')
     while it < length:
         it +=1
-        C.add_one()
         Status = status_code_raw()
         if Status == 200:
             try:
@@ -74,9 +60,8 @@ def run():
             except StandardError:
                 pass
         else:
+            print('Server not reachable')
             break
-    C.save_file()
-
 
 dictFuncs = {
     '-h': h,
@@ -84,9 +69,6 @@ dictFuncs = {
     'cls': cls,
     '-v':v,
     '-s':status_code,
-    'cat-info':catinfo,
-    'cat-add':catadd,
-    'cat-rm': catrm,
     'settings': print_settings,
     'run': run
 }

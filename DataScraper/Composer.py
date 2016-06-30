@@ -39,7 +39,6 @@ Data format to send
 "bibcode":["NGC 225"]
 }
 """
-from astropy.coordinates import SkyCoord, get_constellation
 
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 import json
@@ -141,7 +140,7 @@ class Composer(object):
         self.catalogue = catalogue
         self.number = number
         if WIKIMEDIA and DOCS_PHOTO or DOCS_OVERVIEW and WIKIINFO:
-            raise StandardError('Warrnig, if data is collected from local files and wikipedia, it may cause an errors')
+            raise StandardError('Warrnig, if data is collected from local files and wikipedia, it may cause errors.')
 
     def __unicode__(self):
         return '%s %s' % (self.catalogue,self.number)
@@ -178,7 +177,8 @@ class Composer(object):
                 data['data']['overview'] = WPI
         if WIKIMEDIA:
             WMPI = ComposerInterface('WIKIMEDIA',self.catalogue,self.number).get_data()
-            data['photo'] = WMPI
+            if WMPI:
+                data['photo'] = WMPI
         data['catalogue'] ={ 'catalogue':self.catalogue, 'number':self.number}
         return data
 

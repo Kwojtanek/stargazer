@@ -377,7 +377,7 @@ def wiki_photo_all(name):
         #Creates list of not duplicated and not baned photos
         shortlist = []
         for f in filelist:
-            # duplicate_writer(f)
+            duplicate_writer(f)
             if not ban_reader(f):
                 shortlist.append(f)
         for s in shortlist:

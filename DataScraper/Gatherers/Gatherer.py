@@ -39,6 +39,3 @@ def nooorka(max):
         pk_writer(pk_generator().next())
         nooorka(max)
 
-
-A = WikiMediaScraper('UGC 5692')
-print A.get_finall_data()

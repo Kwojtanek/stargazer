@@ -25,6 +25,7 @@ setts = {'NED': NEDScraper,
          'WIKIINFO': WikiMediaScraper,
          'WIKIMEDIA' : wiki_photo_all}
 
+#Different fields that will be included in data from Nasa Extragalactic db.
 Votablefields = ['flux(U)','flux(B)','flux(V)','flux(R)',
                  'flux(I)','flux(J)','flux(H)','flux(K)',
                  'flux(u)', 'flux(g)','flux(r)','flux(i)',
