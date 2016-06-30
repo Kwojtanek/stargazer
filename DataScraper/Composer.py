@@ -45,11 +45,43 @@ __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 import json
 
 from settings import *
-from common_funcs import flux_func, get_ra, get_description,get_otype, idsconverter, get_const
+from common_funcs import flux_func, get_ra, idsconverter, get_const, get_type, wiki_photo_all
 
 #TODO Implement wikipedia image interface
 
 astrotable = 'astropy.table.table.Table'
+
+
+class Mapper:
+    def __init__(self,data, iType):
+        self.data = data
+        self.iType = iType
+
+    def map_data(self):
+        results = {}
+        if(self.data['GALDIM_MAJAXIS']):
+            try:
+                results["dimAxb"] = '%s x %s' % (self.data['GALDIM_MINAXIS'].compressed()[0], self.data['GALDIM_MINAXIS'].compressed()[0])
+            except:
+                pass
+        if(self.data['FLUX_B'].compressed()) and (self.data['FLUX_B'].compressed()) != '':
+            results["magnitudo"] = round(flux_func(self.data),2)
+        if(self.data['MORPH_TYPE']).compressed() and (self.data['MORPH_TYPE']).compressed() != '':
+            results["classe"] = self.data['MORPH_TYPE'].compressed()[0]
+        if(self.data['OTYPE'].compressed()) and (self.data['OTYPE'].compressed()) != '':
+            results["otype"] = get_type(self.data['OTYPE'].compressed()[0])['descriptiontype']
+            results["type_shortcut"] = get_type(self.data['OTYPE'].compressed()[0])['shortcutnametype']
+            results["type"] = get_type(self.data['OTYPE'].compressed()[0])['nametype']
+        if(self.data['RA'].compressed()) and (self.data['RA'].compressed()) != '':
+            results["rightAsc"] =  get_ra(self.data['RA'].compressed()[0])
+        if(self.data['DEC'].compressed()) and (self.data['DEC'].compressed()) != '':
+            results["declination"] = self.data['DEC'].compressed()[0][:-3]
+        try:
+            results['constelation'] = get_const('%s %s' % (results['rightAsc'],results['declination']))
+        except:
+            pass
+        return results
+
 
 class ComposerInterface:
     """
@@ -76,40 +108,12 @@ class ComposerInterface:
                 return setts[self.iType](self.catalogue,self.number)
             if self.iType == 'WIKIINFO':
                 return setts[self.iType](self.representation()).get_finall_data()
+            if self.iType =='WIKIMEDIA':
+                return setts[self.iType](self.representation())
 
 
         else:
             return 0
-
-class Mapper:
-    def __init__(self,data, iType):
-        self.data = data
-        self.iType = iType
-
-    def map_data(self):
-        results = {}
-        if(self.data['GALDIM_MAJAXIS']):
-            try:
-                results["dimAxb"] = '%s x %s' % (self.data['GALDIM_MINAXIS'].compressed()[0], self.data['GALDIM_MINAXIS'].compressed()[0])
-            except:
-                pass
-        if(self.data['FLUX_B'].compressed()) and (self.data['FLUX_B'].compressed()) != '':
-            results["magnitudo"] = round(flux_func(self.data),2)
-        if(self.data['MORPH_TYPE']).compressed() and (self.data['MORPH_TYPE']).compressed() != '':
-            results["classe"] = self.data['MORPH_TYPE'].compressed()[0]
-        if(self.data['OTYPE'].compressed()) and (self.data['OTYPE'].compressed()) != '':
-            results["otype"] = get_description(self.data['OTYPE'].compressed()[0])
-            results["type_shortcut"] = (self.data['OTYPE'].compressed()[0])
-            results["type"] = get_otype(self.data['OTYPE'].compressed()[0])
-        if(self.data['RA'].compressed()) and (self.data['RA'].compressed()) != '':
-            results["rightAsc"] =  get_ra(self.data['RA'].compressed()[0])
-        if(self.data['DEC'].compressed()) and (self.data['DEC'].compressed()) != '':
-            results["declination"] = self.data['DEC'].compressed()[0][:-3]
-        try:
-            results['constelation'] = get_const('%s %s' % (results['rightAsc'],results['declination']))
-        except:
-            pass
-        return results
 
 
 class Composer(object):
@@ -136,6 +140,8 @@ class Composer(object):
 
         self.catalogue = catalogue
         self.number = number
+        if WIKIMEDIA and DOCS_PHOTO or DOCS_OVERVIEW and WIKIINFO:
+            raise StandardError('Warrnig, if data is collected from local files and wikipedia, it may cause an errors')
 
     def __unicode__(self):
         return '%s %s' % (self.catalogue,self.number)
@@ -166,7 +172,13 @@ class Composer(object):
             PCI = ComposerInterface('DOCS_PHOTO',self.catalogue, self.number).get_data()
             if PCI:
                 data['photo'] = PCI
-
+        if WIKIINFO:
+            WPI = ComposerInterface('WIKIINFO',self.catalogue,self.number).get_data()
+            if WPI:
+                data['data']['overview'] = WPI
+        if WIKIMEDIA:
+            WMPI = ComposerInterface('WIKIMEDIA',self.catalogue,self.number).get_data()
+            data['photo'] = WMPI
         data['catalogue'] ={ 'catalogue':self.catalogue, 'number':self.number}
         return data
 

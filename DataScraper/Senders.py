@@ -84,37 +84,6 @@ class PhotoSender(Scraper):
         else:
             return False
 
-class TypeSender(Scraper):
-    def __init__(self,name,data):
-        Scraper.__init__(self,name)
-        self.name = name
-        self.data = data
-    PARAMS = {'format':'json'}
-    URL = 'http://127.0.0.1:8000/endpoint/createtypeAPI'
-
-    def conv_data(self):
-        converted_data = {}
-        converted_data['sk'] = sk
-        converted_data['Maintype'] = self.data['Maintype']
-        converted_data['Nametype'] = self.data['Nametype']
-        converted_data['Shortcutnametype'] = self.data['Shortcutnametype']
-        converted_data['Description'] = self.data['Description']
-        print json.dumps(converted_data)
-
-    def send_data(self,count=1):
-        data = self.conv_data()
-        req = urllib2.Request(self.object_endpoint(), data, headers={'Content-Type':'application/json'})
-        if count < 5:
-            try:
-                print 'Trying send data to%s' % self.object_endpoint()
-                f = urllib2.urlopen(req,timeout=5)
-                return  json.load(f)
-            except:
-                count+=1
-                return self.send_data(count)
-        else:
-            return False
-
 # Wbudowane URLLIBS są straszne
 
 # Nadchodzi nowa jakość Requests
@@ -124,6 +93,16 @@ class LocalSender:
     def __init__(self,data,*args,**kwargs):
         self.json_data = data
     URL = 'http://127.0.0.1:8000/endpoint/createupdateAPI'
+    def check_connection(self):
+        req = requests.post(self.URL)
+        return req.status_code
+    def send(self):
+        r = requests.post(self.URL, json=self.json_data)
+
+class TypeSender:
+    def __init__(self,data,*args,**kwargs):
+        self.json_data = data
+    URL = 'http://127.0.0.1:8000/endpoint/type/'
     def check_connection(self):
         req = requests.post(self.URL)
         return req.status_code

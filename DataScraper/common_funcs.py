@@ -10,7 +10,7 @@ import numpy
 from astropy import units as u
 from astropy.coordinates import SkyCoord, get_constellation
 
-from Scrapers import Reciver
+from Scrapers import Reciver, TypeScraper, WikiImageScraper, WikiSingleImageScraper
 from Senders import LocalSender
 
 DOCS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),'docs')
@@ -44,57 +44,10 @@ def pk_generator():
         yield pk + 1
 
 
-def get_otype(otype):
-    """
-    reads type of object and if does not ocures in list waits for input
-
-    """
-    with open(os.path.join(DOCS_DIR, 'otypes.json'), 'rb') as f:
-        ot = (json.load(f))
-        f.close()
-    if ot.has_key(otype):
-        return ot.get(otype)
-    else:
-        inputvalue = raw_input('No full name %s ' + otype)
-        ot[otype] = inputvalue
-        if inputvalue == 'break':
-            return False
-        else:
-            with open(os.path.join(DOCS_DIR,'otypes.json'), 'w') as f:
-                json.dump(ot,f)
-            return inputvalue
-
-
-def get_description(otype):
-
-    """
-    return matching description of type, if none is matching waits for new
-    """
-    with open(os.path.join(DOCS_DIR, 'SearchTypes.json'),'r') as f:
-        st = (json.load(f))
-        f.close()
-
-    for x in range(0,len(st)):
-        for y in range(0,len(st[x]['value'])):
-            if st[x]['value'][y] == otype:
-                return st[x]['label']
-
-    inputvalue = raw_input('No uniform name... for %s ' % otype )
-
-    for z in range(0,len(st)):
-        for v in range(0,len(st[z]['value'])):
-            if st[z]['value'][v] == inputvalue:
-                st[z]['value'].append(otype)
-                with open(os.path.join(DOCS_DIR, 'SearchTypes.json'),'w') as f:
-                    json.dump(st,f)
-                return inputvalue
-            else:
-                inputlabel = inputvalue
-                newrow = {'value': [otype], 'label': inputlabel}
-                st.append(newrow)
-                with open(os.path.join(DOCS_DIR, 'SearchTypes.json'),'w') as f:
-                    json.dump(st,f)
-                return inputvalue
+def get_type(tp):
+    #gets shortcuted name and return dic of all info
+    T = TypeScraper(tp)
+    return json.loads(T.get())
 
 
 def get_ra(ra):
@@ -290,13 +243,16 @@ def idsconverter(table):
     # return [' '.join(r.split()) for r in l]
     return l
 def status_code():
-    code = LocalSender().check_connection()
+    code = LocalSender('bla').check_connection()
     if code == 200:
         print('Connection Ok')
     elif code == 500:
         print('Server Down')
     else:
         print('Http Status code %s' % code)
+def status_code_raw():
+    code = LocalSender('bla').check_connection()
+    return code
 
 
 class CataloguesRWD:
@@ -411,3 +367,48 @@ def get_const(const):
     c = SkyCoord(const,unit=(u.hourangle, u.deg))
     A = get_constellation(c, short_name=True)
     return const_reader(A)
+
+def wiki_photo_all(name):
+    #Takes name and from wiki and returns data for all of them
+    filelistexists = WikiImageScraper(name).getimageslist()
+    finall_data = []
+    if filelistexists:
+        filelist = json.loads(filelistexists)
+        #Creates list of not duplicated and not baned photos
+        shortlist = []
+        for f in filelist:
+            # duplicate_writer(f)
+            if not ban_reader(f):
+                shortlist.append(f)
+        for s in shortlist:
+            print('Geting details about %s' % s)
+            singleimageexists = WikiSingleImageScraper(s,thumbWidth=400,thumbHeight=400).getimagesdetails()
+            if singleimageexists:
+                singleimage = singleimageexists
+                #if photo is big enougth
+                if  singleimage['size'] > 80000:
+                    finall_data.append(singleimage)
+    if finall_data:
+        listofp = []
+        #Maps data
+        #Photo format
+        '''[
+        {
+            "photo": "http://127.0.0.1:8000/media/images/ngc4494.jpg",
+            "photo_url": "",
+            "photo_thumbnail": ""
+        },
+        {
+            "photo": "http://127.0.0.1:8000/media/images/ngc4559.jpg",
+            "photo_url": "",
+            "photo_thumbnail": ""
+        }]'''
+        for f in finall_data:
+            data = {}
+            data['photo_url'] = f['url']
+            data['photo_thumbnail'] = f['thumburl']
+            data['photo'] = ''
+            listofp.append(data)
+        return listofp
+    else:
+        return False

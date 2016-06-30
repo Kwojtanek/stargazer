@@ -1,4 +1,6 @@
 # coding=utf-8
+import requests
+
 __author__ = 'Jakub Wojtanek Kwojtanek@gmail.com'
 import urllib
 import urllib2
@@ -288,3 +290,19 @@ class NEDScraper:
 
         """
         return Ned.get_table(self.name, table='diameters')
+
+class TypeScraper:
+    def __init__(self,name,*args,**kwargs):
+        self.name = name.replace('?','%3F')
+
+    @property
+    def URL(self):
+        return 'http://127.0.0.1:8000/endpoint/type/%s/' %self.name
+
+    def get(self):
+        params = {'format':'json'}
+        r = requests.get(self.URL,params=params)
+        if json.loads(r.text).has_key('datail'):
+            return False
+        else:
+            return r.text

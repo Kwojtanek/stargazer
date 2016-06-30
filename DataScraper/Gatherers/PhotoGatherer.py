@@ -52,8 +52,9 @@ def mainfunc():
                 print 'No info'
     save_add_index(available_photo_reader())
     print '....................................................................................................'
-
-print available_photo_reader()
-while  read_row(available_photo_reader()):
-    mainfunc()
-
+#
+# new = []
+# for f in json.loads(WikiImageScraper('NGC 224').getimageslist()):
+#     if not ban_reader(f):
+#         new.append(f)
+#

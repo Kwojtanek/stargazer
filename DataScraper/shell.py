@@ -28,7 +28,7 @@ Options:
 """
 from __future__ import print_function
 import sys, os
-from common_funcs import CataloguesRWD, status_code
+from common_funcs import CataloguesRWD, status_code, status_code_raw
 from settings import print_settings
 from common_funcs import CataloguesRWD
 from Composer import Composer
@@ -65,12 +65,16 @@ def run():
     while it < length:
         it +=1
         C.add_one()
-        try:
-            Data = Composer(Cat, it)
-            print(Data.__unicode__())
-            LocalSender(Data.get_data()).send()
-        except StandardError:
-            pass
+        Status = status_code_raw()
+        if Status == 200:
+            try:
+                Data = Composer(Cat, it)
+                print(Data.__unicode__())
+                LocalSender(Data.get_data()).send()
+            except StandardError:
+                pass
+        else:
+            break
     C.save_file()
 
 

@@ -1,11 +1,12 @@
 # coding=utf-8
+__doc__ = "POLIGON DOŚWIADCZALNY"
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
 from astroquery.simbad import Simbad
 from DataScraper.Scrapers import NEDScraper
 from DataScraper.Scrapers import SimbadScraper
 from DataScraper.Scrapers import SimbadIdsScraper
 from DataScraper.Senders import LocalSender
-from DataScraper.common_funcs import get_ra, flux_func, idsconverter
+from DataScraper.common_funcs import get_ra, flux_func, idsconverter, get_type
 import json
 from DataScraper.Composer import Composer
 from astroquery.ned import Ned
@@ -112,5 +113,4 @@ data ={
 # for x in S:
 #     print x
 # print round(S['GALDIM_MAJAXIS'].compressed()[0],2)
-# print S['GALDIM_MINAXIS'].compressed()[0]
-print Composer('IC', 4592).get_data()
+print json.dumps(Composer('UGC', 5692).get_data())
