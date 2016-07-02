@@ -52,7 +52,7 @@
             </div>
         </div>
         <div id="search-field">
-            <input style="line-height: 5" type="text" class="form-control" ng-model="filters.Name" placeholder="&#8981_________________________________________________________________________________" >
+            <input style="line-height: 5" type="text" class="form-control" ng-model="filters.Name" placeholder="search..." >
         </div>
 
         <div id="types">
@@ -78,8 +78,8 @@
                 Catalogues&#9660;
             </button>
             <ul class="dropdown-menu" style="list-style-type:none">
-                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-class="{'ok': filters.SearchCatalogues.indexOf(cat) != -1}" ng-click="ChooseCatalogue()">
-                    {{ cat }}
+                <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-class="{'ok': filters.SearchCatalogues.indexOf(cat.value) != -1}" ng-click="ChooseCatalogue()">
+                    {{ cat.label }}
                 </li>
             </ul>
         </div>

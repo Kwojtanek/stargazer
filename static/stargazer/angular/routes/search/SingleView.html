@@ -3,6 +3,8 @@
         <div>
             <h3>Names:</h3>
 <h3><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h3>
+            <h3><span ng-repeat="bib in MainObject.bibcode"><span style="white-space: nowrap">{{ bib.name }}</span><br></span></h3>
+
     <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
     <h4><span>{{ ngc.notes }}</span></h4>
 <!-- banner3 -->
@@ -133,8 +135,7 @@
 </section>
 <main id="sources" class="main"><section class="half-cell">
     <h3>Sources:</h3>
-    <p ng-if="MainObject.overview"><a href="https://en.wikipedia.org/wiki/{{ MainObject.catalogues[0].object_catalogue }} {{ MainObject.catalogues[0].object_number }}">Wikipedia</a></p>
-    <p ng-if="MainObject.otype"><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues[0].object_catalogue }}_{{ MainObject.catalogues[0].object_number }}">Simbad Database</a></p>
+    <p ng-repeat="s in MainObject.source"><a href="{{ s.name }}">{{ s.name }}</a></p>
 </section></main>
 
 <aside id="navigation-bar">

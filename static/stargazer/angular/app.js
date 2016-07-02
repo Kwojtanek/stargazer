@@ -17,7 +17,6 @@ SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeP
 });
 SearchApp.config(function($routeProvider,$locationProvider){
     $locationProvider.html5Mode(true);
-
     $routeProvider
         .when('/',
         {
@@ -28,6 +27,10 @@ SearchApp.config(function($routeProvider,$locationProvider){
         {
             controller : 'SingleViewCtrl',
             templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
+        })
+        .when('/about', {
+            controller: 'AboutCtrl',
+            templateUrl: '/static/stargazer/angular/routes/about.html'
         })
         .when('/explore/:type/:typesc', {
             controller: 'ExploreCtrl',

@@ -1,6 +1,6 @@
 var min_mag = 0;
-var max_mag = 20.6;
-var maxid = 13401;
+var max_mag = 23.8;
+var maxid = 20000;
 var hashtag = '';
 var familycount = 9
 
@@ -393,11 +393,41 @@ SearchTypes = [
 ]
 
 SearchCatalogues = [
-    'NGC',
-    'PGC',
-    'Messier',
-    'IC'
-
+    {
+        'value': 'NGC',
+        'label': 'New General Catalogue'},
+    {
+        'value': 'PGC',
+        'label': 'Principal Galaxies Catalogue'
+    },
+    {
+        'value': 'Messier',
+        'label': 'Messier Objects Catalouge'
+    },
+    {
+        'value': 'IC',
+        'label': 'Index Catalouge'
+    },
+    {
+        'value': 'UGC',
+        'label': 'Uppsala General Catalogue'
+    },
+    {
+        'value': 'HCG',
+        'label': 'Hickson Compact Group'
+    },
+    {
+        'value': 'GC',
+        'label': 'Catalogue of Nebulae and Clusters of Stars'
+    },
+    {
+        'value': 'GCL',
+        'label': 'Globular Clusters'
+    },
+    {
+        'value': 'OCL',
+        'label': 'Open Clusters'
+    }
 ]
 Nodata = [
     {
@@ -406,13 +436,13 @@ Nodata = [
     {
         'value': 'Unknown',
         'label': 'Object of unknown nature'},
-            {
+    {
         'value': '',
         'label': 'No data'},
-        {
+    {
         'value': 'Inexistent',
         'label': 'Not an object (error, artefact, ...)'},
-        {
+    {
         'value': 'Very red source',
         'label': 'Extremely Red Object'},
 
@@ -478,16 +508,16 @@ ddtypes = [
         {"value": "ClG", "label": "Cluster of Galaxies"}]},
     {"uniname": "Infra-Red source", "data": [
         {"value": "IR", "label": "Infra-Red source"}]},
-    ]
-    // IE compability
-    var doctop = function(){
-        if(document.documentElement && document.documentElement.scrollTop)
-        {return document.documentElement.scrollTop}
-        if(document.body.scrollTop)
-        {return document.body.scrollTop}}
-    var dochaight =function(){
-        if(document.documentElement && document.documentElement.scrollHeight)
-        {return document.documentElement.scrollHeight}
-        if(document.body.scrollHeight)
-        {return document.body.scrollHeight}
-        else return 0;}
+]
+// IE compability
+var doctop = function(){
+    if(document.documentElement && document.documentElement.scrollTop)
+    {return document.documentElement.scrollTop}
+    if(document.body.scrollTop)
+    {return document.body.scrollTop}}
+var dochaight =function(){
+    if(document.documentElement && document.documentElement.scrollHeight)
+    {return document.documentElement.scrollHeight}
+    if(document.body.scrollHeight)
+    {return document.body.scrollHeight}
+    else return 0;}

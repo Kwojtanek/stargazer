@@ -161,15 +161,15 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     }
 
     $scope.ChooseCatalogue = function(){
-        if ($.inArray(this.cat, $scope.filters.SearchCatalogues ) == -1) {
-            $scope.filters.SearchCatalogues.push(this.cat);
+        if ($.inArray(this.cat.value, $scope.filters.SearchCatalogues ) == -1) {
+            $scope.filters.SearchCatalogues.push(this.cat.value);
         }
         else {
-            $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1)
+            $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat.value), 1)
         }
     }
     $scope.RemoveCatalogue = function(){
-        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1);
+        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat.value), 1);
     }
     $scope.TypeList = true;
     $scope.CatList = true;
