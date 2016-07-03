@@ -68,7 +68,7 @@ class StellarObject(models.Model):
             pattern = re.compile('\d+.\d+')
             numb = re.findall(pattern, self.dimAxb)
             if len(numb) == 0:
-                return 20
+                return 1
             for n in numb:
                 if n >= x:
                     x = n
@@ -80,10 +80,10 @@ class StellarObject(models.Model):
             if x <= 0.1:
                 return x * 50
             else:
-                return 20
+                return 1
 
         else:
-            return 20
+            return 1
 
 class Catalogues(models.Model):
     """

@@ -197,9 +197,6 @@ section > h2 {
 #search-field > input {
     width: 100%;
 }
-input[type='text'] {
-    font-size: larger;
-}
 #types {
     order: 7;
 }
@@ -274,7 +271,8 @@ body > section.container {
 
 /* Button 1a */
 .btn-1a:hover,
-.btn-1a:active {
+.btn-1a:active,
+.btn-1a:focus {
     color: #666666;
     background: #fff;
 }
@@ -718,4 +716,21 @@ a:hover {
     font-weight: 700;
     cursor:pointer;
 
+}
+.format-icon {
+    width: 64px;
+    height: 64px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    padding: 0 12px 12px 0;
+    margin: 0 6px 6px 0;
+    transition: 0.4s;
+}
+.format-icon:hover {
+    background-color: rgba(0, 120, 215, 0.51);
+
+}
+.select_layout {
+    background-color: #666666;
+    transition: 0.4s;
 }

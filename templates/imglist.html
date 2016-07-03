@@ -6,7 +6,7 @@
 </head>
 <body>
     {% for p in photo %}
-        <img src="{{ p.thumb }}">
+        <a href="{{ p.orginal }}"><img src="{{ p.thumb }}"></a>
 {% endfor %}
 {% if is_paginated %}
 <ul class="pagination">

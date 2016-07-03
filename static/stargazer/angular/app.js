@@ -13,8 +13,21 @@ SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeP
         if(document.body.scrollHeight)
         {return document.body.scrollHeight}
         else return 0;}
-
+    $rootScope.layout = {};
+    $rootScope.layout.list = true;
+    $rootScope.layout.photo = false;
+    function layout_function(lt){
+        if (lt == 'list'){
+            $rootScope.layout.list = true;
+            $rootScope.layout.photo = false;
+        }
+        if (lt =='photo'){
+            $rootScope.layout.photo = true;
+            $rootScope.layout.list = false;
+        }
+    }
 });
+
 SearchApp.config(function($routeProvider,$locationProvider){
     $locationProvider.html5Mode(true);
     $routeProvider
@@ -29,7 +42,6 @@ SearchApp.config(function($routeProvider,$locationProvider){
             templateUrl: '/static/stargazer/angular/routes/search/SingleView.html'
         })
         .when('/about', {
-            controller: 'AboutCtrl',
             templateUrl: '/static/stargazer/angular/routes/about.html'
         })
         .when('/explore/:type/:typesc', {
@@ -48,3 +60,10 @@ SearchApp.config(function($routeProvider,$locationProvider){
             redirectTo: '/page404',
         });
 });
+
+SearchApp.directive('stellarList', function(){
+    return {
+        restricte: 'E',
+        templateUrl: '/static/stargazer/angular/directives/stellar-list.html'
+    }
+})

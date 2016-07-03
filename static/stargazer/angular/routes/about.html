@@ -1,0 +1,25 @@
+<script>
+        function aboutPage(){
+            var about_menu =document.querySelector('a[href="/about"]');
+            about_menu.style.backgroundColor = '#0078D7';
+            about_menu.style.color = '#FFF';
+            var m = document.querySelector('.main');
+            document.querySelector('.ng-view-section').style.minHeight = 0;
+            document.querySelector('.ng-view-section').style.height ='500px';
+
+            m.style.padding = '10%';
+        }
+    aboutPage();
+</script>
+<main class="main" style="min-height: 60vh; text-align: center">
+    Hi, welcome to Zorya.co, first astronomical charts finder on the internet.
+    DateBase includes several catalogues, and for specific object finds matching maps.
+    For now it contains 3 sets of maps up to maximum magnitude of 12.6 so for
+    darker objects don't generates charts.
+    Application allows you to filter results by catalogues within they are,
+    by maximum and minimum brightness of object, by type and by position you are right now.
+    You can also just search by popular name of object.
+    If you have any suggestions feel free to leave me message.
+    To do that use Leave message button in footer of page.
+
+</main>

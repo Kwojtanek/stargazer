@@ -120,6 +120,7 @@ class Composer(object):
     Class  takes data from different interfaces, combine them and returns dictionary
     """
     def __init__(self, catalogue, number,
+                 joint = ' ',
                  BIBCODES=BIBCODES,
                  NED=NED,
                  SIMBAD=SIMBAD,
@@ -139,11 +140,12 @@ class Composer(object):
 
         self.catalogue = catalogue
         self.number = number
+        self.joint = joint
         if WIKIMEDIA and DOCS_PHOTO or DOCS_OVERVIEW and WIKIINFO:
             raise StandardError('Warrnig, if data is collected from local files and wikipedia, it may cause errors.')
 
     def __unicode__(self):
-        return '%s %s' % (self.catalogue,self.number)
+        return '%s%s%s' % (self.catalogue, self.joint, self.number)
 
     print_settings = lambda: print_settings()
 

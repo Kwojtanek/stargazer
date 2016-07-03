@@ -27,7 +27,6 @@ from __future__ import print_function
 import sys, os
 from common_funcs import status_code, status_code_raw
 from settings import print_settings
-from common_funcs import CataloguesRWD
 from Composer import Composer
 from Senders import LocalSender
 import requests

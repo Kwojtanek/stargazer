@@ -36,7 +36,7 @@ class AdminNGC(admin.ModelAdmin):
     list_display = ["type", "type_shortcut", "classe",
                     "rightAsc", "declination", "constelation",
                     "magnitudo", "dimAxb",]
-    search_fields = ["unique_name"]
+    search_fields = ["catalogues__object_number"]
 
     inlines = [ImageInline]
 

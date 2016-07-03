@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from DjangoSettings.settings import BASE_DIR
+from django.db.models import Count
 
 import pdb
 __author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
@@ -47,7 +48,6 @@ def CreateUpdateAPI(request):
         response = {}
         if request.data.has_key('data'):
             data = request.data['data']
-            print data
             #Sprawdzamy czy sa wystarczaj aco kompletne
             try:
 
@@ -141,6 +141,17 @@ def CreateUpdateAPI(request):
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def CatalogueInfo(request):
+    if request.GET.has_key('catalogue'):
+        C = Catalogues.objects.get(name=request.GET['catalogue'])
+        data = {}
+        data['catalogue'] = C.name
+        data['count'] = C.stellarobscount()
+        data['size'] = C.size
+        return Response(data,status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class BugTrackerViewAPI(generics.CreateAPIView):

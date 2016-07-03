@@ -1,6 +1,6 @@
 var min_mag = 0;
 var max_mag = 23.8;
-var maxid = 20000;
+var maxid = 35000;
 var hashtag = '';
 var familycount = 9
 

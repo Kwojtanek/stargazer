@@ -285,9 +285,9 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         else {
             $scope.StellarObject.next = null;
             $scope.CommonData.next = null;
-            butt = $('#search-btn > input');
-            butt.attr('value', 'search Again');
-            butt.attr('id', 'SearchAgain');
+            //butt = $('#search-btn > input');
+            //butt.attr('value', 'search Again');
+            //butt.attr('id', 'SearchAgain');
             document.getElementById('params-annot').style.display = 'block';
 
         }}, true);

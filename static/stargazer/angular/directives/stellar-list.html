@@ -1,0 +1,74 @@
+<section id="results">
+    <div style="display: inline-flex;background-color: #eee; margin-top: 24px; width: auto">
+        <p style="background-color: #eee; color:#35393E; font-weight: 900; text-transform: uppercase; margin: 0; padding: 12px;">Set Layout:</p>
+        <span ng-class="layout.list ? 'select_layout' : ''" onclick="layout_function('list')" class="format-icon"  style="background-image:url('/static/stargazer/css/img/horizontal.svg')">
+        </span>
+        <span ng-class="layout.photo ? 'select_layout' : ''" onclick="layout_function('photo')" class="format-icon" style="background-image:url('/static/stargazer/css/img/square.svg')">
+        </span>
+    </div>
+    <h3>Results: {{ StellarObject.count }}</h3>
+    <p style="background-color: #eee; color:#35393E; font-weight: 900; text-transform: uppercase; margin: 0; padding: 12px;">Click on property to set order</p>
+    <table style="background-color: #F7F7F7;border: 0">
+        <thead>
+        <tr style="background-color: #EBEBEB;">
+            <td>#<p></p></td>
+            <td ng-click="orderBy('catalogues')"  class='orderby'>Catalogues <div class="animate-switch-container" ng-switch on="filters.ordering">
+                <p class="animate-switch" ng-switch-when="-catalogues">&#x25BC</p>
+                <p class="animate-switch" ng-switch-when="catalogues">&#x25B2</p>
+                <p class="animate-switch" ng-switch-when=""></p>
+            </div>            </td>
+            <td ng-click="orderBy('type')"  class='orderby'>Type <div class="animate-switch-container" ng-switch on="filters.ordering">
+                <p class="animate-switch" ng-switch-when="-type">&#x25BC</p>
+                <p class="animate-switch" ng-switch-when="type">&#x25B2</p>
+                <p class="animate-switch" ng-switch-when=""></p>
+            </div>            </td>
+            <td ng-click="orderBy('classe')" class='orderby'>Class<div class="animate-switch-container" ng-switch on="filters.ordering">
+                <p class="animate-switch" ng-switch-when="-classe">&#x25BC</p>
+                <p class="animate-switch" ng-switch-when="classe">&#x25B2</p>
+                <p class="animate-switch" ng-switch-when=""></p>
+            </div>            </td>
+            <td ng-click="orderBy('rightAsc')" class='orderby'>RightAsc.
+                <div class="animate-switch-container" ng-switch on="filters.ordering">
+                    <p class="animate-switch" ng-switch-when="-rightAsc">&#x25BC</p>
+                    <p class="animate-switch" ng-switch-when="rightAsc">&#x25B2</p>
+                    <p class="animate-switch" ng-switch-when=""></p>
+                </div>   </td>
+            <td ng-click="orderBy('declination')" class='orderby'>Declination
+                <div class="animate-switch-container" ng-switch on="filters.ordering">
+                    <p class="animate-switch" ng-switch-when="-declination">&#x25BC</p>
+                    <p class="animate-switch" ng-switch-when="declination">&#x25B2</p>
+                    <p class="animate-switch" ng-switch-when=""></p>
+                </div></td>
+            <td ng-click="orderBy('constelation')" class='orderby'>Const.
+                <div class="animate-switch-container" ng-switch on="filters.ordering">
+                    <p class="animate-switch" ng-switch-when="-constelation">&#x25BC</p>
+                    <p class="animate-switch" ng-switch-when="constelation">&#x25B2</p>
+                    <p class="animate-switch" ng-switch-when=""></p>
+                </div></td>
+            <td ng-click="orderBy('magnitudo')" class='orderby'>Mag.
+                <div class="animate-switch-container" ng-switch on="filters.ordering">
+                    <p class="animate-switch" ng-switch-when="-magnitudo">&#x25BC</p>
+                    <p class="animate-switch" ng-switch-when="magnitudo">&#x25B2</p>
+                    <p class="animate-switch" ng-switch-when=""></p>
+                </div></td>
+            <td style="max-width: 120px">Angular size
+                (arcmin):</td>
+            <td>img<p></p></td>
+        </tr>
+        </thead>
+                <tbody>
+        <tr ng-repeat="obj in results track by $index" ng-click="trUrl(obj.id, $index)" href="/{{ obj.id }}" data-href="/{{ obj.id }}" style="min-height: 105px">
+            <td>{{ obj.unique_name}}</td>
+            <td><span ng-repeat="cat in obj.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></td>
+            <td>{{ obj.type }}</td>
+            <td>{{ obj.classe }}</td>
+            <td>{{ obj.rightAsc }}</td>
+            <td>{{ obj.declination }}</td>
+            <td>{{ obj.constelation }}</td>
+            <td>{{ obj.magnitudo }}</td>
+            <td>{{ obj.dimAxb }}</td>
+            <td><a ng-if="obj.photos[0].orginal" href="{{ obj.photos[0].orginal }}"><img ng-src="{{ obj.photos[0].thumb }}" width="100" height="100"></a> </td>
+        </tr>
+        </tbody>
+    </table>
+</section>

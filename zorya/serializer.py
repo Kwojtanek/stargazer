@@ -4,7 +4,7 @@ __author__ = 'kuba'
 from rest_framework import serializers
 from .models import Objects_list, StellarObject, Constellations,\
     Catalogues, ObjectPhotos, AstroCharts, BugTracker,\
-    ContactApplet, ReletedType
+    ContactApplet, ReletedType, BibCode, Source
 
 
 class NGCNestedSerializer(serializers.ModelSerializer):
@@ -41,6 +41,16 @@ class PhotoSerializer(serializers.ModelSerializer):
         model = ObjectPhotos
         fields = ('thumb', 'normal', 'orginal')
 
+class BibcodesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= BibCode
+        fields = ('name',)
+
+class SourceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Source
+        fields = ('name',)
+
 
 class StellarObjectSerializer(serializers.ModelSerializer):
     catalogues = NGCNestedSerializer(
@@ -58,6 +68,14 @@ class StellarObjectSerializer(serializers.ModelSerializer):
     )
 
     photos = PhotoSerializer(
+        many=True,
+        read_only=True
+    )
+    source = SourceSerializer(
+        many=True,
+        read_only=True
+    )
+    bibcode = BibcodesSerializer(
         many=True,
         read_only=True
     )
