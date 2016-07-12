@@ -22,7 +22,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
             }
         });
     }
-
     $scope.Types = SearchTypes;
     $scope.Catalogues = SearchCatalogues;
     $scope.ddtypes = ddtypes;
@@ -35,6 +34,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters = $scope.CommonData.filters;
         $scope.results = $scope.CommonData.results;
         $scope.page = $scope.CommonData.page;
+        $scope.show = $scope.CommonData.show;
         SliderFunc()
         $('#results').fadeIn(300);
     }
@@ -44,12 +44,14 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.advanced = false;
         $scope.filters.SearchConstellation = [];
         $scope.filters.SearchTypes = [];
-        $scope.filters.SearchCatalogues = [];
+        $scope.filters.SearchCatalogues = ["NGC", "Messier"];
         $scope.filters.lat = '';
         $scope.filters.MinMag = min_mag;
         $scope.filters.MaxMag = max_mag;
         $scope.page = 1;
+        $scope.show = true;
         $scope.filters.ordering = 'magnitudo'
+        $scope.index
         SliderFunc()
 
         $scope.results = [];
@@ -169,7 +171,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         }
     }
     $scope.RemoveCatalogue = function(){
-        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat.value), 1);
+        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1);
     }
     $scope.TypeList = true;
     $scope.CatList = true;
@@ -201,7 +203,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
                 $scope.results = ob.results;
-                CommonData.set($scope.StellarObject,1, $scope.filters, $scope.results, $scope.page);
+                CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
 
                 $('div.box').fadeOut(300);
             });
@@ -215,7 +217,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         /*
          window.open('#/'.concat(url), '_blank');
          */
-        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results,$scope.page);
+        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results,$scope.page,$scope.show);
         document.removeEventListener('scroll', LoadOnScroll, false);
         window.location = '/'.concat('object/',id);
     }
@@ -252,7 +254,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             for (var i = 0; i < ob.results.length; i++){
                                 $scope.results.push(ob.results[i]);
                             }
-                            CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page);
+                            CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
                             document.getElementById('annotation-loader').style.display = '';
                         }
                     )
@@ -277,7 +279,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         }
         else { $scope.filters.ordering = data}
     }
-    // NIE działa tak jak powinno
     $scope.$watch('filters', function(newdata,olddata) {
         if (!$scope.StellarObject || olddata == newdata ||$scope.results.length == 0){
             return;

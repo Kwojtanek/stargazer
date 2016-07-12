@@ -105,7 +105,8 @@ class Catalogues(models.Model):
 class Objects_list(models.Model):
     """
     Mediative class between catalogue and stellar object.
-    Every stellar object can be in many catalogues and have unique name or number in it.
+    Every stellar object can be in many catalogues and
+     have unique name or number in it.
     """
     single_object = models.ForeignKey(StellarObject, related_name='catalogues')
     object_catalogue = models.ForeignKey(Catalogues, related_name='Catalogue')
@@ -125,7 +126,7 @@ class ObjectPhotos(models.Model):
     photo = ImageWithThumbsField(upload_to='images', sizes=((410, 230), (1280, 718)), blank=True, null=True)
     photo_url = models.URLField(blank=True, null=True)
     photo_thumbnail = models.URLField(blank=True,null=True)
-    ngc_object = models.ForeignKey(StellarObject, related_name='photos')
+    StellarObject = models.ForeignKey(StellarObject, related_name='photos')
 
     def __unicode__(self):
         if self.photo:

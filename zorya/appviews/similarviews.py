@@ -24,6 +24,7 @@ def SimilarViewAPI(request):
         stellarquery = StellarObject.objects.annotate(num_p=Count('photos')).exclude(magnitudo__isnull=True,pk=request.GET['pk'],num_p=0).order_by('-num_p')
         returnedquery = {}
         #Goes through GET params and maps them corectly to queryset
+        #TODO Change to polimorphism
         for k,v in (request.GET).items():
             if k == 'type':
                 serializer = StellarObjectSerializer(stellarquery.filter(type_shortcut=v)[:8],many=True, context={'request': request})

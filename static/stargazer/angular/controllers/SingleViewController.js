@@ -113,16 +113,6 @@ SearchApp.controller('SingleViewCtrl',
                 }
 
             }
-            /*
-             setMenu = function(){
-             var m = document.querySelector('#navbar > nav');
-             var naviid = document.createElement('span');
-             naviid.className = 'nav-i active-object';
-             naviid.id = 'nav-active';
-             var textnode = document.createTextNode($scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number))
-             naviid.appendChild(textnode)
-             m.appendChild(naviid);
-             }*/
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
             if ($routeParams.id > maxid || $routeParams.id <= 0 || isNaN($routeParams.id) )
             {window.location = '/'.concat('page404');}

@@ -3,11 +3,8 @@
         <div>
             <h3>Names:</h3>
 <h3><span ng-repeat="cat in MainObject.catalogues"><span style="white-space: nowrap">{{ cat.object_catalogue }} {{ cat.object_number }}</span><br></span></h3>
-            <h3><span ng-repeat="bib in MainObject.bibcode"><span style="white-space: nowrap">{{ bib.name }}</span><br></span></h3>
-
-    <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
-    <h4><span>{{ ngc.notes }}</span></h4>
-<!-- banner3 -->
+            <h3><span ng-repeat="bib in MainObject.bibcode|limitTo:15"><span style="white-space: nowrap">{{ bib.name }}</span><br></span></h3>
+            <!-- banner3 -->
 <ins class="adsbygoogle"
      style="display:inline-block;width:336px;height:280px"
      data-ad-client="ca-pub-2422075747758177"
@@ -100,11 +97,10 @@
 <section class="main" id="more-section">
     <h3>More:</h3>
     <p ng-if="!similar">Loading....</p>
-    <main class="more-main" ng-if="similar.type"><h4>More of this type:</h4>
+    <main class="more-main" ng-if="similar.type"><h4>See more of {{ MainObject.type }}</h4>
     <a href="/object/{{ type.id }}" class="more-single" ng-repeat="type in similar.type"><div class="more-single-out">
         <img ng-if="type.photos[0].thumb" src=" {{ type.photos[0].thumb }}">
         <p>{{ type.catalogues[0].object_catalogue }} {{ type.catalogues[0].object_number }}</p>
-
     </div>
         </a>
         <a style="display: none" href="/explore/type/{{ MainObject.type_shortcut }}">
@@ -112,7 +108,7 @@
                 <img src="/static/stargazer/css/img/chain.svg")>
                 See more in {{ MainObject.type }}</div></a></main>
 
-    <main class="more-main" ng-if="similar.constellation"><h4>More in this constellation</h4>
+    <main class="more-main" ng-if="similar.constellation"><h4>See more in {{ getConstelationName()}}</h4>
     <a href="/object/{{ constellation.id }}" class="more-single" ng-repeat="constellation in similar.constellation"><div class="more-single-out">
         <img ng-if="constellation.photos[0].thumb" src="{{ constellation.photos[0].thumb }}">
         <p>{{ constellation.catalogues[0].object_catalogue }}{{ constellation.catalogues[0].object_number }}</p>
@@ -122,7 +118,7 @@
         <img src="/static/stargazer/css/img/chain.svg")>
         See more in {{ getConstelationName()}}  </div></main>
 
-    <main class="more-main" ng-if="similar.catalogue"><h4>More in this catalogue</h4>
+    <main class="more-main" ng-if="similar.catalogue"><h4>See more in {{ MainObject.catalogues[0].object_catalogue }}</h4>
     <a href="/object/{{ catalogue.id }}" ng-if="catalogue.photos[0].thumb" class="more-single" ng-repeat="catalogue in similar.catalogue"><div class="more-single-out">
         <img src="{{ catalogue.photos[0].thumb }}">
         <p>{{ catalogue.catalogues[0].object_catalogue }} {{ catalogue.catalogues[0].object_number }}</p>

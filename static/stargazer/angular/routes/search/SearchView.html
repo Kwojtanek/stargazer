@@ -1,13 +1,31 @@
-<form>
+<form style="width: 100%; transition: min-height 0.4s ease-in;" xmlns="http://www.w3.org/1999/html" ng-class="show ? 'ng-view-min' :'ng-view-max'" >
     <section id="filter-animated" >
-        <h2 style="color: white">Filters:</h2>
+        <span style="color: white;display: flex; align-items: center; margin: 0 44px 12px 44px; width: 100%" ng-switch on="show">
+                <p style="font-weight: 900; text-transform: uppercase" ng-switch-when="true">Show filters:</p>
+                <p style="font-weight: 900; text-transform: uppercase"  ng-switch-when="false">Hide filters:</p>
+            <span class="show-filters-icon" ng-class="show ? 'arrow-down' :'arrow-up'" ng-click="show = !show">
+            </span>
+            <span  id="search-grp">
+                <button ng-hide="!show"  ng-click="show = !show" type="button" class="search-group-mag">
+                    Magnitude: {{ filters.MinMag  }} - {{ filters.MaxMag }}
+                </button>
+            <button type="button" id="const-button" class="search-group-list" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()">
+                {{ c }}
+            </button>
+            <button type="button" id="type-button" class="search-group-list" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()">
+                {{ t }}
+            </button>
+            <button type="button" id="cat-button"  class="search-group-list" ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()">
+                {{ cat }}
+            </button>
 
-
-
-        <button class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()">
+        </span>
+        </span>
+        </span>
+        <button ng-hide="show" class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()">
             Reset</button>
 
-        <div id="brightness">
+        <div id="brightness" ng-hide="show">
             <div class="maxmindiv">
                 <label for="min_mag">Min:</label>
                 <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MinMag">
@@ -21,41 +39,24 @@
                 <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag">
             </div>
         </div>
-        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
+        <button ng-hide="show" type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
             Visible Only
         </button>
-        <div id="search-grp">
-            <button type="button" id="const-button" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()">
-                {{ c }}
-            </button>
-            <button type="button" id="type-button" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()">
-                {{ t }}
-            </button>
-            <button type="button" id="cat-button"  ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()">
-                {{ cat }}
-            </button>
-        </div>
+            <span ng-hide="show" id="search-grp" style="height: 74px">
+        </span>
 
 
-
-
-
-
-
-
-
-
-        <div id="const-group" >
-            <input id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" >
+        <div ng-hide="show" id="const-group" >
+            <input type="text" id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" >
             <div class="btn-group">
                 <button type="button" ng-click="ChooseConst()" class="button btn-1 btn-1a" >Add</button>
             </div>
         </div>
         <div id="search-field">
-            <input style="line-height: 5" type="text" class="form-control" ng-model="filters.Name" placeholder="search..." >
+            <input type="text" class="form-control" ng-model="filters.Name" autofocus placeholder="search..." >
         </div>
 
-        <div id="types">
+        <div ng-hide="show" id="types">
             <button type="button" class="button btn-1 btn-1a">
                 Types&#9660;
             </button>
@@ -73,11 +74,11 @@
             </ul>
         </div>
 
-        <div id="catalogues">
+        <div ng-hide="show" id="catalogues">
             <button type="button" class="button btn-1 btn-1a">
                 Catalogues&#9660;
             </button>
-            <ul class="dropdown-menu" style="list-style-type:none">
+            <ul class="dropdown-menu catalogue-dropdown" style="list-style-type:none">
                 <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-class="{'ok': filters.SearchCatalogues.indexOf(cat.value) != -1}" ng-click="ChooseCatalogue()">
                     {{ cat.label }}
                 </li>
@@ -91,8 +92,8 @@
 <stellar-list></stellar-list>
 <div id="params-annot">Search parameters changed. Press <b>enter</b> to search again</div>
 <script type="text/javascript" >
-        search_butt = document.getElementsByClassName('nav-i')[0];
-        search_butt.id = 'nav-active';
-        explore_butt = document.getElementsByClassName('nav-i')[1];
-        explore_butt.id = '';
+    search_butt = document.getElementsByClassName('nav-i')[0];
+    search_butt.id = 'nav-active';
+    explore_butt = document.getElementsByClassName('nav-i')[1];
+    explore_butt.id = '';
 </script>

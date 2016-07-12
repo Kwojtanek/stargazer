@@ -224,7 +224,7 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     box-shadow: 1px 1px 1px 1px rgba(53, 57, 62, 0.04);
 }
 .more-single:hover {
-    box-shadow: 0 0 0 12px rgba(2, 121, 215, 0.75);
+    box-shadow: 0 0 0 12px rgba(2, 121, 215, 1);
 }
 
 .more-single-out {

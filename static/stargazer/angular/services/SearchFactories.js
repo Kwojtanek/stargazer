@@ -10,6 +10,7 @@ SearchApp.factory('SingleViewFactory',['$resource', function($resource){
     return $resource('/endpoint/singleAPI/1', format);
 
 }])
+
 SearchApp.factory('ChartsFactory',['$resource', function($resource,asc,dec,mag){
     return $resource('/endpoint/mapAPI',
         {
@@ -29,13 +30,15 @@ SearchApp.factory('SimilarFactory', ['$resource', function($resource,constellati
 }])
 SearchApp.factory('CommonData', function() {
     savedData = {}
-    function set(data, index, filters, results,page) {
+    function set(data, index, filters, results,page,show) {
         if(typeof(Storage) !== "undefined") {
             if (data !== 'same'){localStorage.setItem('data',JSON.stringify(data))};
             if (results !== 'same'){localStorage.setItem('results', JSON.stringify(results))};
             if (page !== 'same'){localStorage.setItem('page',(page))};
             if (isNaN(parseInt(index))){localStorage.setItem('index', JSON.stringify(0));}
             else { localStorage.setItem('index',(index));}
+            if (show !== 'same'){localStorage.setItem('show',(show))};
+
             if (filters !== 'same'){localStorage.setItem('filters',JSON.stringify(filters))}
             // Code for localStorage/sessionStorage.
         }       else {
@@ -49,6 +52,7 @@ SearchApp.factory('CommonData', function() {
             savedData.index = JSON.parse(localStorage.getItem('index'));
             savedData.filters =JSON.parse(localStorage.getItem('filters'));
             savedData.results = JSON.parse(localStorage.getItem('results'));
+            savedData.show = JSON.parse(localStorage.getItem('show'));
             savedData.page = (localStorage.getItem('page'));
             return savedData;
         } else return savedData;

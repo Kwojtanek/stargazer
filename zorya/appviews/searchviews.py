@@ -55,13 +55,14 @@ class SearchAPI(generics.ListAPIView):
                 stellarquery = stellarquery.filter(declination__lte=str(ln))
 
         if n:
-            stellarquery = stellarquery.filter(bibcode__name__icontains=n).distinct()
+            stellarquery = stellarquery.filter(bibcode__name__icontains=n)
         if orderby:
             if orderby == 'constelation':
-                return stellarquery.order_by('constelation__abbreviation')
+                stellarquery =  stellarquery.order_by('constelation__abbreviation')
             if orderby == '-constelation':
-                return stellarquery.order_by('-constelation__abbreviation')
+                stellarquery = stellarquery.order_by('-constelation__abbreviation')
             else:
-                return stellarquery.order_by(orderby)
+                stellarquery =  stellarquery.order_by(orderby)
         else:
-            return stellarquery.order_by('magnitudo')
+            stellarquery = stellarquery.order_by('magnitudo')
+        return stellarquery.distinct()
