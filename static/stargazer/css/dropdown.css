@@ -1,9 +1,7 @@
 button  {
 	display: block;
 }
-#advanced {
-	background-color: #ffbf00;
-}
+
 #types > button:hover  + .dropdown-menu {
 	display: block;
 
@@ -78,9 +76,6 @@ button  {
 		left: 48.7vw;
 		width: 49.15vw;
 	}
-	#const-group {
-		flex: 10 1 100%;
-	}
 }
 @media only screen
 and (max-width : 480px) {
@@ -98,9 +93,6 @@ and (max-width : 480px) {
 	body {
 		min-height: 1600px;
 	}
-		#const-group {
-		flex: 10 1 100%;
-	}
 
 }
 @media only screen and (min-width : 1025px) and (max-width: 1280px) {
@@ -114,9 +106,6 @@ and (max-width : 480px) {
 		left: 24.2vw;
 		width: 25vw;
 	}
-	    #const-group {
-        flex: 10 1 50%;
-    }
 
 }
 @media only screen
@@ -133,6 +122,3 @@ and (min-width : 1824px) {
 		width: 271px;
 	}
 }
-	#const-group {
-		flex: 2 1 300px;
-	}

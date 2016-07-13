@@ -27,7 +27,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
     $scope.ddtypes = ddtypes;
     // On enter searches
     document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
-
+    //document.querySelector('#autocomplete').addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.ChooseConst()}})
     $scope.CommonData  = CommonData.get()
     if ($scope.CommonData.index !== null) {
         $scope.StellarObject = $scope.CommonData.data;
@@ -37,6 +37,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.show = $scope.CommonData.show;
         SliderFunc()
         $('#results').fadeIn(300);
+
     }
     else {
         $scope.filters = {}
@@ -49,15 +50,19 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.MinMag = min_mag;
         $scope.filters.MaxMag = max_mag;
         $scope.page = 1;
-        $scope.show = true;
+        $scope.show = false;
         $scope.filters.ordering = 'magnitudo'
-        $scope.index
+        $scope.filters.withmag = true
+
         SliderFunc()
 
         $scope.results = [];
 
 
     }
+    if ($scope.show == false){
+        $('#filter-animated').hide();
+}
 
     // JQueryUI
     $( "#autocomplete" ).autocomplete({
@@ -69,10 +74,12 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.MaxMag = max_mag;
         $scope.filters.MinMag = min_mag;
         $scope.filters.SearchTypes.length = 0;
-        $scope.filters.SearchCatalogues.length = 0;
+        $scope.filters.SearchCatalogues = ['NGC','Messier'];
         $scope.filters.visible = false;
         $scope.filters.lat ='';
         $scope.filters.Name ='';
+        $scope.filters.advanced = false;
+        $scope.filters.withmag = true;
 
         document.querySelector('#search-field>input').value = '';
         $( "#min_mag" ).val(min_mag);
@@ -198,7 +205,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                 cat: $scope.filters.SearchCatalogues.toString(),
                 lat: $scope.filters.lat,
                 name: $scope.filters.Name,
-                orderby: $scope.filters.ordering
+                orderby: $scope.filters.ordering,
+                withmag: $scope.filters.withmag
             }
         ).$promise.then(function(ob){
                 $scope.StellarObject = ob;
@@ -244,7 +252,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
                             cat: $scope.filters.SearchCatalogues.toString(),
                             lat: $scope.filters.lat,
                             name: $scope.filters.Name,
-                            orderby: $scope.filters.ordering
+                            orderby: $scope.filters.ordering,
+
                         }
                     ).$promise.then(function(ob){
                             $scope.page++
@@ -292,4 +301,8 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
             document.getElementById('params-annot').style.display = 'block';
 
         }}, true);
+    $scope.withMag = function(){
+        $scope.filters.withmag = $scope.filters.withmag == true ? false : true
+
+    }
 }]);

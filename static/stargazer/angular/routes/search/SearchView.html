@@ -1,31 +1,46 @@
-<form style="width: 100%; transition: min-height 0.4s ease-in;" xmlns="http://www.w3.org/1999/html" ng-class="show ? 'ng-view-min' :'ng-view-max'" >
-    <section id="filter-animated" >
-        <span style="color: white;display: flex; align-items: center; margin: 0 44px 12px 44px; width: 100%" ng-switch on="show">
-                <p style="font-weight: 900; text-transform: uppercase" ng-switch-when="true">Show filters:</p>
-                <p style="font-weight: 900; text-transform: uppercase"  ng-switch-when="false">Hide filters:</p>
-            <span class="show-filters-icon" ng-class="show ? 'arrow-down' :'arrow-up'" ng-click="show = !show">
+<form style="width: 100%; transition: min-height 0.4s ease-in;" xmlns="http://www.w3.org/1999/html">
+    <span class="search-interface" style="order: 1;    background-color: rgba(255, 255, 255, 0.08);" >
+            <span style="color: white; display: inherit"  ng-switch on="show" title="Display/hide filter options">
+                <p class="search-i-p" style="color: #ebebeb" ng-switch-when="false" >Show filters:</p>
+                <p class="search-i-p" style="color: #ebebeb" ng-switch-when="true" >Hide filters:</p>
+            <span class="show-filters-icon"  ng-click="show = !show"  ng-class="!show ? 'arrow-down' :'arrow-up'">
             </span>
-            <span  id="search-grp">
-                <button ng-hide="!show"  ng-click="show = !show" type="button" class="search-group-mag">
-                    Magnitude: {{ filters.MinMag  }} - {{ filters.MaxMag }}
-                </button>
-            <button type="button" id="const-button" class="search-group-list" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()">
-                {{ c }}
-            </button>
-            <button type="button" id="type-button" class="search-group-list" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()">
+                </span>
+    <button ng-hide="show" type="button" ng-click="void(0)" onclick="void(0)" class="search-group-mag" title="Range of minimum and maximum magnitude of results">
+        Magnitude: {{ filters.MinMag  }} - {{ filters.MaxMag }}
+    </button>
+        <button type="button" id="const-button" class="search-group-list" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()" title="Delete constellation from results">
+            {{ c }}
+        </button>
+            <button type="button" id="type-button" class="search-group-list" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()" title="Delete type from results">
                 {{ t }}
             </button>
-            <button type="button" id="cat-button"  class="search-group-list" ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()">
+            <button type="button" id="cat-button"  class="search-group-list" ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()" title="Delete catalogue from results">
                 {{ cat }}
             </button>
+    </span>
+    <section id="filter-animated" class="search-interface">
 
-        </span>
-        </span>
-        </span>
-        <button ng-hide="show" class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()">
+        <span class="search-interface" id="settings-module" style="order:1">
+        <p class="search-i-p" style="order:2" title="Main settings of search">Settings:</p>
+        <button  class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()" title="Resets resluts criteria">
             Reset</button>
+        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'clicked' : 'not-clicked'" ng-click="VisibleOnly()" title="Includes/Excludes from results objects that are never seen from your latitude">
+            Visible Only
+        </button>
+        <button type="button"  id="withmag" class="button btn-1 btn-1a"  ng-class="filters.withmag ? 'clicked-brightness' : 'not-clicked-brightness'" ng-click="withMag()"  style="height: 74px" title="Includes/Excludes objects that have no known brightness">
+            With Brightness
+        </button>
+        <button type="button" id="advanced" class="button btn-1 btn-1a" ng-click="ChooseAdvanced()" ng-class="filters.advanced ? 'btn-icon-vis clicked' : 'btn-icon-notvis'" title="Allows to filter by more specific type of object ie. can differ types of galaxies">
+            Advanced Types
+        </button>
+            </span>
 
-        <div id="brightness" ng-hide="show">
+
+
+        <span class="search-interface" style="order:2">
+        <p class="search-i-p" style="order:7"  title="Range of minimum and maximum magnitude of results">Magnitude: </p>
+        <div id="brightness" title="Drag to change minimum and maximum magnitude of objects">
             <div class="maxmindiv">
                 <label for="min_mag">Min:</label>
                 <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MinMag">
@@ -39,24 +54,20 @@
                 <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag">
             </div>
         </div>
-        <button ng-hide="show" type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'btn-icon-vis' : 'btn-icon-notvis'" ng-click="VisibleOnly()"  style="height: 74px">
-            Visible Only
-        </button>
-            <span ng-hide="show" id="search-grp" style="height: 74px">
-        </span>
+            </span>
 
 
-        <div ng-hide="show" id="const-group" >
-            <input type="text" id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" >
+        <span class="search-interface" style="order:3">
+            <p class="search-i-p">Constellations, types & catalogues</p>
+
+        <div id="const-group" >
+            <input type="text" id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" title="Search in given constellation, click add button to add constellation" >
             <div class="btn-group">
-                <button type="button" ng-click="ChooseConst()" class="button btn-1 btn-1a" >Add</button>
+                <button type="button" ng-click="ChooseConst()" class="button btn-1 btn-1a" title="Press to add constellation">Add</button>
             </div>
         </div>
-        <div id="search-field">
-            <input type="text" class="form-control" ng-model="filters.Name" autofocus placeholder="search..." >
-        </div>
 
-        <div ng-hide="show" id="types">
+        <div id="types" title="Narrows down results to choosen type">
             <button type="button" class="button btn-1 btn-1a">
                 Types&#9660;
             </button>
@@ -70,11 +81,10 @@
                 <li ng-if="!filters.advanced" ng-class="{'ok': filters.SearchTypes.indexOf(t.uniname) != -1}" ng-repeat="t in ddtypes" style="white-space: nowrap;" ng-click="ChooseType()" >
                     {{ t.uniname }}
                 </li>
-                <li id="advanced" ng-click="ChooseAdvanced()" ng-class="filters.advanced ? 'btn-icon-vis' : 'btn-icon-notvis'"><h4 >Advanced</h4></li>
             </ul>
         </div>
 
-        <div ng-hide="show" id="catalogues">
+        <div id="catalogues" title="Narrows down results to choosen stellar catalogue">
             <button type="button" class="button btn-1 btn-1a">
                 Catalogues&#9660;
             </button>
@@ -84,10 +94,14 @@
                 </li>
             </ul>
         </div>
-        <div id="search-btn" style="order: 11; flex-basis: 100%; display: inherit; justify-content: center">
-            <input type="submit" value="search" class="button btn-1 btn-1a" ng-click="SearchFor(1)"/>
-        </div>
+</span>
     </section>
+    <div id="search-field">
+        <input type="text" class="form-control" ng-model="filters.Name" autofocus placeholder="search..." title="Write common name or catalogue number">
+    </div>
+    <div id="search-btn" style="order: 11; flex-basis: 100%; justify-content: center">
+        <input type="submit" value="search" class="button btn-1 btn-1a" ng-click="SearchFor(1)"/>
+    </div>
 </form>
 <stellar-list></stellar-list>
 <div id="params-annot">Search parameters changed. Press <b>enter</b> to search again</div>
@@ -96,4 +110,7 @@
     search_butt.id = 'nav-active';
     explore_butt = document.getElementsByClassName('nav-i')[1];
     explore_butt.id = '';
+    $('.show-filters-icon').click(function(){
+        $('#filter-animated').slideToggle( "slow" );
+    });
 </script>
