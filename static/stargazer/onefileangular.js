@@ -215,8 +215,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
 
         SliderFunc()
 
-        $scope.results = [];
-
 
     }
     if ($scope.show == false){
@@ -233,7 +231,7 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.filters.MaxMag = max_mag;
         $scope.filters.MinMag = min_mag;
         $scope.filters.SearchTypes.length = 0;
-        $scope.filters.SearchCatalogues = ['NGC','Messier'];
+        $scope.filters.SearchCatalogues.length = 0;
         $scope.filters.visible = false;
         $scope.filters.lat ='';
         $scope.filters.Name ='';
@@ -247,25 +245,21 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $('*> ul > li').removeClass('ok')
     }
 
-    $scope.VisibleOnly = function(){
-        if ($scope.filters.visible == false) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    latitude = position.coords.latitude
-                    $scope.filters.lat = position.coords.latitude
-                    $scope.filters.visible = true;
+    $scope.VisibleOnly = function() {
+        var latitude;
 
-                })
-            } else {
-                return alert("Geolocation is not supported by this browser.");
-            }
-            $scope.filters.visible = true;
+        function success(position){
+            latitude = position.coords.latitude;
+            $scope.filters.lat = $scope.filters.lat == latitude ? null: latitude
         }
-        else {
-            $scope.filters.visible = false;
-            $scope.filters.lat ='';
+        function error(err){console.warn('ERROR(' + err.code + '): ' + err.message)};
+        if (navigator.geolocation) {
+            $scope.filters.visible = $scope.filters.visible == true ? false : true;
+            navigator.geolocation.getCurrentPosition(success,error)
         }
+        else {alert("Geolocation is not supported by this browser.");}
     }
+
     $scope.ChooseConst = function(){
         var $acmp = $( "#autocomplete").val();
         $scope.Constellation = $acmp;

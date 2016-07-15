@@ -1,14 +1,15 @@
 <form style="width: 100%; transition: min-height 0.4s ease-in;" xmlns="http://www.w3.org/1999/html">
     <span class="search-interface" style="order: 1;    background-color: rgba(255, 255, 255, 0.08);" >
-            <span style="color: white; display: inherit"  ng-switch on="show" title="Display/hide filter options">
-                <p class="search-i-p" style="color: #ebebeb" ng-switch-when="false" >Show filters:</p>
-                <p class="search-i-p" style="color: #ebebeb" ng-switch-when="true" >Hide filters:</p>
-            <span class="show-filters-icon"  ng-click="show = !show"  ng-class="!show ? 'arrow-down' :'arrow-up'">
-            </span>
+            <span style="color: white; display: inherit; margin-right: 60px"  ng-switch on="show" title="Display/hide filter options">
+                <span class="show-filters-icon"  ng-click="show = !show"  ng-class="!show ? 'arrow-down' :'arrow-up'">
+                    <p class="search-i-p" style="color: #35393E" ng-switch-when="false" >Show filters:</p>
+                    <p class="search-i-p" style="color: #35393E" ng-switch-when="true" >Hide filters:</p>
                 </span>
-    <button ng-hide="show" type="button" ng-click="void(0)" onclick="void(0)" class="search-group-mag" title="Range of minimum and maximum magnitude of results">
+                </span>
+    <button ng-hide="show" class="search-group-mag" title="Range of minimum and maximum magnitude of results">
         Magnitude: {{ filters.MinMag  }} - {{ filters.MaxMag }}
     </button>
+        <span ng-hide="show">
         <button type="button" id="const-button" class="search-group-list" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()" title="Delete constellation from results">
             {{ c }}
         </button>
@@ -18,47 +19,68 @@
             <button type="button" id="cat-button"  class="search-group-list" ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()" title="Delete catalogue from results">
                 {{ cat }}
             </button>
+        </span>
     </span>
     <section id="filter-animated" class="search-interface">
 
         <span class="search-interface" id="settings-module" style="order:1">
         <p class="search-i-p" style="order:2" title="Main settings of search">Settings:</p>
-        <button  class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()" title="Resets resluts criteria">
-            Reset</button>
-        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'clicked' : 'not-clicked'" ng-click="VisibleOnly()" title="Includes/Excludes from results objects that are never seen from your latitude">
-            Visible Only
+        <button  class="button btn-1 btn-1a btn-icon" style="height: 74px" type="button" id="reset" ng-click="ResetFilters()">
+            Reset<span>Resets results criteria</span></button>
+        <button type="button"  id="VisibleOnly" class="button btn-1 btn-1a"  ng-class="filters.visible ? 'clicked' : 'not-clicked'" ng-click="VisibleOnly()" >
+            Visible Only<span>Includes/Excludes from results objects that are never seen from your latitude.</span>
         </button>
-        <button type="button"  id="withmag" class="button btn-1 btn-1a"  ng-class="filters.withmag ? 'clicked-brightness' : 'not-clicked-brightness'" ng-click="withMag()"  style="height: 74px" title="Includes/Excludes objects that have no known brightness">
-            With Brightness
+        <button type="button"  id="withmag" class="button btn-1 btn-1a"  ng-class="filters.withmag ? 'clicked-brightness' : 'not-clicked-brightness'" ng-click="withMag()"  style="height: 74px">
+            With Brightness<span>Includes/Excludes objects that have no known brightness.</span>
         </button>
-        <button type="button" id="advanced" class="button btn-1 btn-1a" ng-click="ChooseAdvanced()" ng-class="filters.advanced ? 'btn-icon-vis clicked' : 'btn-icon-notvis'" title="Allows to filter by more specific type of object ie. can differ types of galaxies">
-            Advanced Types
+        <button type="button" id="advanced" class="button btn-1 btn-1a" ng-click="ChooseAdvanced()" ng-class="filters.advanced ? 'btn-icon-vis clicked' : 'btn-icon-notvis'">
+            Advanced Types <span>Allows to filter by more specific type of object ie. can differ types of galaxies</span>
         </button>
             </span>
 
 
 
         <span class="search-interface" style="order:2">
-        <p class="search-i-p" style="order:7"  title="Range of minimum and maximum magnitude of results">Magnitude: </p>
-        <div id="brightness" title="Drag to change minimum and maximum magnitude of objects">
+        <p class="search-i-p" style="order:7"  title="Range of minimum and maximum magnitude of results">Magnitude:
+        </p>
+        <div id="brightness">
             <div class="maxmindiv">
-                <label for="min_mag">Min:</label>
-                <input type="text" id="min_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MinMag">
+                <label for="min_mag">Minimal</label>
+                <input id="min_mag" readonly style="border:0; background-color: transparent; font-weight:bold;" ng-model="filters.MinMag">
             </div>
 
             <div>
                 <div id="slider"></div>
             </div>
             <div class="maxmindiv">
-                <label for="max_mag">Max:</label>
-                <input type="text" id="max_mag" readonly style="border:0; width: 30px; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag">
+                <label for="max_mag">Maximal</label>
+                <input id="max_mag" readonly style="border:0; background-color: transparent; font-weight:bold;" ng-model="filters.MaxMag">
             </div>
         </div>
+
             </span>
 
 
         <span class="search-interface" style="order:3">
-            <p class="search-i-p">Constellations, types & catalogues</p>
+            <p class="search-i-p" style="
+            min-height: 80px;
+            display: flex;
+            align-content: center;
+            align-items: center;
+            align-self: center; ">
+                Constellations, Types & Catalogues:
+                <span>
+                <button type="button" id="const-button" class="search-group-list" ng-repeat="c in filters.SearchConstellation" ng-click="RemoveConst()" title="Delete constellation from results">
+            {{ c }}
+            </button>
+            <button type="button" id="type-button" class="search-group-list" ng-repeat="t in filters.SearchTypes" ng-click="RemoveType()" title="Delete type from results">
+                {{ t }}
+            </button>
+            <button type="button" id="cat-button"  class="search-group-list" ng-repeat="cat in filters.SearchCatalogues" ng-click="RemoveCatalogue()" title="Delete catalogue from results">
+                {{ cat }}
+            </button>
+        </span>
+            </p>
 
         <div id="const-group" >
             <input type="text" id="autocomplete" class="form-control" placeholder="Add constellation" ng-model="Constellation" title="Search in given constellation, click add button to add constellation" >
@@ -67,33 +89,32 @@
             </div>
         </div>
 
-        <div id="types" title="Narrows down results to choosen type">
-            <button type="button" class="button btn-1 btn-1a">
+            <div id="types" title="Narrows down results to choosen type" ng-class="filters.advanced ? 'types-advanced':'dropdown-button'">
                 Types&#9660;
-            </button>
-            <ul class="dropdown-menu" style="list-style-type:none">
-                <li  class="single-type" ng-if="filters.advanced"  ng-repeat="t in ddtypes" style="white-space: nowrap;" >{{ t.uniname }} &#9654
-                    <ul class="otype"><li ng-repeat="ot in t.data" ng-class="{'ok': filters.SearchTypes.indexOf(ot.value) != -1}" ng-click="ChooseType()" class="single-type">{{ ot.label }}</li></ul>
+                            <ul class="dropdown-menu" style="list-style-type:none">
+                <li ng-if="filters.advanced"  ng-repeat="t in ddtypes" style="white-space: nowrap;" >{{ t.uniname }} &#9654
+                    <ul class="otype">
+                        <li ng-repeat="ot in t.data" ng-class="{'ok': filters.SearchTypes.indexOf(ot.value) != -1}" ng-click="ChooseType()" class="single-type">{{ ot.label }}</li>
+                    </ul>
                 </li>
-
 
                 <!-- Zaawansowane wyszukiwanie -->
                 <li ng-if="!filters.advanced" ng-class="{'ok': filters.SearchTypes.indexOf(t.uniname) != -1}" ng-repeat="t in ddtypes" style="white-space: nowrap;" ng-click="ChooseType()" >
                     {{ t.uniname }}
                 </li>
             </ul>
-        </div>
+            </div>
 
-        <div id="catalogues" title="Narrows down results to choosen stellar catalogue">
-            <button type="button" class="button btn-1 btn-1a">
+
+            <div  class="dropdown-button" id="catalogues" title="Narrows down results to choosen stellar catalogue">
                 Catalogues&#9660;
-            </button>
-            <ul class="dropdown-menu catalogue-dropdown" style="list-style-type:none">
+                            <ul class="dropdown-menu catalogue-dropdown" style="list-style-type:none">
                 <li ng-repeat="cat in Catalogues" style="white-space: nowrap; " ng-class="{'ok': filters.SearchCatalogues.indexOf(cat.value) != -1}" ng-click="ChooseCatalogue()">
                     {{ cat.label }}
                 </li>
             </ul>
-        </div>
+            </div>
+
 </span>
     </section>
     <div id="search-field">

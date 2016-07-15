@@ -1,7 +1,6 @@
 Kluczowe:
 
-Factory dla nie-zmiennych X
-Poprawić visible only, niezawsze działa X
+provider dla nie-zmiennych X
 Pobieranie map nieba bezpośrednia z listy obiektów X
 Indeksowanie wyszukiwania X
 Dokumentacja API X
@@ -23,14 +22,14 @@ Pomńiejsze:
 Różne serwisy powinny być w 1 zapytaniu na serwer X
 Po najechaniu na klasę powinno pokazywać szczegóły na jej temat X
 
-Endpoint sprawdzający czy istnieje taki obiekt z inną nazwąX
 ANGULAR MATERIALS Przerobić autocomplete z jqueryUI X
+Źle wyświetla się pasek magnitudo poniżej 480px X
 
 Bugi:
 Fields dla deklinacji nie działa tak jak powinno X - Prawdopodobnie już działa, więcej testów!
 Zrobione:
 Fields nie tworzy kolumny bazy danych V
-Źle wyświetla się pasek magnitudo poniżej 480px V
+
 Nie precyzyjna deklinacja dla simbada V
 Pojedyńczy widok powinien zmieniać też URL podczas klikania na następny/poprzedni V
 Po przejśćiu między widokami nie wyświetla właściwie Magnitudo V
@@ -38,6 +37,7 @@ w podobnych widoku są zduplikowane wpisy V
 
 Getter/Setter dla CommonData w głównym oknie nie wczytuje z LocalStorage danych chyba, że wczyta następną stronę ??? V
 
+Poprawić visible only, niezawsze działa V
 
 Uprościć Stronę filtrów V
 poprawić wyświetlanie Navigacji V
