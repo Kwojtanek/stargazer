@@ -1,7 +1,7 @@
 /**
  * Created by root on 08.06.15.
  */
-SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'CommonData', function($scope, $window, SearchFactory,CommonData) {
+SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory','HintFactory', 'CommonData',function($scope, $window, SearchFactory, HintFactory, CommonData) {
     // True if page waits for another part of list
     $scope.pending = false;
     // Data that will be displayed $scope.results
@@ -37,7 +37,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.show = $scope.CommonData.show;
         SliderFunc()
         $('#results').fadeIn(300);
-
     }
     else {
         $scope.filters = {}
@@ -53,7 +52,6 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         $scope.show = false;
         $scope.filters.ordering = 'magnitudo'
         $scope.filters.withmag = true
-
         SliderFunc()
 
 
@@ -297,6 +295,15 @@ SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'Common
         }}, true);
     $scope.withMag = function(){
         $scope.filters.withmag = $scope.filters.withmag == true ? false : true
-
     }
+    //$scope.$watch('filters.Name', function(){
+    //    console.log($scope.filters.Name)
+    //    el = document.querySelector('#search-field')
+    //    var hint = HintFactory.get(
+    //        {'hintNname': $scope.filters.Name}).promise.then(function(ob) {
+    //            $scope.hint = ob;
+    //            console.log(ob);
+    //            el.innerHTML = ob;
+    //    })
+    //})
 }]);
