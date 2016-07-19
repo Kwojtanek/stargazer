@@ -1,6 +1,5 @@
 # -*- coding=utf-8 -*-
 __author__ = 'kuba'
-
 from rest_framework import serializers
 from .models import Objects_list, StellarObject, Constellations,\
     Catalogues, ObjectPhotos, AstroCharts, BugTracker,\
@@ -139,3 +138,16 @@ class StellarObjectSerializer2(serializers.ModelSerializer):
     class Meta:
         model = StellarObject
 
+
+class SimpleStellarSerializer(serializers.ModelSerializer):
+    bibcode = BibcodesSerializer(
+        many=True,
+        read_only=True
+    )
+    catalogues = NGCNestedSerializer(
+        many=True,
+        read_only=True
+    )
+    class Meta:
+        model = StellarObject
+        fields = ('bibcode','catalogues')

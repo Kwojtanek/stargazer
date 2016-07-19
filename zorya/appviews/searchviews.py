@@ -1,20 +1,16 @@
 # coding=utf-8
-from django.db.models import Q
 from rest_framework import generics
-from zorya.filters import StellarListFilter
-from zorya.models import StellarObject, Catalogues
-from zorya.serializer import StellarObjectSerializer
+from zorya.models import StellarObject
+from zorya.serializer import StellarObjectSerializer, SimpleStellarSerializer
 from zorya.views import StandardResultsSetPagination
 
 __author__ = 'root'
 
 
-class SearchAPI(generics.ListAPIView):
+class StandartSearchAPI(generics.ListAPIView):
     """Endpoint dla wyszukiwarki
     """
     pagination_class = StandardResultsSetPagination
-    serializer_class = StellarObjectSerializer
-    filter_class = StellarListFilter
 
     def get_queryset(self):
         stellarquery = StellarObject.objects.all()
@@ -27,6 +23,16 @@ class SearchAPI(generics.ListAPIView):
         orderby =self.request.query_params.get('orderby', None)
         overview =self.request.query_params.get('overview', None)
         catalogue_number = self.request.query_params.get('cat_n',None)
+        withmag = self.request.query_params.get('withmag',None)
+        max_mag = self.request.query_params.get('max_mag', None)
+        min_mag = self.request.query_params.get('min_mag',None)
+        hint = self.request.query_params.get('hint', None)
+
+
+        if max_mag and min_mag:
+            stellarquery = stellarquery.filter(magnitudo__lte=max_mag,magnitudo__gte=min_mag)
+        if withmag == 'false':
+            stellarquery = stellarquery | StellarObject.objects.filter(magnitudo__isnull=True)
 
         if constellation:
             constellation = constellation.split(',')
@@ -56,6 +62,9 @@ class SearchAPI(generics.ListAPIView):
 
         if n:
             stellarquery = stellarquery.filter(bibcode__name__icontains=n)
+        if hint:
+            stellarquery = stellarquery.filter(bibcode__name__icontains=hint)
+
         if orderby:
             if orderby == 'constelation':
                 stellarquery =  stellarquery.order_by('constelation__abbreviation')
@@ -66,3 +75,12 @@ class SearchAPI(generics.ListAPIView):
         else:
             stellarquery = stellarquery.order_by('magnitudo')
         return stellarquery.distinct()
+
+
+
+class SearchAPI(StandartSearchAPI):
+    serializer_class = StellarObjectSerializer
+
+
+class HintAPI(StandartSearchAPI):
+    serializer_class = SimpleStellarSerializer

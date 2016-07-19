@@ -113,8 +113,8 @@ class Objects_list(models.Model):
     object_number = models.IntegerField(blank=True,null=True)
 
     def __unicode__(self):
-        return u'%s %s' % (str(Catalogues.objects.get(pk=self.object_catalogue.pk)),
-                                  str(StellarObject.objects.get(pk=self.single_object.pk)))
+        return u'%s %s' % (str(self.object_catalogue),
+                                  str(self.object_number))
 
 class ObjectPhotos(models.Model):
     """

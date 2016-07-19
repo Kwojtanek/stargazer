@@ -4,7 +4,7 @@ from .appviews.createaupdateviews import UpdateAPI, BugTrackerViewAPI, ContactAp
     PhotoCreate,  CreateUpdateAPI, PhotoList, CatalogueInfo
 from .appviews.mapviews import mapapi
 from .views import ImgList
-from .appviews.searchviews import SearchAPI
+from .appviews.searchviews import SearchAPI, HintAPI
 from .appviews.generics import TypeViewSet
 
 from .appviews.similarviews import SimilarViewAPI
@@ -33,6 +33,7 @@ endpointspatterns = [
 
     url(r'^mapAPI$', mapapi),
     url(r'^searchAPI$', SearchAPI.as_view(), name='SearchApiUrl'),
+    url(r'^hintAPI$', HintAPI.as_view(), name='HintApiUrl'),
 
     url(r'^updateAPI/(?P<pk>[0-9_-]+)$', UpdateAPI, name='UpdateUrl'),
     url(r'^createupdateAPI$',CreateUpdateAPI, name='CreateUpdateUrl'),
