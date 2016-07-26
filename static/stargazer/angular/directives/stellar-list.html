@@ -1,6 +1,12 @@
 <section id="results">
     <div style="display: inline-flex;background-color: #eee; margin-top: 24px; width: auto">
-        <p style="background-color: #eee; color:#35393E; margin: 21px 21px 21px 44px; font-weight: 900; text-transform: uppercase; padding:12px 12px 12px 0;">Set Layout:</p>
+        <p style="    background-color: #eee;
+    color: #35393E;
+    margin: 12px 8px 13px 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 12px 0px 12px 0;
+    ">Set Layout:</p>
         <span ng-class="layout ? 'select_layout_photo' :'select_layout_list'" ng-click="layout = !layout" class="format-icon">
         </span>
     </div>
@@ -66,7 +72,7 @@
             <td>{{ obj.constelation }}</td>
             <td>{{ obj.magnitudo }}</td>
             <td>{{ obj.dimAxb }}</td>
-            <td><a ng-if="obj.photos[0].orginal" href="{{ obj.photos[0].orginal }}"><img ng-src="{{ obj.photos[0].thumb }}" width="100" height="100"></a> </td>
+            <td><img ng-src="{{ obj.photos[0].thumb }}" width="100" height="100"></td>
         </tr>
         </tbody>
     </table>
@@ -82,12 +88,6 @@
         </main>
     </section>
 </section>
-
-
 <div class="display-details-fullframe" ng-click="hideDetails()">
-    <div class="display-details">
-        bla
-        {{ stellob.unique_name }}
-        {{ stellob }}
-    </div>
+        <stellar-charts class="display-details"></stellar-charts>
 </div>

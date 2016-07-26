@@ -3,7 +3,10 @@ SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeP
     $rootScope.hashtag = hashtag;
 });
 SearchApp.config(function($routeProvider,$locationProvider){
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+        enabled:true,
+        requireBase:false
+    });
 
     $routeProvider
         .when('/',
@@ -41,5 +44,16 @@ SearchApp.directive('stellarList', function(){
         restricte: 'E',
         controller: 'ListCtrl',
         templateUrl: '/static/stargazer/angular/directives/stellar-list.html'
+    }
+}).directive('stellarFooter', function(){
+    return {
+        restrict: 'E',
+        controller: 'FooterCtrl',
+        templateUrl: '/static/stargazer/angular/directives/stellar-footer.html'
+    }
+}).directive('stellarCharts', function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/static/stargazer/angular/directives/stellar-charts.html'
     }
 })

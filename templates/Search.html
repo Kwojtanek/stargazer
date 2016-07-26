@@ -44,8 +44,11 @@
 
     <!-- Angular linki -->
     <script src="/static/stargazer/onefileangular.js"></script>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{#    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>#}
 </head>
+<script>
+    document.documentElement.style.overflowX = 'hidden'
+</script>
 <body ng-app="SearchApp">
 
 {% verbatim %}
@@ -54,69 +57,15 @@
     margin-bottom: 10px;;"><a href="/" target="_self">Zorya.co</a></h1>
     <p style="margin-top: 0;">Stellar maps search engine</p>
     <nav style="display: inline-block">
-        <span><a href="/" class="nav-i" target="_self">Search</a></span>
-        <span><a href="/about" class="nav-i" target="_self">about</a></span>
-        <span style="display: none;"><a href="/explore/" class="nav-i" target="_self">Explore</a></span>
+        <span><a href="/" class="nav-i">Search</a></span>
+        <span><a href="/about" class="nav-i">about</a></span>
+        <!-- span style="display: none;"><a href="/explore/" class="nav-i">Explore</a></span -->
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
-<section class="ng-view-section" style="min-height: 1300px; width: 100%">
+<section class="ng-view-section" style=" width: 100%">
     <ng-view class="mainview-animation"></ng-view>
 </section>
-<!-- banner2 -->
-<footer ng-controller="FooterCtrl" style="    justify-content: center;
-    flex-flow: row wrap; display: flex">
-    <section class="half-cell" style="align-self: baseline;">
-        <h2>Contacts:</h2>
-        <button ng-click="bugtracker = !bugtracker" class="btn-1a button" style="width: 280px">Report Bug</button>
-        <button ng-click="contactapplet = !contactapplet" class="btn-1a button" style="margin-top: 5px;padding: 0 30px;width: 280px">Leave message</button>
-    </section>
-    <section class="half-cell" style="align-self: baseline;">
-        <h2>Info:</h2>
-        <p><a href="http://www.zorya.co/static/sitemap.xml">Sitemap</a></p>
-    </section>
-    <p style="text-align: center">Copyright 2016 ©</p>
-    <div id="form-main" ng-hide="!bugtracker" ng-cloak>
-        <div id="form-div">
-            <form class="form" id="form1">
-                <p id="form-title" ng-click="bugtracker = !bugtracker">Report Bug:</p>
-                <p class="email">
-                    <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" placeholder="Email" ng-model="bugform.author"/>
-                </p>
-
-                <p class="text">
-                    <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*Information" ng-model="bugform.info" required></textarea>
-                </p>
-                <p style="color: white">*required</p>
-
-                <div class="submit">
-                    <input type="submit" value="SEND" ng-click="sendbug()"  id="button-blue"/>
-                    <div class="ease"></div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div id="form-main" ng-hide="!contactapplet" ng-cloak>
-        <div id="form-div">
-            <form class="form" id="form1">
-                <p id="form-title" ng-click="contactapplet = !contactapplet">Contact us:</p>
-                <p class="email">
-                    <input name="email" type="text" class="validate[custom[email]] feedback-input" id="email" ng-model="contactapp.author" placeholder="*Email" required/>
-                </p>
-
-                <p class="text">
-                    <textarea name="text" class="validate[required,length[6,300]] feedback-input" id="comment" placeholder="*message" ng-model="contactapp.message" required></textarea>
-                </p>
-                <p style="color: white">*required</p>
-
-                <div class="submit">
-                    <input type="submit" value="SEND" ng-click="sendcontact()" id="button-blue"/>
-                    <div class="ease"></div>
-                </div>
-            </form>
-        </div>
-    </div>
-</footer>
 
 <div class="box">
     <div class="loader1"><div class="loader-planet"></div> </div>

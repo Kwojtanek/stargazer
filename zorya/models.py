@@ -93,6 +93,7 @@ class Catalogues(models.Model):
     name = models.CharField(max_length=64, unique=True, blank=False)
     description = models.CharField(max_length=1024, blank=True)
     size = models.IntegerField(blank=True, null=True)
+    last_object = models.IntegerField(blank=True,null=True)
 
     def __unicode__(self):
         return self.name
@@ -166,6 +167,7 @@ class AstroCharts(models.Model):
     maxDeclination = DeclinationField(blank=True, null=True)
     minDeclination = DeclinationField(blank=True, null=True)
     magnitudo = models.DecimalField(max_digits=3, decimal_places=1)
+    source = models.CharField(max_length=64)
 
 
 class BugTracker(models.Model):
@@ -204,6 +206,12 @@ class ReletedType(models.Model):
 class BibCode(models.Model):
     StellarObject = models.ForeignKey(StellarObject,related_name='bibcode')
     name = models.CharField(max_length=128)
+    name_length = models.SmallIntegerField(blank=True,null=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        self.name_length = len(self.name)
+        return super(BibCode,self).save(*args,**kwargs)
+
 
     def __unicode__(self):
         return unicode(self.name)

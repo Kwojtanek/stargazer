@@ -52,7 +52,7 @@
 	background-color: #FFFFFF;
 	color: #22313f;
 }
-.types-advanced .dropdown-menu, .dropdown-button .dropdown-menu {
+ .types-advanced .dropdown-menu, .dropdown-button .dropdown-menu {
     position: absolute;
     width: 100%;
     color: #FFF;
@@ -63,23 +63,50 @@
     opacity: 0;
     text-transform: none;
     text-shadow: none;
+     right: -3px;
 }
-.types-advanced:hover .dropdown-menu, .dropdown-button:hover .dropdown-menu {
+#search-field > .dropdown-menu {
+    position: absolute;
+    width: calc(100% - 74px);
+    background: #D7D7D7;
+    border-radius: 0;
+    transition: opacity .7s;
+    padding: 0;
+    left: 38px;
+    top: 100px;
+    z-index: 1;
+    display: none;
+    color: #35393E;
+
+}
+ .types-advanced:hover .dropdown-menu, .dropdown-button:hover .dropdown-menu {
     visibility: visible;
     opacity: 1;
-    left: -3px;
     z-index: 999;
     transition: opacity .7s;
     padding: 0;
     top: 56px;
     border: 3px solid #fff;
 }
+#search-field>ul>p {
+    text-align: center;
+    font-family: 'segoe ui', Arial, sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    width: 100%;
+    background: rgba(53, 57, 62, 0.8);
+    margin: 0;
+    color: white;
+}
+
 .dropdown-menu > li {
     padding: 8px;
     border-top: groove #FFFFFF 1px;
 }
-.dropdown-menu > li:hover {
-    background-color: #008fff;
+#search-field > ul > li:hover {
+    background-color: #ffffff;
     transition: background-color 0.3s;
 }
 .dropdown-menu > li > ul {
@@ -101,7 +128,7 @@
     transition: background-image 0.7s;
 
 }
-.types-advanced .dropdown-menu > li:hover {
+#catalogues .dropdown-menu >li:hover, #types .dropdown-menu >li:hover, .types-advanced .dropdown-menu > li:hover {
     height: auto;
     background-color: #008fff;
     transition: background-color 0.3s, height 0.3s;

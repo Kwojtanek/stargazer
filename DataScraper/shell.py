@@ -46,7 +46,7 @@ def run():
     Cat = raw_input('Name of catalogue: ')
     r = requests.get('http://127.0.0.1:8000/endpoint/catalogueInfo',params={'catalogue':Cat,'format':'json'})
     length = int(json.loads(r.text)['size'])
-    it = int(json.loads(r.text)['count']) - 1
+    it = int(json.loads(r.text)['count'])
     print(str(round(float(it)/float(length),4)*100) + ' %')
     while it < length:
         it +=1

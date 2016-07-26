@@ -70,30 +70,7 @@
 
 
 
-<main id="astrocharts" class="main" ng-if="MainObject" >
-    <h3 style="flex-basis: 100%">Sky Charts:</h3>
-    <!--mapy -->
-    <p ng-if="MainObject.magnitudo <= 12.6">Click on one bellow to download sky map</p>
-
-    <section  id="search-charts" ng-if="MainObject.magnitudo <= 12.6">
-        <div>
-        <img src="/static/stargazer/css/img/search.svg">
-            <p ng-if="!charts">Loading...</p>
-
-        <p ng-if="charts">Found charts</p>
-
-    </div><a ng-repeat="c in  charts.results" href="{{ c.url  }}" target="_blank"><div ><img src="/static/stargazer/css/img/pdf.svg">Max magnitudo: {{ c.max_mag }}</div></a></section>
-
-
-    <!-- Brak map -->
-    <section ng-if="MainObject.magnitudo > 12.6"><h2>
-        <img src="/static/stargazer/css/img/search.svg">
-        <p>We are sorry but page includes maps only up to 12.6 <!--a href="/glossary#magnitudo">magnitudo</a --></p>
-    </h2>
-    </section>
-
-
-</main>
+<stellar-charts id="astrocharts" class="main"></stellar-charts>
 <section class="main" id="more-section">
     <h3>More:</h3>
     <p ng-if="!similar">Loading....</p>
@@ -129,6 +106,10 @@
             See more in {{ MainObject.catalogues[0].object_catalogue }}</div></main>
 
 </section>
+<main class="main">
+    <h3>Different names</h3>
+    <p ng-repeat="b in MainObject.bibcode">{{ b.name }},</p>
+</main>
 <main id="sources" class="main"><section class="half-cell">
     <h3>Sources:</h3>
     <p ng-repeat="s in MainObject.source"><a href="{{ s.name }}">{{ s.name }}</a></p>
@@ -148,6 +129,7 @@
 
 <div ng-if="lastObject" ng-click="leastIndex(MainObject.id)" class="nextLeast" style="left: 0; background: #0279d7 url('/static/stargazer/css/img/left.svg') no-repeat right center">{{ lastObject }}</div>
 <div ng-if="nextObject" ng-click="nextIndex(MainObject.id)" class="nextLeast" style="right: 0; background: #0279d7 url('/static/stargazer/css/img/right.svg') no-repeat left center">{{ nextObject }}</div>
+<stellar-footer></stellar-footer>
 <script type="text/javascript" >
     search_butt = document.getElementsByClassName('nav-i')[0];
     search_butt.id = '';

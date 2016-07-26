@@ -147,7 +147,7 @@ def CatalogueInfo(request):
         C = Catalogues.objects.get(name=request.GET['catalogue'])
         data = {}
         data['catalogue'] = C.name
-        data['count'] = C.stellarobscount()
+        data['count'] = C.last_object
         data['size'] = C.size
         return Response(data,status=status.HTTP_200_OK)
     else:

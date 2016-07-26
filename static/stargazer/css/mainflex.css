@@ -12,7 +12,7 @@ body {
 }
 #navbar {
     flex-basis: 100%;
-    padding: 0 10% 8px 10%;
+    padding: 0 36px 8px 36px;
 }
 #navbar > h1 > a{
     text-decoration: None;
@@ -35,6 +35,9 @@ ng-view {
     transition: 0.5s;
 
 
+}
+#results {
+    padding: 36px;
 }
 ng-view >form {
     margin: 0;
@@ -192,7 +195,6 @@ display: -ms-flexbox;
     text-transform: uppercase;
     font-size: 1.3em;
     background-size: 50px;
-    background-size: 50px;
 }
 .search-group-list:hover {
     box-shadow: 0 0 0 12px rgba(25, 105, 175, 0.6);
@@ -216,15 +218,6 @@ display: -ms-flexbox;
     flex: 1;
 }
 
-input[type=text] {
-    color: rgb(34, 49, 63);
-    transition: 0.4s;
-}
-input[type=text]:focus {
-    background-color: #ffffff;
-    box-shadow: 0 0 0 12px rgba(195, 195, 195, 0.75);
-
-}
 
 
 /* Autocomplete */
@@ -319,8 +312,8 @@ td {
     transition: 400ms;
 }
 #results tr:hover {
-    background-color: #ffbf00;
-    color: #676767;
+    background-color: #0078D7;
+    color: #fff;
 
 }
 #results thead tr:hover:first-child {
@@ -427,6 +420,10 @@ input[type=text] {
 tr > td:nth-child(1) {
     display: none;
 }
+#main-form {
+    width: 100%;
+    transition: min-height 0.4s ease-in;
+}
 /* -------------------------------------Large---------------------------------------------------------- */
 @media only screen
 and (min-width : 1824px) {
@@ -434,6 +431,14 @@ and (min-width : 1824px) {
     #results {
         width: 80%;
         margin: 0 10% 200px 10%;
+    }
+    #main-form {
+        width: 80%;
+        padding: 0 10%;
+    }
+    #navbar {
+        width: 80%;
+        padding: 0 calc(10% + 36px);
     }
     #buttons {
         width: 70%;
@@ -693,56 +698,41 @@ and (min-width : 1824px) {
         height: 64px;
         background-position: center center;
         background-repeat: no-repeat;
-        padding: 0 12px 12px 0;
-        margin: 6px;
+        padding: 0;
+        margin: 3px;
         transition: 0.4s;
-    }
-
-    .format-icon:hover {
         background-color: rgb(195, 195, 195);
-
     }
-
-    .select_layout {
+ .select_layout {
         background-color: #666666;
-        transition: 0.4s;
+        transition: 0.7s;
     }
 
     .select_layout_list {
-        background-image: url('/static/stargazer/css/img/horizontal.svg')
+        background-image: url('/static/stargazer/css/img/layout-list-black.svg')
+    }
+    .select_layout_list:hover {
+        background-image: url('/static/stargazer/css/img/layout-list-white.svg')
     }
 
     .select_layout_photo {
-        background-image: url('/static/stargazer/css/img/square.svg')
+        background-image: url('/static/stargazer/css/img/layout-square-black.svg')
     }
-
-    .show-filters-icon {
-    height: 56px;
-    flex: 0 0 200px;
-    display: flex;
-    align-items: center;
-    transition: .4s;
-    margin: 12px;
-    background-position-x: 95%;
-    padding-left: 12px;
+    .select_layout_photo:hover {
+        background-image: url('/static/stargazer/css/img/layout-square-white.svg')
     }
-
-    .show-filters-icon:hover {
-        box-shadow: 0 0 0 12px rgba(195, 195, 195, 0.75);
-    }
-
-    .arrow-up {
+        .arrow-up {
         background-image: url("/static/stargazer/css/img/arrow-up-small.svg");
         background-repeat: no-repeat;
         background-position: center center;
-        background-color: #d7d7d7;
+        background-color: #FFFFFF;
     }
 
     .arrow-down {
         background-image: url("/static/stargazer/css/img/arrow-down-small.svg");
         background-repeat: no-repeat;
         background-position: center center;
-        background-color: #d7d7d7;
+        background-color: #FFFFFF;
     }
 
     .show {
@@ -821,24 +811,14 @@ and (min-width : 1824px) {
         flex: 1 1 250px;
 
 }
-#search-field {
-    flex: 2 1 100%;
-    margin: 64px 32px 64px 32px;
-    order: 10;
-}
-#search-field > input {
-    width: 100%;
-    font-size: x-large;
-    color: rgb(34, 49, 63);
-    transition: 0.4s;
 
-}
+
 
     #brightness {
         order: 8;
         display: inherit;
         background-color: #ABB1BE;
-        flex: 1 0 550px;
+        flex: 1 0 520px;
         height: 74px;
     }
 
@@ -884,9 +864,53 @@ and (min-width : 1824px) {
     color: #FFFFFF;
     font-size: x-large;
 }
-
-
-/*#settings-module:n {*/
+#search-field > ul li {
+    display: flex;
+}
+.hint-catalogues {
+    flex-wrap: wrap;
+    display: inherit;
+    align-items: flex-start;
+    align-self: stretch;
+    flex: 1 1 20%;
+    font-size: smaller
+}
+.hint-bibcodes {
+    flex-wrap: wrap;
+    display: inherit;
+    align-items: flex-start;
+    align-self: stretch;
+    flex: 1 1 70%;
+    font-size: smaller
+}
+.hint-photo {
+        height: 100px;
+    flex-wrap: wrap;
+    display: inherit;
+    align-items: flex-start;
+    align-self: stretch;
+    flex: 0 0 100px;
+}
+.hint-name {
+    width: auto;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+.hint-name-catalogue {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+}
+.hint-name-bibcode {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+}
+#search-field .dropdown-menu:hover {
+    visibility: visible;
+    opacity: 1;
+}
+    /*#settings-module:n {*/
         /*flex: 1 1 200px;*/
     /*}*/
 /*Eksperymentt*/
@@ -902,3 +926,124 @@ and (min-width : 1824px) {
     /*box-shadow: 0px 0px 4px #222;*/
 /*}*/
 
+#search-field {
+    flex: 0 0 100%;
+    order: 10;
+    position: relative;
+    z-index: 0;
+    display: flex;
+    padding: 24px 24px 42px 24px;
+}
+
+
+#search-text-button {
+    position: relative;
+    z-index: 1;
+    border: 3px white solid;
+    background-image: url("/static/stargazer/css/img/mag-glass-black.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 74px;
+    margin: 12px 12px 12px 0;
+    transition:0.7s;
+    background-color: #d7d7d7;
+}
+
+#search-text-field {
+    position: relative;
+    z-index: 2;
+    width: calc(100% - 74px);
+    font-size: x-large;
+    color: #22313f;
+    transition: .4s;
+    margin: 12px 0 12px 12px;
+}
+
+#search-text-button:hover {
+    background-color: rgb(195,195,195);
+        background-image: url("/static/stargazer/css/img/mag-glass-white.svg");
+        background-position: center center;
+        background-repeat: no-repeat;
+        color: white;
+    }
+
+.show-filters-icon {
+    text-transform: uppercase;
+    padding: 0 32px 0 6px;
+    background-color: #eee;
+    background-position: right center;
+    background-repeat: no-repeat;
+    height: 56px;
+    flex: auto;
+    display: flex;
+    align-items: center;
+    transition: .4s;
+    margin: 12px;
+}
+.filters-arrow-down {
+    background-image: url("/static/stargazer/css/img/arrow-down-black.svg");
+}
+.filters-arrow-down:hover {
+    background-image: url("/static/stargazer/css/img/arrow-down-white.svg");
+    background-color: #c3c3c3;;
+}
+.filters-arrow-up {
+    background-image: url("/static/stargazer/css/img/arrow-up-black.svg");
+}
+.filters-arrow-up:hover {
+    background-image: url("/static/stargazer/css/img/arrow-up-white.svg");
+    background-color: #c3c3c3;
+}
+.small_maxmindiv {
+    display: none;
+    background-color: #22313f;
+}
+.small_maxmindiv input {
+    border: 0;
+    font-weight: bold;
+    font-size: larger;
+    width: 100%;
+
+}
+.settings-button {
+    display: inline-flex;
+    background-color: #fff;
+    margin: 12px 0 12px 36px;
+    width: auto;
+}
+    @media only screen
+    and (max-width: 600px) {
+        #slider {
+            display: none;
+        }
+        #brightness {
+            flex: 1 1 100%;
+        }
+        .maxmindiv {
+            display: none;
+
+        }
+        .small_maxmindiv {
+    display: block;
+    text-align: center;
+    flex: 0 0 50%;
+    border: #D7D7D7 1px solid;
+}
+    .settings-button {
+    display: inline-flex;
+    background-color: #fff;
+    margin: 12px 36px 12px 36px;
+    width: 100%;
+    position: relative;
+
+    }
+    .settings-button .format-icon {
+        position: absolute;
+        right: 0;
+    }
+    }
+
+#strict-mode {
+    order: 5;
+    flex: 1 1 250px;
+}

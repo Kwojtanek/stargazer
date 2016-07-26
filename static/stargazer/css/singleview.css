@@ -135,32 +135,7 @@ aside#navigation-bar > section:first-child > *:first-child:hover {
     box-shadow: 0 0 0 6px rgba(4, 122, 215, 0.75)
 }
 
-#search-charts {
-    text-align: center;
-    width: 100%;
-    height: auto;
-    display: inline-flex;
-    color: white;
-}
-#search-charts > div:first-child {
-    padding: 20px;
-    background-color: #0279D7;
-    height: 240px;
-    margin: 0;
-    width: 144px;
-    transition: 400ms;
-}
-#search-charts > a > div {
-    margin: 12px;
-    padding: 16px;
-    background-color: #FFBF00;
-    width: 128px;
-    height: 224px;
-    transition: 400ms;
-}
-#search-charts > a > div:hover {
-    box-shadow: 0 0 0 12px rgba(255, 191, 2, 0.75)
-}
+
 #sources *:link {
     text-decoration: none;
     color: white;

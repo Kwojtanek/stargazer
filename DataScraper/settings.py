@@ -8,10 +8,10 @@ NED = False
 SIMBAD = True
 DOCS_OVERVIEW = False
 DOCS_PHOTO = False
-BIBCODES = True
+BIBCODES = False
 #Scraping from wiki medias requiers connection for every photo so it slows down scraping process ~4times
-WIKIMEDIA = True
-WIKIINFO = True
+WIKIMEDIA = False
+WIKIINFO = False
 
 UPDATED_URL = 'http://127.0.0.1:8000/endpoint/createupdateAPI'
 

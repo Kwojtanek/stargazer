@@ -2,7 +2,7 @@
 __author__ = 'kuba'
 from rest_framework import serializers
 from .models import Objects_list, StellarObject, Constellations,\
-    Catalogues, ObjectPhotos, AstroCharts, BugTracker,\
+    Catalogues, ObjectPhotos, BugTracker,\
     ContactApplet, ReletedType, BibCode, Source
 
 
@@ -120,12 +120,6 @@ class CatalogueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catalogues
 
-
-class MapSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AstroCharts
-        fields = ('file_name', 'magnitudo')
-
 class BugTrackerSerializer(serializers.ModelSerializer):
     class Meta:
         model = BugTracker
@@ -148,6 +142,10 @@ class SimpleStellarSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    photos = PhotoSerializer(
+        many=True,
+        read_only=True
+    )
     class Meta:
         model = StellarObject
-        fields = ('bibcode','catalogues')
+        fields = ('pk', 'bibcode','catalogues','photos')

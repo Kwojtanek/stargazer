@@ -35,27 +35,12 @@ SearchApp.controller('SingleViewCtrl',
                     'dec': $scope.MainObject.declination,
                     'mag': $scope.MainObject.magnitudo
                 })
-                if ($scope.CommonData.index !== null) {
-                    if ($scope.CommonData.results[$scope.CommonData.index].hasOwnProperty('charts') === false) {
                         document.getElementById('annotation-loader').style.display = 'inherit'
                         ChartMapFactory.get().$promise.then(function (ob) {
                             $scope.charts = ob;
-                            $scope.CommonData.results[$scope.CommonData.index].charts = $scope.charts;
+                            document.querySelector('#search-charts > a:last-child').style.display = 'none';
                         })
-                    }
-                    else {
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts;
-                    }
                 }
-                else {
-                    if (!$scope.charts) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        ChartMapFactory.get().$promise.then(function (ob) {
-                            $scope.charts = ob;
-                        })
-                    }
-                }
-            }
 
             // function that initialize interactive night sky map
             aladin = function () {
@@ -89,28 +74,11 @@ SearchApp.controller('SingleViewCtrl',
                     constellation: $scope.MainObject.constelation,
                     pk : $scope.MainObject.id
                 });
-                if ($scope.CommonData.index !== null) {
-                    if ($scope.CommonData.results[$scope.CommonData.index].hasOwnProperty('similar') === false) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob;
-                            $scope.CommonData.results[$scope.CommonData.index].similar = $scope.similar;
-                            document.getElementById('annotation-loader').style.display = '';
-                        })
-                    }
-                    else {
-                        $scope.similar = $scope.CommonData.results[$scope.CommonData.index].similar;
-                    }
-                }
-                else {
-                    if (!$scope.similar) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob
-                            document.getElementById('annotation-loader').style.display = ''
-                        })
-                    }
-                }
+                document.getElementById('annotation-loader').style.display = 'inherit'
+                SimilarFactory.get().$promise.then(function (ob) {
+                    $scope.similar = ob;
+                    document.getElementById('annotation-loader').style.display = '';
+                })
 
             }
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
@@ -131,73 +99,26 @@ SearchApp.controller('SingleViewCtrl',
 
                 // If you were redirected from search page you will get infos about the objects passed throu CommonData service
                 // Otherwise data will be downloaded from server according to id param in url.
-                if ($scope.CommonData.index !== null && $scope.CommonData.results[$scope.CommonData.index].id == parseInt($routeParams.id)) {
-                    $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index]
-                    //Name of next object
-                    $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                    //Name of last object
-                    $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
+                $scope.nextObject = false
+                $scope.lastObject = false
+
+                $('div.box').fadeIn(300);
+                var SingleViewFactory = $resource('/endpoint/singleAPI/:id', {id: $routeParams.id, format: 'json'});
+                SingleViewFactory.get().$promise.then(function (ob) {
+                    $scope.MainObject = ob;
+                    $('div.box').fadeOut(300);
                     title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
                     window.document.title = title;
                     aladin();
                     getCharts();
                     getSimilar();
-                }
-                else {
-                    $scope.nextObject = false
-                    $scope.lastObject = false
 
-                    $('div.box').fadeIn(300);
-                    var SingleViewFactory = $resource('/endpoint/singleAPI/:id', {id: $routeParams.id, format: 'json'});
-                    SingleViewFactory.get().$promise.then(function (ob) {
-                        $scope.MainObject = ob;
-                        $('div.box').fadeOut(300);
-                        title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        window.document.title = title;
-                        aladin();
-                        getCharts();
-                        getSimilar();
-
-                    })
-                }
+                })
 
                 $scope.scrollTo = function (id) {
                     $('html, body').animate({scrollTop:$('#' + id).position().top - 60}, 'slow');
                 }
 
-                // Sets Next or last Main object
-                $scope.nextIndex = function (index) {
-                    if (typeof $scope.CommonData !== 'undefinded' && $scope.CommonData.index < $scope.CommonData.results.length) {
-
-                        $scope.CommonData.index++
-
-                        $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                        $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
-
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts;
-                        $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
-                        window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
-
-                        //Aladin does not work when id  href is changed???
-                        window.location = '/'.concat('object/',$scope.MainObject.id);
-                    }
-                }
-
-                $scope.leastIndex = function (index) {
-                    if (typeof $scope.CommonData !== 'undefinded' && $scope.CommonData.index >= 0) {
-
-                        $scope.CommonData.index--
-                        $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                        $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
-
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts
-                        $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
-                        window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        window.location = '/'.concat('object/',$scope.MainObject.id);
-                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
-                    }
-                }
                 $scope.getConstelationName = function () {
                     for (var index = 0; index < ConstList.length; index++) {
                         if (ConstList[index].value == $scope.MainObject.constelation) {
@@ -205,6 +126,5 @@ SearchApp.controller('SingleViewCtrl',
                         }
                     }
                 }
-                // Pobiera z za API dane na temat mapy
             }
         }])

@@ -7,10 +7,10 @@ SearchApp.factory('SearchFactory',['$resource', function($resource){
 
 }])
 SearchApp.factory('SingleViewFactory',['$resource', function($resource){
-    return $resource('/endpoint/singleAPI/1', format);
+    return $resource('/endpoint/singleAPI/:id',format);
 
-}])
 
+}]);
 SearchApp.factory('ChartsFactory',['$resource', function($resource,asc,dec,mag){
     return $resource('/endpoint/mapAPI',
         {
@@ -28,11 +28,23 @@ SearchApp.factory('SimilarFactory', ['$resource', function($resource,constellati
             constellation: constellation
         })
 }])
+SearchApp.factory('HintFactory',['$resource', function($resource, name){
+    return $resource('/endpoint/hintAPI',
+        {
+            'name': name,
+            format: 'json'
+        })
+    }])
 SearchApp.factory('CommonData', function() {
+    //Variables:
+    //  Index: id of object Int
+    // filters: filters on main page dict
+    // results: resulted data from server List
+    // page: adds up if next part of list is downloaded Int
+    // show: Remembers if page should be displayed expanded or collapsed Bool
     savedData = {}
-    function set(data, index, filters, results,page,show) {
+    function set(index, filters, results,page,show) {
         if(typeof(Storage) !== "undefined") {
-            if (data !== 'same'){localStorage.setItem('data',JSON.stringify(data))};
             if (results !== 'same'){localStorage.setItem('results', JSON.stringify(results))};
             if (page !== 'same'){localStorage.setItem('page',(page))};
             if (isNaN(parseInt(index))){localStorage.setItem('index', JSON.stringify(0));}
@@ -44,11 +56,9 @@ SearchApp.factory('CommonData', function() {
         }       else {
             // Sorry! No Web Storage support..
         }
-
     };
     function get() {
         if(typeof(Storage) !== "undefined") {
-            savedData.data = JSON.parse(localStorage.getItem('data'));
             savedData.index = JSON.parse(localStorage.getItem('index'));
             savedData.filters =JSON.parse(localStorage.getItem('filters'));
             savedData.results = JSON.parse(localStorage.getItem('results'));
@@ -72,5 +82,4 @@ SearchApp.factory('CommonData', function() {
         isEmpty: isEmpty
 
     };
-
 });

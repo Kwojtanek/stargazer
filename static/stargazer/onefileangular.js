@@ -7,7 +7,10 @@ SearchApp.run(function($rootScope,BugTrackerFactory,ContactAppletFactory,$routeP
     $rootScope.hashtag = hashtag;
 });
 SearchApp.config(function($routeProvider,$locationProvider){
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode({
+        enabled:true,
+        requireBase:false
+    });
 
     $routeProvider
         .when('/',
@@ -45,6 +48,17 @@ SearchApp.directive('stellarList', function(){
         restricte: 'E',
         controller: 'ListCtrl',
         templateUrl: '/static/stargazer/angular/directives/stellar-list.html'
+    }
+}).directive('stellarFooter', function(){
+    return {
+        restrict: 'E',
+        controller: 'FooterCtrl',
+        templateUrl: '/static/stargazer/angular/directives/stellar-footer.html'
+    }
+}).directive('stellarCharts', function(){
+    return {
+        restrict: 'E',
+        templateUrl: '/static/stargazer/angular/directives/stellar-charts.html'
     }
 });/**
  * Created by root on 29.12.15.
@@ -129,336 +143,383 @@ SearchApp.controller('ExploreCtrl',[ '$routeParams', '$scope', '$resource', func
  * Created by root on 04.07.16.
  */
 SearchApp.controller('ListCtrl',['$scope','CommonData', 'ChartsFactory', function($scope,CommonData,ChartsFactory){
+    var el = document.querySelector('.display-details-fullframe');
     $scope.displayDetails = function($index){
-        var el = document.querySelector('.display-details-fullframe');
-        $scope.stellob = CommonData.get().results[$index];
-        $(el).fadeIn();
-        var CharF = ChartsFactory.get(
+
+        $scope.MainObject = CommonData.get().results[$index];
+        el.style.opacity = 1;
+        el.style.visibility = 'visible';
+        ChartsFactory.get(
             {
-                'asc': $scope.stellob.rightAsc,
-                'dec': $scope.stellob.declination,
-                'mag': $scope.stellob.magnitudo,
+                'asc': $scope.MainObject.rightAsc,
+                'dec': $scope.MainObject.declination,
+                'mag': $scope.MainObject.magnitudo,
                 'index': $index
+            }).$promise.then(function(ob){
+                $scope.charts = ob;
             })
     }
     $scope.hideDetails = function(){
-        el =document.querySelector('.display-details-fullframe');
-        $(el).fadeOut()
-
+        el.style.opacity = 0;
+        el.style.visibility = 'hidden';
     }
 }]);/**
- * Created by root on 12.01.16.
- */
-SearchApp.controller('MainExploreCtrl', ['$scope',function($scope) {
-    $scope.Types = SearchTypes;
-    $scope.Catalogues = SearchCatalogues;
-    $scope.ddtypes = ddtypes;
-    $scope.Constellations = ConstList;
-    $scope.maxid = maxid;
-    $scope.familycount = familycount
-}])
-;/**
  * Created by root on 08.06.15.
  */
-SearchApp.controller('SearchCtrl', ['$scope', '$window','SearchFactory', 'CommonData', function($scope, $window, SearchFactory,CommonData) {
-    // True if page waits for another part of list
-    $scope.pending = false;
-    // Data that will be displayed $scope.results
+SearchApp.controller('SearchCtrl', ['$scope', '$window', 'HintFactory','SearchFactory','SingleViewFactory','CommonData',
+    function($scope, $window, HintFactory, SearchFactory,SingleViewFactory, CommonData) {
+        // True if page waits for another part of list
+        $scope.pending = false;
+        $scope.strict = false;
+        var sendName;
+        // Data that will be displayed $scope.results
 
-    //Function that initialize slider
-    SliderFunc = function(){
-        $( "div #slider" ).slider({
-            step: 0.1,
-            range: true,
-            max: max_mag,
-            min: min_mag,
-            values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
-            slide: function( event, ui ) {
-                $( "#min_mag" ).val( ui.values[ 0 ]);
-                $( "#max_mag" ).val( ui.values[ 1 ]);
-                $scope.filters.MinMag = ui.values[ 0 ];
-                $scope.filters.MaxMag = ui.values[ 1 ];
-            }
-        });
-    }
-    $scope.Types = SearchTypes;
-    $scope.Catalogues = SearchCatalogues;
-    $scope.ddtypes = ddtypes;
-    // On enter searches
-    document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
-    //document.querySelector('#autocomplete').addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.ChooseConst()}})
-    $scope.CommonData  = CommonData.get()
-    if ($scope.CommonData.index !== null) {
-        $scope.StellarObject = $scope.CommonData.data;
-        $scope.filters = $scope.CommonData.filters;
-        $scope.results = $scope.CommonData.results;
-        $scope.page = $scope.CommonData.page;
-        $scope.show = $scope.CommonData.show;
-        SliderFunc()
-        $('#results').fadeIn(300);
-
-    }
-    else {
-        $scope.filters = {}
-        $scope.filters.visible = false;
-        $scope.filters.advanced = false;
-        $scope.filters.SearchConstellation = [];
-        $scope.filters.SearchTypes = [];
-        $scope.filters.SearchCatalogues = ["NGC", "Messier"];
-        $scope.filters.lat = '';
-        $scope.filters.MinMag = min_mag;
-        $scope.filters.MaxMag = max_mag;
-        $scope.page = 1;
-        $scope.show = false;
-        $scope.filters.ordering = 'magnitudo'
-        $scope.filters.withmag = true
-
-        SliderFunc()
-
-
-    }
-    if ($scope.show == false){
-        $('#filter-animated').hide();
-}
-
-    // JQueryUI
-    $( "#autocomplete" ).autocomplete({
-        source: ConstList
-    });
-    //Przyciski
-    $scope.ResetFilters = function(){
-        $scope.filters.SearchConstellation.length = 0;
-        $scope.filters.MaxMag = max_mag;
-        $scope.filters.MinMag = min_mag;
-        $scope.filters.SearchTypes.length = 0;
-        $scope.filters.SearchCatalogues.length = 0;
-        $scope.filters.visible = false;
-        $scope.filters.lat ='';
-        $scope.filters.Name ='';
-        $scope.filters.advanced = false;
-        $scope.filters.withmag = true;
-
-        document.querySelector('#search-field>input').value = '';
-        $( "#min_mag" ).val(min_mag);
-        $( "#max_mag" ).val(max_mag);
-        $( "#slider" ).slider( "values", [ min_mag, max_mag ] );
-        $('*> ul > li').removeClass('ok')
-    }
-
-    $scope.VisibleOnly = function() {
-        var latitude;
-
-        function success(position){
-            latitude = position.coords.latitude;
-            $scope.filters.lat = $scope.filters.lat == latitude ? null: latitude
-        }
-        function error(err){console.warn('ERROR(' + err.code + '): ' + err.message)};
-        if (navigator.geolocation) {
-            $scope.filters.visible = $scope.filters.visible == true ? false : true;
-            navigator.geolocation.getCurrentPosition(success,error)
-        }
-        else {alert("Geolocation is not supported by this browser.");}
-    }
-
-    $scope.ChooseConst = function(){
-        var $acmp = $( "#autocomplete").val();
-        $scope.Constellation = $acmp;
-        // Sprawdza czy Została dodana taka konstelacja i czy nie jest pusta
-        if ($.inArray($acmp,$scope.filters.SearchConstellation ) == -1 && $acmp != '') {
-            // Sprawdza czy istnieje taka konstelacja iterując przez ConstList
-            for (var index = 0; index < ConstList.length; index++){
-                if (ConstList[index].value == $acmp)
-                {
-                    $scope.filters.SearchConstellation.push($scope.Constellation);
-                    $scope.Constellation = null;
+        //Function that initialize slider
+        SliderFunc = function(){
+            $( "div #slider" ).slider({
+                step: 0.1,
+                range: true,
+                max: max_mag,
+                min: min_mag,
+                values: [ $scope.filters.MinMag, $scope.filters.MaxMag],
+                slide: function( event, ui ) {
+                    $( "#min_mag" ).val( ui.values[ 0 ]);
+                    $( "#max_mag" ).val( ui.values[ 1 ]);
+                    $scope.filters.MinMag = ui.values[ 0 ];
+                    $scope.filters.MaxMag = ui.values[ 1 ];
                 }
-            }
-        }
-        else
-        {
-            return null
-        };
-    };
-    $scope.RemoveConst = function() {
-        return $scope.filters.SearchConstellation.splice($scope.filters.SearchConstellation.indexOf(this.c),1);
-    }
-    $scope.ChooseType = function(){
-        if ($scope.filters.advanced == true){
-            if ($.inArray(this.ot.value, $scope.filters.SearchTypes ) == -1) {
-                $scope.filters.SearchTypes.push(this.ot.value);
-                $scope.filters.SearchTypes.Visible = true;
-
-            }
-            else {
-                $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.ot.value), 1)
-
-            }
-        }
-        else if ($scope.filters.advanced == false)
-        {
-            if ($.inArray(this.t.uniname, $scope.filters.SearchTypes ) == -1) {
-                $scope.filters.SearchTypes.push(this.t.uniname);
-
-            }
-            else {
-                $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t.uniname), 1)
-
-            }
-
-        }
-    }
-    $scope.ChooseAdvanced = function() {
-        if ($scope.filters.advanced == true) {
-            $scope.filters.advanced = false;
-            $scope.filters.SearchTypes.length = 0;
-        }
-        else {
-            $scope.filters.advanced = true;
-            $scope.filters.SearchTypes.length = 0;
-            $scope.filters.SearchTypes.length = 0;
-        }
-    }
-    $scope.RemoveType = function(){
-        $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t), 1);
-    }
-
-    $scope.ChooseCatalogue = function(){
-        if ($.inArray(this.cat.value, $scope.filters.SearchCatalogues ) == -1) {
-            $scope.filters.SearchCatalogues.push(this.cat.value);
-        }
-        else {
-            $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat.value), 1)
-        }
-    }
-    $scope.RemoveCatalogue = function(){
-        $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1);
-    }
-    $scope.TypeList = true;
-    $scope.CatList = true;
-
-    // Submit przycisk
-    $scope.SearchFor = function(page){
-        document.getElementById('annotation-loader').style.display = '';
-        document.getElementById('params-annot').style.display = '';
-        butt = $('#search-btn > input');
-        butt.attr('value', 'Search');
-        butt.removeAttr('id', 'SearchAgain');
-        $('div.box').fadeIn(300);
-        $scope.page = page;
-        $scope.results= []
-
-        SearchFactory.get(
-            {
-                page: page,
-                max_mag: $scope.filters.MaxMag,
-                min_mag: $scope.filters.MinMag,
-                adv: $scope.filters.advanced,
-                otype:  $scope.filters.SearchTypes.toString(),
-                const: $scope.filters.SearchConstellation.toString(),
-                cat: $scope.filters.SearchCatalogues.toString(),
-                lat: $scope.filters.lat,
-                name: $scope.filters.Name,
-                orderby: $scope.filters.ordering,
-                withmag: $scope.filters.withmag
-            }
-        ).$promise.then(function(ob){
-                $scope.StellarObject = ob;
-                $scope.results = ob.results;
-                CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
-
-                $('div.box').fadeOut(300);
             });
+        }
+        $scope.Types = SearchTypes;
+        $scope.Catalogues = SearchCatalogues;
+        $scope.ddtypes = ddtypes;
+        // On enter searches
+        document.addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.SearchFor(1)}})
+        //document.querySelector('#autocomplete').addEventListener('keypress',function(e){var key = e.which || e.keyCode; if (key==13){ $scope.ChooseConst()}})
+        var Common  = CommonData.get()
+        if (Common.index !== null) {
+            $scope.filters = Common.filters;
+            $scope.results = Common.results;
+            $scope.page = Common.page;
+            $scope.show = Common.show;
+            SliderFunc()
+            $('#results').fadeIn(300);
 
-    }
+        }
+        else {
+            $scope.results = {}
+            $scope.filters = {}
+            $scope.filters.visible = false;
+            $scope.filters.advanced = false;
+            $scope.filters.SearchConstellation = [];
+            $scope.filters.SearchTypes = [];
+            $scope.filters.SearchCatalogues = ["NGC", "Messier"];
+            $scope.filters.lat = '';
+            $scope.filters.MinMag = min_mag;
+            $scope.filters.MaxMag = max_mag;
+            $scope.page = 1;
+            $scope.show = false;
+            $scope.filters.ordering = 'magnitudo'
+            $scope.filters.withmag = true
+            $scope.StellarObject = {}
+            SliderFunc()
 
-    //Wczytywanie kolejnych stron
 
-    //Caly tr jako link
-    $scope.trUrl = function(id, $index){
-        /*
-         window.open('#/'.concat(url), '_blank');
-         */
-        CommonData.set($scope.StellarObject,$index, $scope.filters, $scope.results,$scope.page,$scope.show);
-        document.removeEventListener('scroll', LoadOnScroll, false);
-        window.location = '/'.concat('object/',id);
-    }
+        }
+        if ($scope.show == false){
+            $('#filter-animated').hide();
+        }
 
-    //Function downloads new data on scrolling bottom
-    function LoadOnScroll(){
-        if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
-            // Checks if firs part of Data has been downloaded and next data exists
-            if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
+        // JQueryUI
+        $( "#autocomplete" ).autocomplete({
+            source: ConstList
+        });
+        //Przyciski
+        $scope.ResetFilters = function(){
+            $scope.filters.SearchConstellation.length = 0;
+            $scope.filters.MaxMag = max_mag;
+            $scope.filters.MinMag = min_mag;
+            $scope.filters.SearchTypes.length = 0;
+            $scope.filters.SearchCatalogues.length = 0;
+            $scope.filters.visible = false;
+            $scope.filters.lat ='';
+            $scope.filters.Name ='';
+            $scope.filters.advanced = false;
+            $scope.filters.withmag = true;
 
+            document.querySelector('#search-field>input').value = '';
+            $( "#min_mag" ).val(min_mag);
+            $( "#max_mag" ).val(max_mag);
+            $( "#slider" ).slider( "values", [ min_mag, max_mag ] );
+            $('*> ul > li').removeClass('ok')
+        }
 
-                if (!$scope.pending) {
-                    $scope.pending = true;
-                    document.getElementById('annotation-loader').style.display = 'inherit';
-                    SearchFactory.get(
+        $scope.VisibleOnly = function() {
+            var latitude;
 
-                        {
-                            page: +$scope.page + 1,
-                            max_mag: $scope.filters.MaxMag,
-                            min_mag: $scope.filters.MinMag,
-                            adv: $scope.filters.advanced,
-                            otype:  $scope.filters.SearchTypes.toString(),
-                            const: $scope.filters.SearchConstellation.toString(),
-                            cat: $scope.filters.SearchCatalogues.toString(),
-                            lat: $scope.filters.lat,
-                            name: $scope.filters.Name,
-                            orderby: $scope.filters.ordering,
+            function success(position){
+                latitude = position.coords.latitude;
+                $scope.filters.lat = $scope.filters.lat == latitude ? null: latitude
+            }
+            function error(err){console.warn('ERROR(' + err.code + '): ' + err.message)};
+            if (navigator.geolocation) {
+                $scope.filters.visible = $scope.filters.visible == true ? false : true;
+                navigator.geolocation.getCurrentPosition(success,error)
+            }
+            else {alert("Geolocation is not supported by this browser.");}
+        }
+        $scope.ChooseConst = function(){
+            var $acmp = $( "#autocomplete").val();
+            $scope.Constellation = $acmp;
+            // Sprawdza czy Została dodana taka konstelacja i czy nie jest pusta
+            if ($.inArray($acmp,$scope.filters.SearchConstellation ) == -1 && $acmp != '') {
+                // Sprawdza czy istnieje taka konstelacja iterując przez ConstList
+                for (var index = 0; index < ConstList.length; index++){
+                    if (ConstList[index].value == $acmp)
+                    {
+                        $scope.filters.SearchConstellation.push($scope.Constellation);
+                        $scope.Constellation = null;
+                    }
+                }
+            }
+            else
+            {
+                return null
+            };
+        };
+        $scope.RemoveConst = function() {
+            return $scope.filters.SearchConstellation.splice($scope.filters.SearchConstellation.indexOf(this.c),1);
+        }
+        $scope.ChooseType = function(){
+            if ($scope.filters.advanced == true){
+                if ($.inArray(this.ot.value, $scope.filters.SearchTypes ) == -1) {
+                    $scope.filters.SearchTypes.push(this.ot.value);
+                    $scope.filters.SearchTypes.Visible = true;
 
-                        }
-                    ).$promise.then(function(ob){
-                            $scope.page++
-                            $scope.pending = false;
-                            $scope.StellarObject = ob;
-                            // appends results to list
-                            for (var i = 0; i < ob.results.length; i++){
-                                $scope.results.push(ob.results[i]);
-                            }
-                            CommonData.set($scope.StellarObject,ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
-                            document.getElementById('annotation-loader').style.display = '';
-                        }
-                    )
+                }
+                else {
+                    $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.ot.value), 1)
+
+                }
+            }
+            else if ($scope.filters.advanced == false)
+            {
+                if ($.inArray(this.t.uniname, $scope.filters.SearchTypes ) == -1) {
+                    $scope.filters.SearchTypes.push(this.t.uniname);
+
+                }
+                else {
+                    $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t.uniname), 1)
+
                 }
 
             }
         }
-    };
+        $scope.ChooseAdvanced = function() {
+            if ($scope.filters.advanced == true) {
+                $scope.filters.advanced = false;
+                $scope.filters.SearchTypes.length = 0;
+            }
+            else {
+                $scope.filters.advanced = true;
+                $scope.filters.SearchTypes.length = 0;
+                $scope.filters.SearchTypes.length = 0;
+            }
+        }
+        $scope.RemoveType = function(){
+            $scope.filters.SearchTypes.splice($scope.filters.SearchTypes.indexOf(this.t), 1);
+        }
 
-    document.addEventListener('scroll', LoadOnScroll, false);
-    $scope.orderBy =function(data){
-        // If order by is changed no next page will be loaded
-        if ($scope.filters.ordering == data) {
-            $scope.filters.ordering = ''.concat('-',data)
+        $scope.ChooseCatalogue = function(){
+            if ($.inArray(this.cat.value, $scope.filters.SearchCatalogues ) == -1) {
+                $scope.filters.SearchCatalogues.push(this.cat.value);
+            }
+            else {
+                $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat.value), 1)
+            }
         }
-        else if ($scope.filters.ordering == ''.concat('-',data))
-        {
-            $scope.filters.ordering = '';
+        $scope.RemoveCatalogue = function(){
+            $scope.filters.SearchCatalogues.splice($scope.filters.SearchCatalogues.indexOf(this.cat), 1);
         }
-        else if ($scope.filters.ordering == '') {
-            $scope.filters.ordering = data;
-        }
-        else { $scope.filters.ordering = data}
-    }
-    $scope.$watch('filters', function(newdata,olddata) {
-        if (!$scope.StellarObject || olddata == newdata ||$scope.results.length == 0){
-            return;
-        }
-        else {
-            $scope.StellarObject.next = null;
-            $scope.CommonData.next = null;
-            //butt = $('#search-btn > input');
-            //butt.attr('value', 'search Again');
-            //butt.attr('id', 'SearchAgain');
-            document.getElementById('params-annot').style.display = 'block';
+        $scope.TypeList = true;
+        $scope.CatList = true;
 
-        }}, true);
-    $scope.withMag = function(){
-        $scope.filters.withmag = $scope.filters.withmag == true ? false : true
+        // Submit przycisk
+        $scope.SearchFor = function(page){
+            $searchFieldUl.hide();
+            document.getElementById('annotation-loader').style.display = '';
+            document.getElementById('params-annot').style.display = '';
+            butt = $('#search-btn > input');
+            butt.attr('value', 'Search');
+            butt.removeAttr('id', 'SearchAgain');
+            $('div.box').fadeIn(300);
+            $scope.page = page;
+            $scope.results= []
+            if ($scope.strict){sendName = '^' + $scope.filters.Name + '$'}
+            else if (!$scope.strict){sendName = $scope.filters.Name}
+            SearchFactory.get(
+                {
+                    page: page,
+                    max_mag: $scope.filters.MaxMag,
+                    min_mag: $scope.filters.MinMag,
+                    adv: $scope.filters.advanced,
+                    otype:  $scope.filters.SearchTypes.toString(),
+                    const: $scope.filters.SearchConstellation.toString(),
+                    cat: $scope.filters.SearchCatalogues.toString(),
+                    lat: $scope.filters.lat,
+                    name: sendName,
+                    orderby: $scope.filters.ordering,
+                    withmag: $scope.filters.withmag
+                }
+            ).$promise.then(function(ob){
+                    $scope.StellarObject = ob;
+                    $scope.results = ob.results;
+                    CommonData.set(ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
 
-    }
-}]);
+                    $('div.box').fadeOut(300);
+                });
+
+        }
+
+        //Wczytywanie kolejnych stron
+
+        //Function downloads new data on scrolling bottom
+        function LoadOnScroll(){
+            if ($scope.StellarObject && $scope.StellarObject.next !== null ) {
+                // Checks if firs part of Data has been downloaded and next data exists
+                if (doctop() >  dochaight() - 2200 && $scope.results.length < $scope.StellarObject.count){
+
+
+                    if (!$scope.pending) {
+                        if ($scope.strict){sendName = '^' + $scope.filters.Name + '$'}
+                        else if (!$scope.strict){sendName = $scope.filters.Name}
+                        $scope.pending = true;
+                        document.getElementById('annotation-loader').style.display = 'inherit';
+                        SearchFactory.get(
+
+                            {
+                                page: +$scope.page + 1,
+                                max_mag: $scope.filters.MaxMag,
+                                min_mag: $scope.filters.MinMag,
+                                adv: $scope.filters.advanced,
+                                otype:  $scope.filters.SearchTypes.toString(),
+                                const: $scope.filters.SearchConstellation.toString(),
+                                cat: $scope.filters.SearchCatalogues.toString(),
+                                lat: $scope.filters.lat,
+                                name: sendName,
+                                orderby: $scope.filters.ordering,
+
+                            }
+                        ).$promise.then(function(ob){
+                                $scope.page++
+                                $scope.pending = false;
+                                $scope.StellarObject = ob;
+                                // appends results to list
+                                for (var i = 0; i < ob.results.length; i++){
+                                    $scope.results.push(ob.results[i]);
+                                }
+                                CommonData.set(ob.index, $scope.filters, $scope.results, $scope.page,$scope.show);
+                                document.getElementById('annotation-loader').style.display = '';
+                            }
+                        )
+                    }
+
+                }
+            }
+        };
+
+        document.addEventListener('scroll', LoadOnScroll, false);
+        $scope.orderBy =function(data){
+            // If order by is changed no next page will be loaded
+            if ($scope.filters.ordering == data) {
+                $scope.filters.ordering = ''.concat('-',data)
+            }
+            else if ($scope.filters.ordering == ''.concat('-',data))
+            {
+                $scope.filters.ordering = '';
+            }
+            else if ($scope.filters.ordering == '') {
+                $scope.filters.ordering = data;
+            }
+            else { $scope.filters.ordering = data}
+        }
+        $scope.$watch('filters', function(newdata,olddata) {
+            if (olddata == newdata ||$scope.results.length == 0){
+                return;
+            }
+            else {
+                Common.next = null;
+                //butt = $('#search-btn > input');
+                //butt.attr('value', 'search Again');
+                //butt.attr('id', 'SearchAgain');
+                document.getElementById('params-annot').style.display = 'block';
+
+            }}, true);
+        $scope.withMag = function(){
+            $scope.filters.withmag = $scope.filters.withmag == true ? false : true
+
+        }
+        //scope watch pownien działać z opuźnieniem
+        function getHint() {
+            if ($scope.strict){sendName = '^' + $scope.filters.Name + '$'}
+            else if (!$scope.strict){sendName = $scope.filters.Name}
+            document.getElementById('hint-anotation-loader').style.display = 'flex';
+            HintFactory.get({
+                    name: sendName,
+                    max_mag: $scope.filters.MaxMag,
+                    min_mag: $scope.filters.MinMag,
+                    adv: $scope.filters.advanced,
+                    otype:  $scope.filters.SearchTypes.toString(),
+                    const: $scope.filters.SearchConstellation.toString(),
+                    cat: $scope.filters.SearchCatalogues.toString(),
+                    lat: $scope.filters.lat,
+                    withmag: $scope.filters.withmag
+                },
+                $p.innerText= 'Searching for ' +  $scope.filters.Name,
+                $scope.hints = ''
+            ).$promise.then(function(ob){
+                    if ($scope.filters.Name.length == 0) {$scope.hints.length = 0}
+                    else {$scope.hints = ob;}
+                    document.getElementById('hint-anotation-loader').style.display = '';
+                    if (ob.results.length == 5){  $p.innerText = '5+ objects. ' + $scope.filters.Name}
+                    else  $p.innerText = ob.results.length + ' results for: ' +$scope.filters.Name
+                })}
+
+        var getHintChange;
+        function getHintFunction() {
+            getHintChange = setTimeout(function(){getHint()}, 750);
+        }
+
+        function stopHintFunction() {
+            clearTimeout(getHintChange);
+        }
+
+        $scope.$watch('filters.Name', function(){
+            $p = $('#search-field >ul>p')[0];
+            $input = $('#search-field > input');
+            $input.show();
+            if ($scope.filters.Name.length > 2 && $input.is(':focus')) {
+                $searchFieldUl.show()
+                stopHintFunction()
+                getHintFunction()
+            }
+            else {
+                $searchFieldUl.hide();
+                $scope.hints = '';
+                stopHintFunction();
+                $p.innerText = '';
+            };
+        })
+        $scope.SearchfromHint = function(id, catalogue, number){
+            $searchFieldUl.hide();
+            SingleViewFactory.get({id:id}).$promise.then(function(ob){
+                CommonData.set(id,$scope.filters,{ 0: ob},1, $scope.show)
+                $scope.results = {0 :ob};
+            })
+            $scope.filters.Name = catalogue + ' ' + number;
+
+        }
+    }]);
 ;/**
  * Created by root on 05.11.15.
  */
@@ -496,27 +557,12 @@ SearchApp.controller('SingleViewCtrl',
                     'dec': $scope.MainObject.declination,
                     'mag': $scope.MainObject.magnitudo
                 })
-                if ($scope.CommonData.index !== null) {
-                    if ($scope.CommonData.results[$scope.CommonData.index].hasOwnProperty('charts') === false) {
                         document.getElementById('annotation-loader').style.display = 'inherit'
                         ChartMapFactory.get().$promise.then(function (ob) {
                             $scope.charts = ob;
-                            $scope.CommonData.results[$scope.CommonData.index].charts = $scope.charts;
+                            document.querySelector('#search-charts > a:last-child').style.display = 'none';
                         })
-                    }
-                    else {
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts;
-                    }
                 }
-                else {
-                    if (!$scope.charts) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        ChartMapFactory.get().$promise.then(function (ob) {
-                            $scope.charts = ob;
-                        })
-                    }
-                }
-            }
 
             // function that initialize interactive night sky map
             aladin = function () {
@@ -550,28 +596,11 @@ SearchApp.controller('SingleViewCtrl',
                     constellation: $scope.MainObject.constelation,
                     pk : $scope.MainObject.id
                 });
-                if ($scope.CommonData.index !== null) {
-                    if ($scope.CommonData.results[$scope.CommonData.index].hasOwnProperty('similar') === false) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob;
-                            $scope.CommonData.results[$scope.CommonData.index].similar = $scope.similar;
-                            document.getElementById('annotation-loader').style.display = '';
-                        })
-                    }
-                    else {
-                        $scope.similar = $scope.CommonData.results[$scope.CommonData.index].similar;
-                    }
-                }
-                else {
-                    if (!$scope.similar) {
-                        document.getElementById('annotation-loader').style.display = 'inherit'
-                        SimilarFactory.get().$promise.then(function (ob) {
-                            $scope.similar = ob
-                            document.getElementById('annotation-loader').style.display = ''
-                        })
-                    }
-                }
+                document.getElementById('annotation-loader').style.display = 'inherit'
+                SimilarFactory.get().$promise.then(function (ob) {
+                    $scope.similar = ob;
+                    document.getElementById('annotation-loader').style.display = '';
+                })
 
             }
             /* Function Checks if id parameter is correct, if it's not will redirect to 404 page */
@@ -592,73 +621,26 @@ SearchApp.controller('SingleViewCtrl',
 
                 // If you were redirected from search page you will get infos about the objects passed throu CommonData service
                 // Otherwise data will be downloaded from server according to id param in url.
-                if ($scope.CommonData.index !== null && $scope.CommonData.results[$scope.CommonData.index].id == parseInt($routeParams.id)) {
-                    $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index]
-                    //Name of next object
-                    $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                    //Name of last object
-                    $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
+                $scope.nextObject = false
+                $scope.lastObject = false
+
+                $('div.box').fadeIn(300);
+                var SingleViewFactory = $resource('/endpoint/singleAPI/:id', {id: $routeParams.id, format: 'json'});
+                SingleViewFactory.get().$promise.then(function (ob) {
+                    $scope.MainObject = ob;
+                    $('div.box').fadeOut(300);
                     title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
                     window.document.title = title;
                     aladin();
                     getCharts();
                     getSimilar();
-                }
-                else {
-                    $scope.nextObject = false
-                    $scope.lastObject = false
 
-                    $('div.box').fadeIn(300);
-                    var SingleViewFactory = $resource('/endpoint/singleAPI/:id', {id: $routeParams.id, format: 'json'});
-                    SingleViewFactory.get().$promise.then(function (ob) {
-                        $scope.MainObject = ob;
-                        $('div.box').fadeOut(300);
-                        title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        window.document.title = title;
-                        aladin();
-                        getCharts();
-                        getSimilar();
-
-                    })
-                }
+                })
 
                 $scope.scrollTo = function (id) {
                     $('html, body').animate({scrollTop:$('#' + id).position().top - 60}, 'slow');
                 }
 
-                // Sets Next or last Main object
-                $scope.nextIndex = function (index) {
-                    if (typeof $scope.CommonData !== 'undefinded' && $scope.CommonData.index < $scope.CommonData.results.length) {
-
-                        $scope.CommonData.index++
-
-                        $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                        $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
-
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts;
-                        $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
-                        window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
-
-                        //Aladin does not work when id  href is changed???
-                        window.location = '/'.concat('object/',$scope.MainObject.id);
-                    }
-                }
-
-                $scope.leastIndex = function (index) {
-                    if (typeof $scope.CommonData !== 'undefinded' && $scope.CommonData.index >= 0) {
-
-                        $scope.CommonData.index--
-                        $scope.nextObject = $scope.getNextLast($scope.CommonData.index + 1)
-                        $scope.lastObject = $scope.getNextLast($scope.CommonData.index - 1)
-
-                        $scope.charts = $scope.CommonData.results[$scope.CommonData.index].charts
-                        $scope.MainObject = $scope.CommonData.results[$scope.CommonData.index];
-                        window.document.title = $scope.MainObject.catalogues[0].object_catalogue.concat(' ',$scope.MainObject.catalogues[0].object_number);
-                        window.location = '/'.concat('object/',$scope.MainObject.id);
-                        CommonData.set('same',$scope.CommonData.index++,'same','same','same');
-                    }
-                }
                 $scope.getConstelationName = function () {
                     for (var index = 0; index < ConstList.length; index++) {
                         if (ConstList[index].value == $scope.MainObject.constelation) {
@@ -666,49 +648,8 @@ SearchApp.controller('SingleViewCtrl',
                         }
                     }
                 }
-                // Pobiera z za API dane na temat mapy
             }
-        }]);/*
-app.controller('constellationsController',['$scope','Const', function($scope, Const){
-    var constellation = Const.query()
-    $scope.constellation = constellation
-}])
-app.controller('constallationsDetailController',[ '$routeParams', '$scope', 'ConstNgcs', function( $routeParams, $scope, ConstNgcs){
-    getData = function(page) {
-        var ngcs = ConstNgcs.get({abbreviation: $routeParams.abbreviation, page: page});
-        $scope.ngcs = ngcs;
-    };
-    getData();
-    page = 1;
-$scope.clickNext = function(){
-    if ($scope.ngcs.next != null) {
-        page++;
-        getData(page);
-    }
-};
-$scope.clickPrevious = function(){
-    if (page != 1) {
-        page--;
-        getData(page);
-    }
-};
-
-}])
-var format = {format: 'json'}
-app.factory('Const',['$resource', function($resource){
-    return $resource('/constellationsAPI',format);
-}]);
-app.factory('ConstNgcs',['$resource', function($resource){
-    return $resource('/constellationsAPI/:abbreviation',format);
-}]);
-app.factory('StellarFactory',['$resource', function($resource){
-    return $resource('/StellarlistAPI',format);
-}]);
-SearchApp.factory('TypeFactory',['$resource', function($resource){
-    return $resource('/endpoint',format);
-}]);
-
-*/;var min_mag = 0;
+        }]);var min_mag = 0;
 var max_mag = 23.8;
 var maxid = 32471;
 var hashtag = '';
@@ -1205,10 +1146,10 @@ SearchApp.factory('SearchFactory',['$resource', function($resource){
 
 }])
 SearchApp.factory('SingleViewFactory',['$resource', function($resource){
-    return $resource('/endpoint/singleAPI/1', format);
+    return $resource('/endpoint/singleAPI/:id',format);
 
-}])
 
+}]);
 SearchApp.factory('ChartsFactory',['$resource', function($resource,asc,dec,mag){
     return $resource('/endpoint/mapAPI',
         {
@@ -1226,11 +1167,23 @@ SearchApp.factory('SimilarFactory', ['$resource', function($resource,constellati
             constellation: constellation
         })
 }])
+SearchApp.factory('HintFactory',['$resource', function($resource, name){
+    return $resource('/endpoint/hintAPI',
+        {
+            'name': name,
+            format: 'json'
+        })
+    }])
 SearchApp.factory('CommonData', function() {
+    //Variables:
+    //  Index: id of object Int
+    // filters: filters on main page dict
+    // results: resulted data from server List
+    // page: adds up if next part of list is downloaded Int
+    // show: Remembers if page should be displayed expanded or collapsed Bool
     savedData = {}
-    function set(data, index, filters, results,page,show) {
+    function set(index, filters, results,page,show) {
         if(typeof(Storage) !== "undefined") {
-            if (data !== 'same'){localStorage.setItem('data',JSON.stringify(data))};
             if (results !== 'same'){localStorage.setItem('results', JSON.stringify(results))};
             if (page !== 'same'){localStorage.setItem('page',(page))};
             if (isNaN(parseInt(index))){localStorage.setItem('index', JSON.stringify(0));}
@@ -1242,11 +1195,9 @@ SearchApp.factory('CommonData', function() {
         }       else {
             // Sorry! No Web Storage support..
         }
-
     };
     function get() {
         if(typeof(Storage) !== "undefined") {
-            savedData.data = JSON.parse(localStorage.getItem('data'));
             savedData.index = JSON.parse(localStorage.getItem('index'));
             savedData.filters =JSON.parse(localStorage.getItem('filters'));
             savedData.results = JSON.parse(localStorage.getItem('results'));
@@ -1270,6 +1221,5 @@ SearchApp.factory('CommonData', function() {
         isEmpty: isEmpty
 
     };
-
 });
 ;

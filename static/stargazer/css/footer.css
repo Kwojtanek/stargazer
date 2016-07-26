@@ -1,5 +1,4 @@
 footer {
-    width: 100%;
     min-height: 200px;
     background-color: #000b15;
     align-content: center;
@@ -12,11 +11,11 @@ footer {
     color: #f0f0f0;
 }
 
-#form-main{
+.form-main{
     width:100%;
     float:left;
 }
-#form-div {
+.form-div {
     top: 5%;
     z-index: 100;
     background-color:rgba(72,72,72,0.4);
@@ -31,7 +30,7 @@ footer {
     margin-top:30px;
     margin-left: -260px;
 }
-#form-title{
+.form-title{
     padding-top: 20px;
     padding-bottom: 20px;
     background: url("/static/stargazer/css/img/cross.svg") no-repeat right center;
@@ -43,7 +42,7 @@ footer {
     -moz-transition: all 0.3s;
     transition: all 0.3s;
 }
-#form-title:hover {
+.form-title:hover {
     background: url("/static/stargazer/css/img/crosswhite.svg")no-repeat right center;
 }
 .feedback-input {
@@ -79,7 +78,7 @@ footer {
 }
 
 /* Icons ---------------------------------- */
-#email{
+.email{
     text-align: start;
     height: auto;
     background-image: url(/static/stargazer/css/img/email.svg);
@@ -87,17 +86,16 @@ footer {
     background-position: 11px 8px;
     background-repeat: no-repeat;
 }
-
-#email:focus{
+.email:focus{
     background-image: url(/static/stargazer/css/img/email.svg);
     background-size: 30px 30px;
     background-position: 11px 8px;
     background-repeat: no-repeat;
 }
-input#email::-webkit-input-placeholder{
+input.email::-webkit-input-placeholder{
     font-weight: normal
 }
-#comment{
+.comment{
     background-image: url(http://rexkirby.com/kirbyandson/images/comment.svg);
     background-size: 30px 30px;
     background-position: 11px 8px;
@@ -116,7 +114,7 @@ input:focus, textarea:focus {
     background-color:white;
 }
 
-#button-blue{
+.button-blue{
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     float:left;
     width: 100%;
@@ -133,7 +131,7 @@ input:focus, textarea:focus {
     font-weight:700;
 }
 
-#button-blue:hover{
+.button-blue:hover{
     background-color: rgba(0,0,0,0);
     color: #0279d7;
 }
@@ -159,7 +157,7 @@ input:focus, textarea:focus {
 }
 
 @media only screen and (max-width: 580px) {
-    #form-div{
+    .form-div{
         left: 3%;
         margin-right: 3%;
         width: 88%;
