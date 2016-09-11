@@ -57,10 +57,12 @@ class DeclinationField(models.Field):
         sec = value - angle*3600 - minute*60
         if negative:
             angle = '-' + str(angle)
-        return u'%s°%s\'%s"' % (angle,minute, sec)
+        # return u'%s°%s\'%s"' % (angle,minute, sec)
+        return '%s %s %s' % (angle,minute, sec)
 
 
     def get_db_prep_value(self, value, connection, prepared=True):
+        #if none provided return none
         if value is None:
             return value
         #if negative
@@ -70,16 +72,25 @@ class DeclinationField(models.Field):
         else: negative = False
         pattern = re.compile('\d{1,2}')
         dec = re.findall(pattern,value)
-        try:
-            angle, minute, sec = dec[0:3]
-        except:
+        if len(dec) >0:
+            angle = dec[0]
+        else:
             raise ValidationError('Wrong Format for declination %s' % value)
+        if len(dec) >1:
+            minute = dec[1]
+        else:
+            minute = 0
+        if len(dec) >2:
+            sec = dec[2]
+        else:
+            sec = 0
         dec_sum = int(angle)*3600 + int(minute)*60 + int(sec)
         if negative:
-            return dec_sum*-1
+            dec_sum =dec_sum*-1
         return super(DeclinationField, self).get_db_prep_value(value=dec_sum, connection=connection, prepared=prepared)
 
     def get_db_prep_save(self, value, connection):
+        #if none provided return none
         if value is None:
             return value
         #if negative
@@ -89,11 +100,19 @@ class DeclinationField(models.Field):
         else: negative = False
         pattern = re.compile('\d{1,2}')
         dec = re.findall(pattern,value)
-        try:
-            angle, minute, sec = dec[0:3]
-        except:
+        if len(dec) >0:
+            angle = dec[0]
+        else:
             raise ValidationError('Wrong Format for declination %s' % value)
+        if len(dec) >1:
+            minute = dec[1]
+        else:
+            minute = 0
+        if len(dec) >2:
+            sec = dec[2]
+        else:
+            sec = 0
         dec_sum = int(angle)*3600 + int(minute)*60 + int(sec)
         if negative:
-            return dec_sum*-1
+            dec_sum =dec_sum*-1
         return super(DeclinationField, self).get_db_prep_value(value=dec_sum, connection=connection)

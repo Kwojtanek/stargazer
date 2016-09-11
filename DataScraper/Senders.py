@@ -98,3 +98,25 @@ class TypeSender:
         return req.status_code
     def send(self):
         r = requests.post(self.URL, json=self.json_data)
+
+class CoorsSender:
+    def __init__(self,coors,pk,*args,**kwargs):
+        self.coors = coors
+        self.pk = pk
+    URL = 'http://127.0.0.1:8000/endpoint/coorsAPI'
+    def check_connection(self):
+        req = requests.get(self.URL)
+        return req.status_code
+    def send(self):
+        r = requests.get(self.URL,params={'pk':self.pk,'coors':self.coors,'format':'json'})
+
+class PKGet:
+    def __init__(self,name,*args,**kwargs):
+        self.name = name
+    URL = 'http://127.0.0.1:8000/endpoint/searchAPI'
+    def check_connection(self):
+        req = requests.get(self.URL)
+        return req.status_code
+    def send(self):
+        r = requests.get(self.URL,params={'name':'^' + self.name + '$','format':'json'})
+        return int(json.loads(r.text)['results'][0]['id'])

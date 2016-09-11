@@ -25,12 +25,11 @@ BotsUserAgents = [
 
 class CrawlerMiddleware(object):
     def process_request(self,request):
-        if request.META.has_key('HTTP_USER_AGENT'):
-            if request.META['HTTP_USER_AGENT'] in BotsUserAgents:
-                urlpath =string.split(urlparse.urlsplit(request.path).path,'/')
-                if urlpath[-2] == 'object':
-                    MainObject = StellarObject.objects.get(pk=urlpath[-1])
-                    return render_to_response('CrawlersTemplate/SingleView.html',
+        if request.META.has_key('HTTP_USER_AGENT') and request.META['HTTP_USER_AGENT'] in BotsUserAgents:
+            urlpath =string.split(urlparse.urlsplit(request.path).path,'/')
+            if urlpath[-2] == 'object':
+                MainObject = StellarObject.objects.get(pk=urlpath[-1])
+                return render_to_response('CrawlersTemplate/SingleView.html',
                                                       {'MainObject':MainObject,
                                                        'charts':mapapistatic(MainObject.rightAsc,
                                                                              MainObject.declination,
@@ -38,7 +37,8 @@ class CrawlerMiddleware(object):
 
                                                        'similar': SimilarViewStatic(**{'type':MainObject.type_shortcut,
                                                                                      'constellation': MainObject.constelation,
-                                                                                    'catalogue': MainObject.catalogues.first().object_catalogue})
+                                                                                    'catalogue': MainObject.catalogues.first().object_catalogue,
+                                                                                       'pk': MainObject.pk})
                                                        },
                                                       )
         else:

@@ -1,7 +1,7 @@
 __author__ = 'kuba'
 from django.conf.urls import url, include
 from .appviews.createaupdateviews import UpdateAPI, BugTrackerViewAPI, ContactAppletViewAPI,\
-    PhotoCreate,  CreateUpdateAPI, PhotoList, CatalogueInfo
+    PhotoCreate,  CreateUpdateAPI, PhotoList, CatalogueInfo, update_coor
 from .appviews.mapviews import mapapi
 from .views import ImgList
 from .appviews.searchviews import SearchAPI, HintAPI
@@ -46,7 +46,8 @@ endpointspatterns = [
     url(r'^bugtrackerAPI$', BugTrackerViewAPI.as_view(), name='BugTrackerUrl'),
     url(r'^contactappletAPI$', ContactAppletViewAPI.as_view(), name='contactappletUrl'),
     url(r'photoAPI', PhotoList.as_view(), name='PhotoListUrl' ),
-    url(r'catalogueInfo', CatalogueInfo, name='CatalogueInfoUrl')
+    url(r'catalogueInfo', CatalogueInfo, name='CatalogueInfoUrl'),
+    url(r'coorsAPI', update_coor)
 ]
 explorepatterns = [
     # All 3 explore endpoints

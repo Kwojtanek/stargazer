@@ -1,6 +1,19 @@
+__author__ = 'Jakub Wojtanek, Kwojtanek@gmail.com'
+__doc__ = 'This file generates variables for angular only once when server is started'
+from django.db.models import Max, Min, Count
+from zorya.models import StellarObject,Catalogues, Constellations
+
+SearchCatalogues = []
+for C in Catalogues.objects.all():
+    SearchCatalogues.append(C.name)
+min_mag = StellarObject.objects.all().aggregate(Min('magnitudo'))
+max_mag = StellarObject.objects.all().aggregate(Max('magnitudo'))
+maxid = StellarObject.objects.all().count()
+
+"""
 var min_mag = 0;
-var max_mag = 23.8;
-var maxid = 32471;
+var max_mag = 20.6;
+var maxid = 18536;
 var hashtag = '';
 var familycount = 9
 
@@ -393,37 +406,12 @@ SearchTypes = [
 ]
 
 SearchCatalogues = [
-    {
-        'value': 'NGC',
-        'label': 'New General Catalogue'},
-    {
-        'value': 'PGC',
-        'label': 'Principal Galaxies Catalogue'
-    },
-    {
-        'value': 'Messier',
-        'label': 'Messier Objects Catalouge'
-    },
-    {
-        'value': 'IC',
-        'label': 'Index Catalouge'
-    },
-    {
-        'value': 'UGC',
-        'label': 'Uppsala General Catalogue'
-    },
-    {
-        'value': 'HCG',
-        'label': 'Hickson Compact Group'
-    },
-    {
-        'value': 'GCL',
-        'label': 'Globular Clusters'
-    },
-    {
-        'value': 'OCL',
-        'label': 'Open Clusters'
-    }
+    'NGC',
+    'PGC',
+    'Messier',
+    'IC',
+    'UGC'
+
 ]
 Nodata = [
     {
@@ -432,13 +420,13 @@ Nodata = [
     {
         'value': 'Unknown',
         'label': 'Object of unknown nature'},
-    {
+            {
         'value': '',
         'label': 'No data'},
-    {
+        {
         'value': 'Inexistent',
         'label': 'Not an object (error, artefact, ...)'},
-    {
+        {
         'value': 'Very red source',
         'label': 'Extremely Red Object'},
 
@@ -504,19 +492,16 @@ ddtypes = [
         {"value": "ClG", "label": "Cluster of Galaxies"}]},
     {"uniname": "Infra-Red source", "data": [
         {"value": "IR", "label": "Infra-Red source"}]},
-]
-[{"uniname": "Infra-Red source", "data": [{"value": "IR>30um", "label": "FIR"}, {"value": "IR<10um", "label": "NIR"}]},
- {"uniname": "Composite object", "data": [{"value": "Region", "label": "reg"}, {"value": "Void", "label": "vid"}, {"value": "SuperClG", "label": "SCG"}, {"value": "ClG", "label": "ClG"}, {"value": "GroupG", "label": "GrG"}, {"value": "Compact_Gr_G", "label": "CGG"}, {"value": "PairG", "label": "PaG"}, {"value": "IG", "label": "IG"}, {"value": "Cl*?", "label": "C?*"}, {"value": "GlCl?", "label": "Gl?"}, {"value": "Cl*", "label": "Cl*"}, {"value": "GlCl", "label": "GlC"}, {"value": "OpCl", "label": "OpC"}, {"value": "Assoc*", "label": "As*"}, {"value": "Stream*", "label": "St*"}, {"value": "MouvGroup", "label": "MGr"}, {"value": "**", "label": "**"}, {"value": "EB*", "label": "EB*"}, {"value": "EB*Algol", "label": "Al*"}, {"value": "EB*betLyr", "label": "bL*"}, {"value": "EB*WUMa", "label": "WU*"}, {"value": "EB*Planet", "label": "EP*"}, {"value": "SB*", "label": "SB*"}, {"value": "EllipVar", "label": "El*"}, {"value": "Symbiotic*", "label": "Sy*"}, {"value": "CataclyV*", "label": "CV*"}, {"value": "DQHer", "label": "DQ*"}, {"value": "AMHer", "label": "AM*"}, {"value": "Nova-like", "label": "NL*"}, {"value": "Nova", "label": "No*"}, {"value": "DwarfNova", "label": "DN*"}, {"value": "XB", "label": "XB*"}, {"value": "LMXB", "label": "LXB"}, {"value": "HMXB", "label": "HXB"}]}, {"uniname": "Interstellar matter", "data": [{"value": "PartofCloud", "label": "PoC"}, {"value": "PN?", "label": "PN?"}, {"value": "ComGlob", "label": "CGb"}, {"value": "Bubble", "label": "bub"}, {"value": "EmObj", "label": "EmO"}, {"value": "Cloud", "label": "Cld"}, {"value": "GalNeb", "label": "GNe"}, {"value": "BrNeb", "label": "BNe"}, {"value": "DkNeb", "label": "DNe"}, {"value": "RfNeb", "label": "RNe"}, {"value": "MolCld", "label": "MoC"}, {"value": "Globule", "label": "glb"}, {"value": "denseCore", "label": "cor"}, {"value": "SFregion", "label": "SFR"}, {"value": "HVCld", "label": "HVC"}, {"value": "HII", "label": "HII"}, {"value": "PN", "label": "PN"}, {"value": "HIshell", "label": "sh"}, {"value": "SNR?", "label": "SR?"}, {"value": "SNR", "label": "SNR"}, {"value": "Circumstellar", "label": "cir"}, {"value": "outflow?", "label": "of?"}, {"value": "Outflow", "label": "out"}, {"value": "HH", "label": "HH"}]}, {"uniname": "Star", "data": [{"value": "*inCl", "label": "*iC"}, {"value": "*inNeb", "label": "*iN"}, {"value": "*inAssoc", "label": "*iA"}, {"value": "*in**", "label": "*i*"}, {"value": "V*?", "label": "V*?"}, {"value": "Pec*", "label": "Pe*"}, {"value": "HB*", "label": "HB*"}, {"value": "YSO", "label": "Y*O"}, {"value": "Ae*", "label": "Ae*"}, {"value": "Em*", "label": "Em*"}, {"value": "Be*", "label": "Be*"}, {"value": "BlueStraggler", "label": "BS*"}, {"value": "RGB*", "label": "RG*"}, {"value": "AGB*", "label": "AB*"}, {"value": "C*", "label": "C*"}, {"value": "S*", "label": "S*"}, {"value": "SG*", "label": "sg*"}, {"value": "RedSG*", "label": "s*r"}, {"value": "YellowSG*", "label": "s*y"}, {"value": "BlueSG*", "label": "s*b"}, {"value": "post-AGB*", "label": "pA*"}, {"value": "WD*", "label": "WD*"}, {"value": "pulsWD*", "label": "ZZ*"}, {"value": "low-mass*", "label": "LM*"}, {"value": "brownD*", "label": "BD*"}, {"value": "Neutron*", "label": "N*"}, {"value": "OH/IR", "label": "OH*"}, {"value": "CH", "label": "CH*"}, {"value": "pMS*", "label": "pr*"}, {"value": "TTau*", "label": "TT*"}, {"value": "WR*", "label": "WR*"}, {"value": "PM*", "label": "PM*"}, {"value": "HV*", "label": "HV*"}, {"value": "V*", "label": "V*"}, {"value": "Irregular_V*", "label": "Ir*"}, {"value": "Orion_V*", "label": "Or*"}, {"value": "Rapid_Irreg_V*", "label": "RI*"}, {"value": "Eruptive*", "label": "Er*"}, {"value": "Flare*", "label": "Fl*"}, {"value": "FUOr", "label": "FU*"}, {"value": "Erupt*RCrB", "label": "RC*"}, {"value": "RCrB_Candidate", "label": "RC?"}, {"value": "RotV*", "label": "Ro*"}, {"value": "RotV*alf2CVn", "label": "a2*"}, {"value": "Pulsar", "label": "Psr"}, {"value": "BYDra", "label": "BY*"}, {"value": "RSCVn", "label": "RS*"}, {"value": "PulsV*", "label": "Pu*"}, {"value": "RRLyr", "label": "RR*"}, {"value": "Cepheid", "label": "Ce*"}, {"value": "PulsV*delSct", "label": "dS*"}, {"value": "PulsV*RVTau", "label": "RV*"}, {"value": "PulsV*WVir", "label": "WV*"}, {"value": "PulsV*bCep", "label": "bC*"}, {"value": "deltaCep", "label": "cC*"}, {"value": "gammaDor", "label": "gD*"}, {"value": "pulsV*SX", "label": "SX*"}, {"value": "LPV*", "label": "LP*"}, {"value": "Mira", "label": "Mi*"}, {"value": "semi-regV*", "label": "sr*"}, {"value": "SN", "label": "SN*"}, {"value": "Sub-stellar", "label": "su*"}, {"value": "Planet?", "label": "Pl?"}, {"value": "Planet", "label": "Pl"}]}, {"uniname": "Galaxy", "data": [{"value": "PartofG", "label": "PoG"}, {"value": "GinCl", "label": "GiC"}, {"value": "BClG", "label": "BiC"}, {"value": "GinGroup", "label": "GiG"}, {"value": "GinPair", "label": "GiP"}, {"value": "High_z_G", "label": "HzG"}, {"value": "AbsLineSystem", "label": "ALS"}, {"value": "Ly-alpha_ALS", "label": "LyA"}, {"value": "DLy-alpha_ALS", "label": "DLA"}, {"value": "metal_ALS", "label": "mAL"}, {"value": "Ly-limit_ALS", "label": "LLS"}, {"value": "Broad_ALS", "label": "BAL"}, {"value": "RadioG", "label": "rG"}, {"value": "HII_G", "label": "H2G"}, {"value": "LSB_G", "label": "LSB"}, {"value": "AGN_Candidate", "label": "AG?"}, {"value": "QSO_Candidate", "label": "Q?"}, {"value": "Blazar_Candidate", "label": "Bz?"}, {"value": "BLLac_Candidate", "label": "BL?"}, {"value": "EmG", "label": "EmG"}, {"value": "StarburstG", "label": "SBG"}, {"value": "BlueCompG", "label": "bCG"}, {"value": "LensedImage", "label": "LeI"}, {"value": "LensedG", "label": "LeG"}, {"value": "LensedQ", "label": "LeQ"}, {"value": "AGN", "label": "AGN"}, {"value": "LINER", "label": "LIN"}, {"value": "Seyfert", "label": "SyG"}, {"value": "Seyfert_1", "label": "Sy1"}, {"value": "Seyfert_2", "label": "Sy2"}, {"value": "Blazar", "label": "Bla"}, {"value": "BLLac", "label": "BLL"}, {"value": "OVV", "label": "OVV"}, {"value": "QSO", "label": "QSO"}]}]
-
-// IE compability
-var doctop = function(){
-    if(document.documentElement && document.documentElement.scrollTop)
-    {return document.documentElement.scrollTop}
-    if(document.body.scrollTop)
-    {return document.body.scrollTop}}
-var dochaight =function(){
-    if(document.documentElement && document.documentElement.scrollHeight)
-    {return document.documentElement.scrollHeight}
-    if(document.body.scrollHeight)
-    {return document.body.scrollHeight}
-    else return 0;}
+    ]
+    var doctop = function(){
+        if(document.documentElement && document.documentElement.scrollTop)
+        {return document.documentElement.scrollTop}
+        if(document.body.scrollTop)
+        {return document.body.scrollTop}}
+    var dochaight =function(){
+        if(document.documentElement && document.documentElement.scrollHeight)
+        {return document.documentElement.scrollHeight}
+        if(document.body.scrollHeight)
+        {return document.body.scrollHeight}
+        else return 0;}
+"""

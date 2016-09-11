@@ -55,8 +55,6 @@ class StandartSearchAPI(generics.ListAPIView):
 
         if name:
             stellarquery = stellarquery.filter(bibcode__name__iregex=name).order_by('bibcode__name_length').order_by()
-            return stellarquery.distinct()
-
         if orderby:
             if orderby == 'constelation':
                 stellarquery =  stellarquery.order_by('constelation__abbreviation')
@@ -64,8 +62,6 @@ class StandartSearchAPI(generics.ListAPIView):
                 stellarquery = stellarquery.order_by('-constelation__abbreviation')
             else:
                 stellarquery =  stellarquery.order_by(orderby)
-        else:
-            stellarquery = stellarquery.order_by('magnitudo')
         return stellarquery.distinct()
 
 

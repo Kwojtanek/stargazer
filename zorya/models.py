@@ -167,7 +167,7 @@ class AstroCharts(models.Model):
     maxDeclination = DeclinationField(blank=True, null=True)
     minDeclination = DeclinationField(blank=True, null=True)
     magnitudo = models.DecimalField(max_digits=3, decimal_places=1)
-    source = models.CharField(max_length=64)
+    source = models.CharField(max_length=64,null=True)
 
 
 class BugTracker(models.Model):

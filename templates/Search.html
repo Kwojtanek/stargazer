@@ -2,6 +2,8 @@
 <html>
 
 <head lang="en">
+  <meta name="msvalidate.01" content="07B92D192CC47CFB9BE642F4E833129E" />
+  <meta name="description" content="Sky maps search engine">
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,16 +43,23 @@
     <script src="/static/angular/angular.min.js"></script>
     <script src="/static/angular-resource/angular-resource.min.js"></script>
     <script src="/static/angular-route/angular-route.min.js"></script>
-
     <!-- Angular linki -->
-    <script src="/static/stargazer/onefileangular.js"></script>
+    <script src="/static/stargazer/oneangular.min.js"></script>
 {#    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>#}
 </head>
 <script>
     document.documentElement.style.overflowX = 'hidden'
 </script>
 <body ng-app="SearchApp">
-
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NMCZ6X"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NMCZ6X');</script>
+<!-- End Google Tag Manager -->
 {% verbatim %}
 <header id="navbar">
     <h1 style="font-size: 1.65em;
@@ -63,6 +72,7 @@
         <!-- span><a href="/{{ hashtag }}API" class="nav-i" target="_self">API</a> </span -->
     </nav>
 </header>
+<span id="navbar-cover" style="width: 100%"></span>
 <section class="ng-view-section" style=" width: 100%">
     <ng-view class="mainview-animation"></ng-view>
 </section>
@@ -82,6 +92,7 @@
     $(document).ready(function(){
         $gotop = $('#go-top');
         $navbar = document.querySelector('#navbar');
+        $navbar_cover = document.querySelector('#navbar-cover');
         function showtop(){
             if (doctop() > 2200 && dochaight() > 1500){
                 $gotop.css({'display':'block'})
@@ -89,12 +100,12 @@
             }
             else $gotop.css({'display':'None'});
             if (doctop() > 200){
-                document.querySelector('#navbar > h1').setAttribute('style',
+                $navbar.querySelector('h1').setAttribute('style',
                         'display: inline-block;' +
                         'margin: 0;' +
                         'position: relative;' +
                         'bottom: -5px;');
-                document.querySelector('#navbar > p').style.display = 'none';
+                $navbar.querySelector('p').style.display = 'none';
 
                 $navbar.setAttribute('style',
                         'background: white;' +
@@ -103,15 +114,17 @@
                         'top: -6px;' +
                         'z-index: 102;' +
                         'box-shadow: 0px 2px 1px 0px rgba(0,0,0,0.75);' +
-                        'padding: 0px 0px 7px 10%;')
+                        'padding: 0px 0px 7px 10%;');
+                $navbar_cover.style.height = '137px'
             }
             else {
                 $navbar.setAttribute('style', 'position: ""; top:""');
-                document.querySelector('#navbar > h1').setAttribute('style',
+                $navbar.querySelector('h1').setAttribute('style',
                         'display:inherit;' +
                         'font-size: 1.65em;' +
                         'margin-bottom: 10px;');
-                document.querySelector('#navbar > p').style.display = 'inherit';
+                $navbar.querySelector('p').style.display = 'inherit';
+                $navbar_cover.style.height = '0'
             }
         }
         document.addEventListener('scroll', showtop, false);

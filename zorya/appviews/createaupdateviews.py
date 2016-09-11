@@ -180,4 +180,13 @@ class PhotoList(generics.ListAPIView):
     queryset = ObjectPhotos.objects.all()
     serializer_class = PhotoPutSerializer
 
-
+@api_view(['POST','GET'])
+def update_coor(request):
+    if request.GET.has_key('pk'):
+        pk = request.GET['pk']
+        dec = request.GET['coors']
+        print(pk,' ',dec)
+        S = StellarObject.objects.get(pk=pk)
+        S.declination = dec
+        S.save()
+        return Response(status=status.HTTP_200_OK)

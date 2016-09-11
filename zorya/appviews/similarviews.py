@@ -50,7 +50,8 @@ def SimilarViewStatic(**kwargs):
             if k == 'type':
                 returnedquery[k] =  stellarquery.filter(type_shortcut=v)[:8]
             if k == 'constellation':
-                returnedquery[k] =  stellarquery.filter(constelation__abbreviation=v)[:8]
+                returnedquery[k] =  stellarquery.filter(constelation=v)[:8]
+                print returnedquery[k]
             if k == 'catalogue':
                 returnedquery[k] =  stellarquery.filter(catalogues__object_catalogue__name=v)[:8]
 

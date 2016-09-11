@@ -19,6 +19,7 @@
     <!-- Angular linki -->
 </head>
 <body>
+
 <header id="navbar">
     <h1 style="font-size: 1.65em;
     margin-bottom: 10px;;"><a href="/" target="_self">Zorya.co</a></h1>
@@ -36,6 +37,9 @@
             </span><br>{% endfor %}</span></h1>
         <h4><span>{{ MainObject.id1 }}<br> {{ MainObject.id2 }}<br> {{ MainObject.id3 }}</span></h4>
         <h4><span>{{ MainObject.notes }}{{ MainObject.unique_name }}</span></h4>
+    {% for b in MainObject.bibcode.all %}
+    <p>{{ b.name }} &nbsp; </p>
+    {% endfor %}
     </section>
     <section class="half-cell"><h1>Overview:</h1>
         <span id="overwiev">{{ MainObject.overview }}</span></section>
@@ -118,10 +122,9 @@
 </main>
 <section class="main" id="more-section">
     <h3>More:</h3>
-
     <main class="more-main">
-        <h4>More of this type:</h4>
-        {% for type in similar.type %}
+        <h4>More of this type: {{ MainObject.otype }}</h4>
+        {% for type in similar.type.all %}
             <a href="/object/{{ type.id }}" class="more-single">
                 <div class="more-single-out">
                     <img src=" {{ type.photos.all.0.thumb }}">
@@ -129,46 +132,44 @@
                 </div>
             </a>
         {% endfor %}
-        <div class="more-main-in" >
-            <img src="/static/stargazer/css/img/chain.svg")>
-            See more in constellation:</div>
+    </main>
+    <main class="more-main">
+        <h4>More in {{ MainObject.constelation }}</h4>
+        {% for constellation in similar.constellation.all %}
+            <a href="/object/{{ constellation.id }}" class="more-single">
+                <div class="more-single-out">
+                    <img src=" {{ constellation.photos.all.0.thumb }}">
+                    <p>{{ constellation.catalogues.all.0.object_catalogue }} {{ constellation.catalogues.all.0.object_number }}</p>
+                </div>
+            </a>
+        {% endfor %}
     </main>
 
-    {% for constellation in similar.constellation %}
-        <main class="more-main">
-        <h4>More in this constellation</h4>
-        <a href="/object/{{ constellation.id }}" class="more-single">
-            <div class="more-single-out">
-                <img src="{{ constellation.photos.all.0.thumb }}">
-                <p>{{ constellation.catalogues.all.0.object_catalogue }}{{ constellation.catalogues.all.0.object_number }}</p>
-
-            </div>
-        </a>
-    {% endfor %}
-    <div class="more-main-in">
-        <img src="/static/stargazer/css/img/chain.svg")>
-        See more in {{ MainObject.constelation}}  </div></main>
-
     <main class="more-main"><h4>More in this catalogue</h4>
-        <a href="/object/{{ catalogue.id }}" ng-if="catalogue.photos[0].thumb" class="more-single" ng-repeat="catalogue in MainObject.similar.catalogue"><div class="more-single-out">
+        {% for catalogue in similar.catalogue.all %}
+        <a href="/object/{{ catalogue.id }}" class="more-single" ><div class="more-single-out">
             <img src="{{ catalogue.photos.0.thumb }}">
             <p>{{ catalogue.catalogues.all.0.object_catalogue }} {{ catalogue.catalogues.all.0.object_number }}</p>
 
         </div></a>
+        {% endfor %}
         <div class="more-main-in" >
             <img src="/static/stargazer/css/img/chain.svg")>
-            See more in {{ MainObject.catalogues.all.0.object_catalogue }}</div></main>
+    </main>
 
 </section>
-{% if MainObject.otype %}
-    <main id="sources" class="main" style="width: 100%"><section class="half-cell">
-        <h2>Sources:</h2>
-        {% if MainObject.overview %}
-            <p><a href="https://en.wikipedia.org/wiki/{{ MainObject.catalogues.all.0.object_catalogue }} {{ MainObject.catalogues.all.0.object_number }}">Wikipedia</a></p>
-        {% endif %}
-        <p><a href="http://simbad.u-strasbg.fr/simbad/sim-id?output.format=ASCII&Ident={{ MainObject.catalogues.all.0.object_catalogue }}_{{ MainObject.catalogues.all.0.object_number }}">Simbad Database</a></p>
-    </section></main>
-{% endif %}
+<main class="main">
+    <h3>Different names</h3>
+    {% for b in MainObject.bibcode.all %}
+    <p>{{ b.name }} &nbsp; </p>
+    {% endfor %}
+</main>
+    <main id="sources" class="main"><section class="half-cell">
+    <h3>Sources:</h3>
+        {% for s in MainObject.source.all %}
+            <p><a href="{{ s.name }}">{{ s.name }}</a></p>
+        {% endfor %}
+</section></main>
 <aside id="navigation-bar">
     <section>
         <h3><img src="/static/stargazer/css/img/list.svg"></h3>

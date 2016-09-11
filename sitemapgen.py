@@ -17,7 +17,16 @@ with tag('urlset', xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"):
                 text('weekly')
             with tag('priority'):
                 text(1)
-        for x in range(1,13402):
+        with tag('url'):
+            with tag('loc'):
+                text('http://www.zorya.co/about/')
+            with tag('lastmod'):
+                text(lastmod)
+            with tag('changefreq'):
+                text('weekly')
+            with tag('priority'):
+                text(1)
+        for x in range(1,32471):
                 with tag('url'):
                     with tag('loc'):
                         text('http://www.zorya.co/object/%s' % x)

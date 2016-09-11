@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 files: {
-                    'static/stargazer/angul.min.js': ['static/stargazer/onefileangular.js']
+                    'static/stargazer/oneangular.min.js': ['static/stargazer/onefileangular.js']
                 }
             }
         },
@@ -67,6 +67,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-shell');
     grunt.registerTask('default', ['shell:pythonServer']);
     grunt.registerTask('w', ['watch']);
+    grunt.registerTask('u', ['uglify']);
+
     grunt.registerTask('pycharm', ['shell:pyCharm']);
 
 

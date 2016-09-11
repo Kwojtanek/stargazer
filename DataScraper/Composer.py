@@ -74,7 +74,7 @@ class Mapper:
         if(self.data['RA'].compressed()) and (self.data['RA'].compressed()) != '':
             results["rightAsc"] =  get_ra(self.data['RA'].compressed()[0])
         if(self.data['DEC'].compressed()) and (self.data['DEC'].compressed()) != '':
-            results["declination"] = self.data['DEC'].compressed()[0][:-3]
+            results["declination"] = self.data['DEC'].compressed()[0]
         try:
             results['constelation'] = get_const('%s %s' % (results['rightAsc'],results['declination']))
         except:
